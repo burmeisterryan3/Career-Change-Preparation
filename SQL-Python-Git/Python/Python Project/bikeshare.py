@@ -142,8 +142,15 @@ def station_stats(df):
     print('Most Common End Station:', popular_estation)
 
     # display most frequent combination of start station and end station trip
+    """
     popular_station_combo = df.value_counts(subset=['Start Station',
                                                     'End Station']).index[0]
+    print('Most Common Start and End Station Combination:\n'
+          + '     Start Station: {}\n'.format(popular_station_combo[0])
+          + '     End Station: {}\n'.format(popular_station_combo[1]))
+    """
+
+    popular_station_combo = df.groupby(['Start Station', 'End Station']).size().idxmax()
     print('Most Common Start and End Station Combination:\n'
           + '     Start Station: {}\n'.format(popular_station_combo[0])
           + '     End Station: {}\n'.format(popular_station_combo[1]))
@@ -187,19 +194,21 @@ def user_stats(df):
         print("    {}: {}".format(user_types[i], user_type_counts[i]))
     print()
 
-    # Display counts of gender
-    user_gender_counts = df['Gender'].value_counts()
-    user_genders = user_gender_counts.index
-    print("Counts by User Gender:")
-    for i in range(user_gender_counts.size):
-        print("    {}: {}".format(user_genders[i], user_gender_counts[i]))
-    print("    Unspecified: {}\n".format(df['Gender'].isna().sum()))
-    print()
-
-    # Display earliest, most recent, and most common year of birth
-    print("Earliest Birth Year: {}".format(int(df['Birth Year'].min())))
-    print("Most Recent Birth Year: {}".format(int(df['Birth Year'].max())))
-    print("Most Common Birth Year: {}".format(int(df['Birth Year'].mode()[0])))
+    if 'Gender' in df.columns:
+        # Display counts of gender
+        user_gender_counts = df['Gender'].value_counts()
+        user_genders = user_gender_counts.index
+        print("Counts by User Gender:")
+        for i in range(user_gender_counts.size):
+            print("    {}: {}".format(user_genders[i], user_gender_counts[i]))
+        print("    Unspecified: {}\n".format(df['Gender'].isna().sum()))
+        print()
+    
+    if 'Birth Year' in df.columns:
+        # Display earliest, most recent, and most common year of birth
+        print("Earliest Birth Year: {}".format(int(df['Birth Year'].min())))
+        print("Most Recent Birth Year: {}".format(int(df['Birth Year'].max())))
+        print("Most Common Birth Year: {}".format(int(df['Birth Year'].mode()[0])))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
