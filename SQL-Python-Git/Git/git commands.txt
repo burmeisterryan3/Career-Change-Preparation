@@ -1,0 +1,211 @@
+###############################################################################
+#					Add, Commit, Revert					#
+###############################################################################
+# Move file from working directory to staging area
+git add <filename>
+
+# Move files from staging area to the repository
+git commit
+git commit -m <Message>
+
+###############################################################################
+#					Log, Show, and Diff					#
+###############################################################################
+# Display commit #, author, date, and commit message for each commit
+git log
+
+# Reduce info to bare essentials
+git log --oneline
+
+# View changes to files
+git log -p <commit>
+git log --path <commit>
+git show <commit>
+
+# View stats regarding changes in commit
+git log --stat
+
+# View stats and file changes
+git log -p --stat <commit>
+git show --stat <commit>
+
+# View changes to uncommitted files
+git diff <filename>
+
+# View all branches with bullets and lines for branches
+git log --oneline --graph --all
+
+###############################################################################
+#						Tag							#
+###############################################################################
+# Add annotated tag (includes author, date, and message)
+# Without -a is a "lightweight" tag - not recommended
+# If no commit is again, applied to most recent commit for current branch
+git tag -a <name> <commit>
+
+# Delete tag
+git tag -d <name>
+
+###############################################################################
+#					Branch, Checkout						#
+###############################################################################
+# List all branches in repository
+git branch
+
+# Create branch
+git branch <name>
+git checkout -b <name>
+
+# Switch branches
+git checkout <name>
+
+# Delete a branch
+git branch -d <name>
+git branch --delete <name>
+
+# Force delete - when commits have not been merged and would be lost if deleted
+git branch -D <name>
+
+# Rename branch
+git branch -m <old-name> <new-name>
+
+###############################################################################
+#						Merge							#
+###############################################################################
+# Merge branch into the currently checked out branch
+# NOTE: the HEAD pointer indicates which branch will move during a merge
+#   if HEAD points to main, git merge alt_branch will move main to alt_branch
+git merge <other-branch>
+
+# Conflicts
+# 1. locate and remove all lines with merge conflict indicators
+#	<<<<<<< HEAD
+#		- everything below this line (until the next indicator) shows you
+#		  what's on the current branch
+#	||||||| merged common ancestors
+#		- everything below this line (until the next indicator) shows you
+#		  what the original lines were
+#	=======
+#		- everything below this line (until the next indicator) shows you
+#		  what the original lines were
+#	>>>>>>> heading-update
+#		- is the ending indicator of what's on the branch that's being
+#		  merged in (in this case, the heading-update branch)
+# 2. determine what to keep
+# 3. save the file(s)
+# 4. stage the file(s)
+# 5. make a commit
+
+###############################################################################
+#					Undoing Commits						#
+###############################################################################
+# Alter the most recent commit
+git commit --amend
+
+# To alter the commit's files, 1) edit file, 2) save file, 3) stage file, and
+#     4) run "git commit --amend"
+# To alter just the commit message, run "git commit --amend" on the directory
+#     without any uncommitted changes
+
+# Reverse previously made commit & create new commit
+git commit <commit>
+
+###### PRO TIP - Run "git branch backup" before executing reset
+
+# Erase previous commit, move current commit changes to working directory
+git reset --mixed <commit>
+(To revert back to backup; run "git checkout -- <file>" & "git merge backup")
+
+# Erase previous commit, move current commit commit to stanging index
+git reset --soft <commit>
+
+# Erase previous commit, permanently erase current commit changes
+git reset --hard <commit>
+
+###############################################################################
+#						Remote							   #
+###############################################################################
+# Manage a remote repository
+git remote
+
+# Add connection between your local repository and the remote repository
+git remote add <remote-shortname> <url>
+(e.g. git remote add origin https://www...)
+
+# View full URL of remote repository
+git remote -v
+
+# Sync remote repository with local repository (send changes)
+git push <remote-shortname> <branch>
+(e.g. git push origin main)
+
+# Sync local repository with the remote repository (retrieve and merge changes)
+git pull <remote-shortname> <branch>
+(e.g. git pull origin main)
+
+# Three things occur with git pull
+# 1. The commits on the remote branch are copied to the local repository.
+# 2. The local tracking branch (origin/main) is moved to point to the most recent commit.
+# 3. The local tracking branch (origin/main) is merged into the local branch (main).
+
+# Retrieve commits from remote repository but do not merge with local branch (retrive changes)
+git fetch <remote-shortname> <branch>
+(e.g. git fetch origin main)
+
+# Two things occur with git fetch
+# 1. The commits on the remote branch are copied to the local repository.
+# 2. The local tracking branch (origin/main) is moved to the most recent commit.
+# NOTE: The local branch is not changed.
+# Use if there are changes on both the local and remote branches neither of the other has.
+
+RT - Remote Tracking Branch
+L - Local Branch
+
+REMOTE
+a - 3 - d - f - e - 7 (main)
+___________________________
+LOCAL
+a - 3 - d - f - e (RT: origin/main; L: main)
+
+git commit
+REMOTE
+a - 3 - d - f - e - 7 (main)
+___________________________
+LOCAL
+a - 3 - d - f - e - b (RT: origin/main; L: main)
+
+
+git fetch origin main
+REMOTE
+a - 3 - d - f - e - 7 (main)
+________________________________
+
+LOCAL
+a - 3 - d - f- e - b (L: main)
+                  \
+                   7 (RT: origin/main)
+
+git merge origin/main
+REMOTE
+a - 3 - d - f - e - 7 (main)
+________________________________
+
+LOCAL
+a - 3 - d - f- e - b - 4 (L: main)
+                  \   /
+                    7 (RT: origin/main)
+
+git push origin main
+REMOTE             7
+		     /  \
+a - 3 - d - f - e - b - 4 (main)
+________________________________
+
+LOCAL
+a - 3 - d - f- e - b - 4 (origin/main; main)
+                  \   /
+                    7
+
+###############################################################################
+#						Clone							   #
+###############################################################################
