@@ -8,8 +8,8 @@ CITY_DATA = { 'chicago': 'chicago.csv',
 
 def get_filters():
     """
-    Asks user to specify a city, month, and day to analyze.
-"
+    Ask user to specify a city, month, and day to analyze.
+    
     Returns:
         (str) city - name of the city to analyze
         (str) month - name of the month to filter by, or "all" to apply no month filter
@@ -51,7 +51,7 @@ def get_filters():
     days = ['all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
     day = input(prompt).lower()
-    while day.lower() not in days:
+    while day not in days:
         day = input(error_prompt).lower()
 
     print('-'*40)
@@ -60,7 +60,7 @@ def get_filters():
 
 def load_data(city, month, day):
     """
-    Loads data for the specified city and filters by month and day if applicable.
+    Load data for the specified city and filters by month and day if applicable.
 
     Args:
         (str) city - name of the city to analyze
@@ -74,19 +74,15 @@ def load_data(city, month, day):
     df = pd.read_csv(CITY_DATA[city.lower()], parse_dates=["Start Time", "End Time"])
     df.rename(columns={'Unnamed: 0': ''}, inplace=True)
 
-    # convert the Start Time column to datetime
-    # df['Start Time'] = pd.to_datetime(df['Start Time'])
-
     # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.day_name() # OR dayofweek for number
-    # df['day_of_week'] = df['Start Time'].dt.day_of_week
 
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
         months = ['january', 'february', 'march', 'april', 'may', 'june']
-        month = months.index(month.lower()) + 1
+        month = months.index(month) + 1
     
         # filter by month to create the new dataframe
         df = df[df['month'] == month]
@@ -95,14 +91,12 @@ def load_data(city, month, day):
     if day != 'all':
         # filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day.title()]
-        # days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        # df = df[df['day_of_week'] == days_of_week.index(day.title())]
     
     return df
 
 
 def time_stats(df):
-    """Displays statistics on the most frequent times of travel."""
+    """Display statistics on the most frequent times of travel."""
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
@@ -128,7 +122,7 @@ def time_stats(df):
 
 
 def station_stats(df):
-    """Displays statistics on the most popular stations and trip."""
+    """Display statistics on the most popular stations and trip."""
 
     print('\nCalculating The Most Popular Stations and Trip...\n')
     start_time = time.time()
@@ -142,25 +136,18 @@ def station_stats(df):
     print('Most Common End Station:', popular_estation)
 
     # display most frequent combination of start station and end station trip
-    """
     popular_station_combo = df.value_counts(subset=['Start Station',
                                                     'End Station']).index[0]
     print('Most Common Start and End Station Combination:\n'
-          + '     Start Station: {}\n'.format(popular_station_combo[0])
-          + '     End Station: {}\n'.format(popular_station_combo[1]))
-    """
-
-    popular_station_combo = df.groupby(['Start Station', 'End Station']).size().idxmax()
-    print('Most Common Start and End Station Combination:\n'
-          + '     Start Station: {}\n'.format(popular_station_combo[0])
-          + '     End Station: {}\n'.format(popular_station_combo[1]))
+          + '\tStart Station: {}\n'.format(popular_station_combo[0])
+          + '\tEnd Station: {}\n'.format(popular_station_combo[1]))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
 
 def trip_duration_stats(df):
-    """Displays statistics on the total and average trip duration."""
+    """Display statistics on the total and average trip duration."""
 
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
@@ -181,7 +168,7 @@ def trip_duration_stats(df):
 
 
 def user_stats(df):
-    """Displays statistics on bikeshare users."""
+    """Display statistics on bikeshare users."""
 
     print('\nCalculating User Stats...\n')
     start_time = time.time()
@@ -194,28 +181,26 @@ def user_stats(df):
         print("    {}: {}".format(user_types[i], user_type_counts[i]))
     print()
 
-    if 'Gender' in df.columns:
-        # Display counts of gender
-        user_gender_counts = df['Gender'].value_counts()
-        user_genders = user_gender_counts.index
-        print("Counts by User Gender:")
-        for i in range(user_gender_counts.size):
-            print("    {}: {}".format(user_genders[i], user_gender_counts[i]))
-        print("    Unspecified: {}\n".format(df['Gender'].isna().sum()))
-        print()
-    
-    if 'Birth Year' in df.columns:
-        # Display earliest, most recent, and most common year of birth
-        print("Earliest Birth Year: {}".format(int(df['Birth Year'].min())))
-        print("Most Recent Birth Year: {}".format(int(df['Birth Year'].max())))
-        print("Most Common Birth Year: {}".format(int(df['Birth Year'].mode()[0])))
+    # Display counts of gender
+    user_gender_counts = df['Gender'].value_counts()
+    user_genders = user_gender_counts.index
+    print("Counts by User Gender:")
+    for i in range(user_gender_counts.size):
+        print("    {}: {}".format(user_genders[i], user_gender_counts[i]))
+    print("    Unspecified: {}\n".format(df['Gender'].isna().sum()))
+    print()
+
+    # Display earliest, most recent, and most common year of birth
+    print("Earliest Birth Year: {}".format(int(df['Birth Year'].min())))
+    print("Most Recent Birth Year: {}".format(int(df['Birth Year'].max())))
+    print("Most Common Birth Year: {}".format(int(df['Birth Year'].mode()[0])))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
 
 def display_ind_trip_data(df):
-    """Displays five trips until the user wants."""
+    """Display five trips until the user wants."""
 
     current_row = 0
     num_trips = df.shape[0]
