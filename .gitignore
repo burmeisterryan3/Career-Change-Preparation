@@ -16,11 +16,18 @@
 /.vs/Data Science - Udacity/FileContentIndex/acfe01ee-699e-43bf-bda2-8e4c10021642.vsidx
 
 # Ignore all csv files
-*.csv
+*\.csv
 
 # Ignore all image files
-*.png
-*.jpg
+*\.png
+*\.jpg
 
 # Ignore all pdf files
-*.pdf
+*\.pdf
+
+# Ignore zip and tar files
+*\.tar
+*\.zip
+
+# Ignore presentation files
+*\.pptx?
