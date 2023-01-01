@@ -14,3 +14,13 @@
 /.vs/Data Science - Udacity/FileContentIndex/a032f399-645e-4d1e-b784-1e8100443e9d.vsidx
 /.vs/Data Science - Udacity/FileContentIndex/read.lock
 /.vs/Data Science - Udacity/FileContentIndex/acfe01ee-699e-43bf-bda2-8e4c10021642.vsidx
+
+# Ignore all csv files
+*.csv
+
+# Ignore all image files
+*.png
+*.jpg
+
+# Ignore all pdf files
+*.pdf
