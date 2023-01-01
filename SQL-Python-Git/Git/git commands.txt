@@ -1,3 +1,27 @@
+OVERVIEW:
+________________________________________________________________
+
+                       Remote Repository
+                          (git push)
+________________________________________________________________
+
+                       Local Repository
+                         (git commit)
+________________________________________________________________
+                    |                      |
+                    |                      |
+                    |                      |
+                    |                      |
+  Working Directory |    Staging Index     |        Trash
+     (git diff)     |      (git add)       | (git reset --hard)
+ (git reset --mixed)|  (git reset --soft)  |
+                    |                      |
+                    |                      | 
+
+BRANCHES:
+Local Branch: Which branch within your local repository you are on (e.g. main)
+Tracking Branch: Which branch within your remote repository you are on (e.g. origin/main, upstream/main)
+
 ###############################################################################
 #					Add, Commit, Revert					#
 ###############################################################################
@@ -35,6 +59,18 @@ git diff <filename>
 # View all branches with bullets and lines for branches
 git log --oneline --graph --all
 
+# View commit messages containing specific text
+git log --grep="<text>"
+
+# View commits by contributor
+git shortlog
+
+# Show number of commits by contributor in numerical order
+git shortlog -s -n
+
+# View commits by partiicular contributor
+git log --author="<author-name>"
+
 ###############################################################################
 #						Tag							#
 ###############################################################################
@@ -58,6 +94,9 @@ git checkout -b <name>
 
 # Switch branches
 git checkout <name>
+
+# Discard changes in the working directory
+git checkout -- <file>
 
 # Delete a branch
 git branch -d <name>
@@ -123,7 +162,7 @@ git reset --soft <commit>
 git reset --hard <commit>
 
 ###############################################################################
-#						Remote							   #
+#						Remote						#
 ###############################################################################
 # Manage a remote repository
 git remote
@@ -135,6 +174,11 @@ git remote add <remote-shortname> <url>
 # View full URL of remote repository
 git remote -v
 
+# Rename remote shortnames
+git remote rename <old-shortname> <new-shortname>
+(e.g. git remote rename <origin> <mine> OR
+      git remote rename <upstream> <source-repo>)
+
 # Sync remote repository with local repository (send changes)
 git push <remote-shortname> <branch>
 (e.g. git push origin main)
@@ -145,8 +189,8 @@ git pull <remote-shortname> <branch>
 
 # Three things occur with git pull
 # 1. The commits on the remote branch are copied to the local repository.
-# 2. The local tracking branch (origin/main) is moved to point to the most recent commit.
-# 3. The local tracking branch (origin/main) is merged into the local branch (main).
+# 2. The remote tracking branch (origin/main) is moved to point to the most recent commit.
+# 3. The remote tracking branch (origin/main) is merged into the local branch (main).
 
 # Retrieve commits from remote repository but do not merge with local branch (retrive changes)
 git fetch <remote-shortname> <branch>
@@ -154,58 +198,80 @@ git fetch <remote-shortname> <branch>
 
 # Two things occur with git fetch
 # 1. The commits on the remote branch are copied to the local repository.
-# 2. The local tracking branch (origin/main) is moved to the most recent commit.
+# 2. The remote tracking branch (origin/main) is moved to the most recent commit.
 # NOTE: The local branch is not changed.
 # Use if there are changes on both the local and remote branches neither of the other has.
 
-RT - Remote Tracking Branch
+RR - Remote Repository
+LR - Local Repository
+T - Tracking Branch
 L - Local Branch
 
-REMOTE
+RR
 a - 3 - d - f - e - 7 (main)
 ___________________________
-LOCAL
-a - 3 - d - f - e (RT: origin/main; L: main)
+LR
+a - 3 - d - f - e (T: origin/main; L: main)
 
 git commit
-REMOTE
+RR
 a - 3 - d - f - e - 7 (main)
 ___________________________
-LOCAL
-a - 3 - d - f - e - b (RT: origin/main; L: main)
+LR
+a - 3 - d - f - e - b (T: origin/main; L: main)
 
 
 git fetch origin main
-REMOTE
+RR
 a - 3 - d - f - e - 7 (main)
 ________________________________
-
-LOCAL
+LR
 a - 3 - d - f- e - b (L: main)
                   \
-                   7 (RT: origin/main)
+                   7 (T: origin/main)
 
 git merge origin/main
-REMOTE
+RR
 a - 3 - d - f - e - 7 (main)
 ________________________________
-
-LOCAL
+LR
 a - 3 - d - f- e - b - 4 (L: main)
                   \   /
-                    7 (RT: origin/main)
+                    7 (T: origin/main)
 
 git push origin main
-REMOTE             7
+RR                7
 		     /  \
 a - 3 - d - f - e - b - 4 (main)
 ________________________________
-
-LOCAL
-a - 3 - d - f- e - b - 4 (origin/main; main)
+LR
+a - 3 - d - f- e - b - 4 (T: origin/main; L: main)
                   \   /
                     7
 
 ###############################################################################
-#						Clone							   #
+#						Clone							#
 ###############################################################################
+# Make a copy of a remote repository on the local device  
+git clone <url>
+
+###############################################################################
+#						Rebase						#
+###############################################################################
+# Move commits to a new base (interactively)
+git rebase -i HEAD~3
+(NOTE: The -i is for interactive and is recommended while learning to rebase.)
+###### PRO TIP - Run "git branch backup" before executing rebase to ensure there is a pointer to the branch that has been rebased.
+###### PRO TIP - Do not rebase commits that have already been pushed... remote developers may be forced out of sync if so.
+
+EXAMPLE:
+ 	                               HEAD
+		  				   |
+... - d2e454a - 8aa9efb - d968543 - ac5ce47
+
+git rebase -i HEAD~3 will use commit HEAD~3
+r 8aa9efb (reword this commit to reflect squashed commits as a part of it)
+s d968543 (squash this commit into previous commit)
+s ac5ce47 (squash this commit into previous commit)
+
+... - d2e454a - 4a0328f
