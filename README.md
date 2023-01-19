@@ -11,8 +11,8 @@ If you'd like to know more specifically about my journey, please see [my blog](h
 ## Courses Taken
 
 - Programming Languages
-  - HTML
-    - 
+  - HTML / CSS / JavaScript
+    - Introduction to Web Development with HTML, CSS, JavaScript ([IBM - Coursera](https://www.coursera.org/learn/introduction-to-web-development-with-html-css-javacript))
   - Python
     - Programming for Data Science with Python ([Udacity](https://confirm.udacity.com/HJRUWETD))
   - C#
