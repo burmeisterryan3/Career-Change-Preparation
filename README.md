@@ -12,18 +12,16 @@ If you'd like to know more specifically about my journey, please see [my blog](h
 
 - Programming Languages
   - HTML / CSS / JavaScript
-    - Introduction to Web Development with HTML, CSS, JavaScript ([IBM - Coursera](https://www.coursera.org/learn/introduction-to-web-development-with-html-css-javacript))
+    - Introduction to Web Development with HTML, CSS, JavaScript ([IBM - Coursera Course](https://www.coursera.org/learn/introduction-to-web-development-with-html-css-javacript))
   - Python
-    - Programming for Data Science with Python ([Udacity](https://confirm.udacity.com/HJRUWETD))
+    - Programming for Data Science with Python ([Udacity Certificate](https://confirm.udacity.com/HJRUWETD))
   - C#
-    - Introduction to C# ([Sololearn](https://www.sololearn.com/certificates/CC-QP5EQQDK))
-    - C# Intermediate (Sololearn)
+    - Introduction to C# ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-QP5EQQDK))
+    - C# Intermediate ([Sololearn Certifcate](https://www.sololearn.com/certificates/CC-ECCHUPFZ))
   - Miscellaneous
     - Writing READMEs (Udacity)
 - Cloud Computing
-  - Introduction to Cloud Computing - ([IBM - Coursera](https://www.credly.com/earner/earned/badge/4d4bcc02-ce1c-42b1-a100-6d47a179b54f))
-- Introduction to C# (Sololearn)
-- C# Intermediate (Sololearn)
+  - Introduction to Cloud Computing - ([IBM - Coursera Badge](https://www.credly.com/earner/earned/badge/4d4bcc02-ce1c-42b1-a100-6d47a179b54f))
 
 ## Employment
 
