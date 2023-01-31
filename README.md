@@ -13,6 +13,7 @@ If you'd like to know more specifically about my journey, please see [my blog](h
 - Programming Languages
   - HTML / CSS / JavaScript
     - Introduction to Web Development with HTML, CSS, JavaScript ([IBM - Coursera Course](https://www.coursera.org/learn/introduction-to-web-development-with-html-css-javacript))
+    - JavaScript Intermediate ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-FWUIMPVO))
   - Python
     - Programming for Data Science with Python ([Udacity Certificate](https://confirm.udacity.com/HJRUWETD))
   - C#
