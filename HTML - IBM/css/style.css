@@ -1,0 +1,144 @@
+body {
+    margin: 10px;
+    background-color: black;
+}
+
+#home {
+    background-color: rgb(106,39,101);
+    margin-top: -1cm;
+    margin-left: -1cm;
+    margin-right: -1cm;
+    padding-bottom: 1cm;
+    padding-top: 2cm;
+    padding-bottom: 2cm;
+}
+
+header {
+    font-size: 30px;
+    color: rgb(222, 207, 230);
+    float: left;
+    padding-left: 2cm;
+}
+
+/* Navigation bar container */
+.topdiv {
+    float: right;
+    padding-right: 1cm;
+}
+
+/* Navigation bar buttons */
+.topmenu {
+    color: lightgrey;
+    background-color: rgb(48, 25, 52);
+    margin: 10px;
+    padding: 10px;
+    border-radius: 1mm;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.topmenu:hover {
+    color: white;
+    font-weight: bolder;
+    background-color: rgb(66, 64, 66);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Container for all the three conversion calculator sections   */
+#all-conversions-sections {
+    display: grid;
+    justify-content: center;
+}
+
+figure {
+    float: left;
+    justify-self: auto;
+    width: 200px;
+}
+
+img {
+    width: 200px;
+}
+
+figcaption {
+    color: black;
+    font-size: 17px;
+    text-align: center;
+}
+
+article {
+    padding-top: 10%;
+}
+
+button {
+    font-size: 20px;
+    border: transparent;
+    border-radius: 50px;
+    width: fit-content;
+    background-color: lightgreen;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+/* The calculator panel */
+.b {
+    border-top-style: solid;
+    border-top-width: 20px;
+    border-radius: 10px;
+    background-color: white;
+    width: 600px;
+    height: 400px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-right: 10%;
+    display: flex;
+}
+
+.temperature {
+    border-color: green;
+}
+
+.weight {
+    border-color: coral;
+}
+
+.distance {
+    border-color: cyan;
+}
+
+legend {
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+.calc {
+    margin-left: 50px;
+}
+
+/* Floating icon for the home button */
+.iconbutton {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-color: cyan;
+    justify-content: center;
+    display: flex;
+    position: fixed;
+    left: 0;
+    bottom: 40px;
+}
+
+.iconbutton img {
+    width: 30px;
+}
+
+footer {
+    background-color: lightpink;
+    margin-top: 20px;
+    text-align: center;
+}
