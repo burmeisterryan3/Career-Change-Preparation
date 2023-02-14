@@ -12,8 +12,11 @@ If you'd like to know more specifically about my journey, please see [my blog](h
 
 - Programming Languages
   - HTML / CSS / JavaScript
-    - Introduction to Web Development with HTML, CSS, JavaScript ([IBM - Coursera Course](https://www.coursera.org/learn/introduction-to-web-development-with-html-css-javacript))
+    - Introduction to Web Development with HTML, CSS, JavaScript ([IBM - Coursera Badge](https://www.credly.com/badges/561cf0a2-a37c-4c2a-b915-335127086e4c))
     - JavaScript Intermediate ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-FWUIMPVO))
+    - Game Development with JavaScript ([Sololearn Certificate](https://www.sololearn.com/certificates/CT-QJHSG6OG))
+    - Responsive Web Design ([Sololearn Certificate](https://www.sololearn.com/certificates/CT-PKRDDC0H))
+    - jQuery ([Sololearn Certificate]())
   - Python
     - Programming for Data Science with Python ([Udacity Certificate](https://confirm.udacity.com/HJRUWETD))
   - C#
