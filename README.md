@@ -23,6 +23,7 @@ If you'd like to know more specifically about my journey, please see [my blog](h
     - Introduction to C# ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-QP5EQQDK))
     - C# Intermediate ([Sololearn Certifcate](https://www.sololearn.com/certificates/CC-ECCHUPFZ))
   - Miscellaneous
+    - Git and GitHub Essentials ([IBM - Coursera Badge](https://www.credly.com/badges/2bb49166-4824-4ad2-bed9-133e654b3d0b))
     - Writing READMEs (Udacity)
 - Cloud Computing
   - Introduction to Cloud Computing - ([IBM - Coursera Badge](https://www.credly.com/earner/earned/badge/4d4bcc02-ce1c-42b1-a100-6d47a179b54f))
