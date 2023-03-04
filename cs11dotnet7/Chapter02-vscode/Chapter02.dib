@@ -1,0 +1,607 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":"vscode","aliases":["frontend"],"languageName":null}]}}
+
+#!markdown
+
+# <ins>**Chapter 02**</ins>
+
+##### Taken from *C11-DotNet7 - Modern Cross-Platform Development Fundamentals* by Mark J. Price
+
+https://github.com/markjprice
+https://github.com/markjprice/cs11dotnet7
+
+#!csharp
+
+using System.Xml;
+using System.IO;
+
+#!csharp
+
+Console.WriteLine();
+Console.WriteLine("Hello Ryan");
+Console.WriteLine("Temperature on {0:D} is {1} degree Celsius.", DateTime.Today, 23.4);
+
+#!csharp
+
+double heightInMeters = 1.88;
+Console.WriteLine($"The variable {nameof(heightInMeters)} has the value {heightInMeters}.");
+
+#!markdown
+
+## **Char**
+
+`char` is assigned using single quotes aroudn the literal value, or assigning the return vlaue of a function call.
+
+    char letter = 'A';
+    char digit = '1';
+    char symbol = '$'; 
+    char userChoice = GetSomeKeyStroke();
+
+#!markdown
+
+## **String**
+
+`string` stores text with multiple letters and are assigned using double quotes around the literal value or by assigning the return value of a function call or constructor.
+
+    string firstName = "Bob"; // assigning literal strings
+    string lastName = "Smith";
+    string phoneNumber = "(215) 555-4256";
+
+    // assigning a string returned from the string class constructor  
+    string horizontalLine = new('-', count: 74); // 74 hyphens
+
+    // assigning a string returned from a fictitious function  
+    string address = GetAddressFromDatabase(id: 563);
+
+    // assigning an emoji by converting from Unicode
+    string grinningEmoji = char.ConvertFromUtf32(0x1F600);
+
+#!csharp
+
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+string grinningEmoji = char.ConvertFromUtf32(0x1f600);
+Console.WriteLine(grinningEmoji);
+
+#!markdown
+
+### Veratim Strings
+
+Esacape sequences to represent special characters, e.g. tabs with \t.  
+`string fullNameWithTabSeparator = "Bob\tSmith";`
+
+Use literal strings when special characters should not be interpreted as such.  
+`string filePath = @"C:\televisions\sony\bravia.txt";`
+
+#!csharp
+
+// Will not compile due to unrecognized escape sequence, e.g. \s
+// string filePath = "C:\televisions\sony\bravia.txt";
+
+// String literal
+string filePath = @"C:\televisions\sony\bravia.txt";
+Console.WriteLine(filePath);
+
+#!markdown
+
+### Raw String Literals
+
+Raw string literals are convenient for entering any arbitrary text without needing to escape the contents. They are useful and make it easy to define literals continaing other languages like XML, HTML, or JSON.
+
+Raw string literals start and end with three or more double-quote character. Why *three or <ins>more</ins>* double-quote characters? That is for scenarios where the content itself needs to 
+have three double-quote characters; you can then use four double-quote characters to indicate the beginning and end of the contents. Where the content needs to have four double-quote characters, you can then use five double-quote characters to indicate the beginning and end of the contents. And so on.
+
+#!csharp
+
+// Raw string literal
+// Note pg 69's comments - Spaces are significant
+// Will strip leading white space based on first line
+string xml = """
+             <person age="50">
+                <first_name>Mark</first_name>
+             </person>
+             """;
+xml
+
+#!markdown
+
+### Raw Interpolated Strings
+You can mix interpolated strings that use curly braces { } with raw string literals. You specify the number of braces that indicate a replaced expression by adding that number of dollar signs to the start of the literal. Any fewer braces than that are treated as raw content.
+
+For example, if we want to define some JSON, single braces will be treated as normal braces, but the two dollar symbols tell the compiler that any two curly braces indicate a replaced expression value, as shown in the following code. The number of dollars tells the compiler how many curly braces are needed for something to become recognized as an interpolated expression.
+
+#!csharp
+
+var person = new { FirstName = "Alice", Age = 56 };
+string json = $$"""
+              {
+                  "first_name": "{{person.FirstName}}",
+                  "age": {{person.Age}},
+                  "calculation", "{{{ 1 + 2 }}}"
+              }
+              """;
+Console.WriteLine(json);
+
+#!markdown
+
+### Formatting Using Numbered Positional Arguments
+
+##### Named Parameters
+
+Note: `Write`, `WriteLine`, and `Format` methods can have up to four numbered arguments, named `arg0`, `arg1`, `arg2`, and `arg3`.
+
+#!csharp
+
+int numberOfApples = 12; 
+decimal pricePerApple = 0.35M;
+
+Console.WriteLine(
+    format: "{0} apples cost {1:C}", 
+    arg0: numberOfApples,
+    arg1: pricePerApple * numberOfApples);
+
+string formatted = string.Format(
+    format: "{0} apples cost {1:C}",
+    arg0: numberOfApples,
+    arg1: pricePerApple * numberOfApples);
+
+//WriteToFile(formatted); // writes the string into a file
+
+#!markdown
+
+##### No names
+
+#!csharp
+
+// Five or more parameter values cannot use named arguments.
+Console.WriteLine(
+    format: "{0} {1} lived in {2}, {3} and worked in the {4} team at {5}.",
+    "Roger", "Cevung", "Stockholm", "Sweden", "Education", "Optimizely");
+
+#!markdown
+
+### Interpolated Strings
+
+Allows for output of the variable or expression at that position in the `string`.
+
+#!csharp
+
+// The following statement must be all on one line...
+// Can separate by lines breaks in C# 11
+Console.WriteLine($"{numberOfApples} apples cost {pricePerApple * 
+numberOfApples:C}");
+
+#!markdown
+
+Before C# 10, `string` constants could only be combined by using concatenation with the `+` operator, as shown in the following code:
+
+    private const string firstname = "Omar";
+    private const string lastname = "Rudberg";
+    private const string fullname = firstname + " " + lastname;
+
+With C# 19, interpolated strings (prefixed with `$`) can now be used, as shown in the following code:
+
+    private const string fullname = $"{firstname} {lastname}";
+
+This only works for combining `string` constant values. It cannot work with other types like numbers that would require runtime data type conversions.
+
+### Understanding Format Strings
+
+A variable or expression can be formatted using a format string after a comma or colon.
+
+An `N0` format string means a number with thousands separators and no decimal places, while a `C` format string means currency. The currency format will be determined by the current thread, e.g. pounds sterling with commas as the thousands separator in the UK but euros with dots as the thousands separator in Germany.
+
+The full syntax of a format item is:
+
+    { index [, alignment ] [ : formatString ] }
+
+Alignment values are integers. Postive inegers mean right-aligned and negative integers mean left-aligned.
+
+#!csharp
+
+string applesText = "Apples";
+int applesCount = 1234;
+string bananasText = "Bananas";
+int bananasCount = 56789;
+
+Console.WriteLine(
+    format: "{0,-10} {1,6}",
+    arg0: "Name",
+    arg1: "Count");
+
+Console.WriteLine(
+    format: "{0,-10} {1,6:N0}",
+    arg0: applesText,
+    arg1: applesCount);
+
+Console.WriteLine(
+    format: "{0,-10} {1,6:N0}",
+    arg0: bananasText,
+    arg1: bananasCount);
+
+#!markdown
+
+## **Numbers**
+
+Data we want to perform arithmetic on, e.g. multiplying.
+
+#!csharp
+
+// unsigned integer means positive whole number or 0
+uint naturalNumber = 23;
+Console.WriteLine(naturalNumber);
+
+// integer means negative or positive whole number or 0
+int integerNumber = -23;
+Console.WriteLine(integerNumber);
+
+// float means single-precision floating point
+// F suffix makes it a float literal
+float realNumber = 2.3F;
+Console.WriteLine(realNumber);
+
+// double means double-precision floating point
+double anotherRealNumber = 2.3; // double literal
+Console.WriteLine(anotherRealNumber);
+
+#!markdown
+
+### Digit Separators - Improving Legibility
+
+You can insert underscores anywhere into the digits of a number literal, including decimal, binary, or hexadecimal notation, to improve legibility.
+
+For example, you could write the value for 1 million in decimal notation, that is, Base 10, as 1_000_000.
+
+### Binary & Hexadecimal Notation
+
+To use binary notation, that is, Base 2, using only 1s and 0s, start the number literal with 0b. To use hexadecimal notation, that is, Base 16, using 0 to 9 and A to F, start the number literal with 0x.
+
+#!csharp
+
+// three variables that store the number 2 million
+int decimalNotation = 2_000_000;
+int binaryNotation = 0b_0001_1110_1000_0100_1000_0000;
+int hexadecimalNotation = 0x_001E_8480;
+
+// check the three variables have the same value
+// both statements output true 
+Console.WriteLine($"{decimalNotation == binaryNotation}");
+Console.WriteLine($"{decimalNotation == hexadecimalNotation}");
+
+#!markdown
+
+Compare the size of number types and their maximum and minimum values.
+
+#!csharp
+
+Console.WriteLine($"int uses {sizeof(int)} bytes and can store numbers in the range {int.MinValue:N0} to {int.MaxValue:N0}.");
+Console.WriteLine($"double uses {sizeof(double)} bytes and can store numbers in the range { double.MinValue:N0} to {double.MaxValue:N0}.");
+Console.WriteLine($"decimal uses {sizeof(decimal)} bytes and can store numbers in the range { decimal.MinValue:N0} to {decimal.MaxValue:N0}.");
+
+#!markdown
+
+### Comparing `double` and `decimal` types
+
+#!csharp
+
+Console.WriteLine("Using doubles:"); 
+double a = 0.1;
+double b = 0.2;
+if (a + b == 0.3)
+{
+    Console.WriteLine($"{a} + {b} equals {0.3}");
+}
+else
+{
+    Console.WriteLine($"{a} + {b} does NOT equal {0.3}");
+}
+
+#!markdown
+
+As a rule of thumb, you should only use `double` when accuracy, especially when comparing the equality of two numbers, is not important.
+
+The problem with the preceeding code is illustrated how the computer storest he number 0.1, or multiples of it (IEEE Standard). To represent `0.1` in binary, the computer stores 1 in the 1/16 column, 1 in the 1/32 column, 1/256 column, 1 in the 1/512 column, and so on.
+
+The number `0.1` in decimal is: `0.00011001100110011`... in binary, repeating forever.
+
+#!csharp
+
+Console.WriteLine("Using decimals:");
+decimal c = 0.1M; // M suffix means a decimal literal value
+decimal d = 0.2M;
+if (c + d == 0.3M)
+{
+    Console.WriteLine($"{c} + {d} equals {0.3M}");
+}
+else
+{
+    Console.WriteLine($"{c} + {d} does NOT equal {0.3M}");
+}
+
+#!markdown
+
+The `decimal` type is accurate because it stores the number as a large integer and shifts the decimal point. For example, `0.1` is stored as `1`, with a note to shift the decimal one place to the left. `12.75` is stored as `1275`, with a note to shift the decimal two places ot the left.
+
+### Best Practice
+
+Use `int` for whole numbers. Use `double` for real numbers that will not be compared for equality to other values; it is okay to compare `double` values being less than or greater than, and so on. Use `decimal` for money, CAD drawings, general engineering, and wherever the accuracy of a real number is important.
+
+### Special Values
+
+The `float` and `double` types have some useful special values: `NaN` represents not-a-number (for example, 
+the result of dividing by zero), `Epsilon` represents the smallest positive number that can be stored in 
+a `float` or `double`, and `PositiveInfinity` and `NegativeInfinity` represent infinitely large positive 
+and negative values. They also have methods for checking for these special values like `IsInfinity`
+and `IsNan`.
+
+#!csharp
+
+Console.WriteLine(double.NaN);
+Console.WriteLine(float.Epsilon);
+Console.WriteLine(double.PositiveInfinity);
+Console.WriteLine(float.NegativeInfinity);
+Console.WriteLine(double.IsInfinity(default(double)));
+Console.WriteLine(float.IsNaN(float.NaN));
+
+#!markdown
+
+## **Boolean**
+Booleans can only contain one of the two literal values true or false, as shown in the following code:
+
+    bool happy = true;
+    bool sad = false;
+
+## **Storing Any Type of Object**
+
+There is a special type named `object` that can store any type of data, but its flexibility comes at the cost of messier code and possibly poor performance. Because of those two reasons, you should avoid it whenever possible.
+
+#!csharp
+
+object height = 1.88; // storing a double in an object 
+object name = "Amir"; // storing a string in an object
+Console.WriteLine($"{name} is {height} metres tall.");
+
+// int length1 = name.Length; // gives compile error!
+int length2 = ((string)name).Length; // tell compiler it is a string
+Console.WriteLine($"{name} has {length2} characters.");
+
+#!markdown
+
+The `object` type has been available since the first version of C#, but C# 2.0 and later have a better alternative called **generics**. These will provide us with the flexibility we want, but without the performance overhead.
+
+## **Storing Dynamic Types**
+
+There is another special type named `dynamic` that can also store any type of data, but even more than `object`, its flexibility comes at the cost of performance. However, unlike `object`, the value stored in the variable can have its members invoked without an explicit cast.
+
+#!csharp
+
+// storing a string in a dynamic object
+// string has a Length property
+dynamic something = "Ahmed";
+
+// int does not have a Length property
+something = 12;
+// an array of any type has a Length property
+something = new[] { 3, 5, 7 };
+
+// this compiles but would throw an exception at run-time
+// if you later stored a data type that does not have a
+// property named Length
+Console.WriteLine($"Length is {something.Length}");
+
+#!markdown
+
+## **Declaring Local Variables**
+
+Local variables are declared inside methods, and they only exist during the execution of that method. Once the method returns, the memory allocated to any local variables is released.
+
+Strictly speaking, value types are released while reference types must wait for a garbage collection. 
+
+#!csharp
+
+int population = 67_000_000; // 67 million in UK
+double weight = 1.88; // in kilograms
+decimal price = 4.99M; // in pounds sterling
+string fruit = "Apples"; // strings use double-quotes
+char letter = 'Z'; // chars use single-quotes
+bool happy = true; // Booleans have value of true or false
+
+#!markdown
+
+### Inferring the Type of a Local Variable
+
+You can use the var keyword to declare local variables. The compiler will infer the type from the value that you assign after the assignment operator, `=`.
+
+A literal number without a decimal point is inferred as an `int` variable, that is, unless you add a suffix, as described in the following list:
+* `L`: Compiler infers `long`
+* `UL`: Compiler infers `ulong`
+* `M`: Compiler infers `decimal`
+* `D`: Compiler infers `double`
+* `F`: Compiler infers `float`
+
+A literal number with a decimal point is inferred as `double` unless you add the `M` suffix, in which case the compiler infers a `decimal` variable, or the `F` suffix, in which case it infers a `float` variable.
+
+Double quotes indicate a `string` variable, single quotes indicate a `char` variable, and the `true` and `false` values infer a `bool` type.
+
+#!csharp
+
+// use your mouse to hover over "var" to see compiler type inference
+
+var population = 67_000_000; // 67 million in UK
+var weight = 1.88; // in kilograms
+var price = 4.99M; // in pounds sterling
+var fruit = "Apples"; // strings use double-quotes
+var letter = 'Z'; // chars use single-quotes
+var happy = true; // Booleans have value of true or false
+
+#!csharp
+
+// good use of var because it avoids the repeated type
+// as shown in the more verbose second statement
+var xml1 = new XmlDocument(); // C# 3 and later
+XmlDocument xml2 = new XmlDocument(); // all C# versions
+
+// bad use of var because we cannot tell the type, so we
+// should use a specific type declaration as shown in
+// the second statement
+var file1 = File.CreateText("something1.txt"); 
+StreamWriter file2 = File.CreateText("something2.txt");
+
+#!markdown
+
+## **Using Target-Typed `new` to Instantiate Objects**
+
+With C# 9, Microsoft introduced another syntax for instantiating objects known as target-typed new. When instantiating an object, you can specify the type first and then use new without repeating the type.
+
+    XmlDocument xml3 = new(); // target-typed new in C# 9 or later
+
+If you have a type with a field or property that needs to be set, then the type can be inferred.
+
+    // In Program.cs
+    Person kim = new();
+    kim.BirthDate = new(1967, 12, 26); // instead of: new DateTime(1967, 12, 26)
+    
+    // In a separate Person.cs file or at the bottom of Program.cs
+    class Person
+    {
+        public DateTime BirthDate;
+    }
+
+This way of instantiating objects is especially useful with arrays and collections because they have multiple objects often of the same type.
+
+    List<Person> people = new()
+    {
+        new() { FirstName = "Alice" },
+        new() { FirstName = "Bob" },
+        new() { FirstName = "Charlie" }
+    };
+
+## **Default Values for Types**
+
+Most of the primitive types except `string` are **value types**, which means that they must have a value. You can determine the default value of a type by using the `default()` operator and passing the type as a parameter. You can assign the default value of a type by using the `default` keyword.
+
+The `string` type is a **reference type**. This means that `string` variables contain the memory address of a value, not the value itself. A reference type variable can have a `null` value, which is a literal that indicates that the variable does not reference anything (yet). `null` is the default for all reference types.
+
+#!csharp
+
+Console.WriteLine($"default(int) = {default(int)}"); 
+Console.WriteLine($"default(bool) = {default(bool)}"); 
+Console.WriteLine($"default(DateTime) = {default(DateTime)}"); 
+Console.WriteLine($"default(string) = {default(string)}");
+
+#!csharp
+
+int number = 13;
+Console.WriteLine($"number has been set to: {number}");
+
+number = default;
+Console.WriteLine($"number has been reset to its default: {number}");
+
+#!markdown
+
+## **Console Apps**
+
+### Getting Text Input From the User
+
+We can get text input from the user using the `ReadLine` method. This method waits for the user to type some text. Then, as soon as the user presses *Enter*, whatever the user has typed is returned as a `string` value.
+
+    Console.Write("Type your first name and press ENTER: "); 
+    string firstName = Console.ReadLine();
+    Console.WriteLine($"Hello {firstName}!");
+
+##### Handling Null
+
+<ins>Option 1</ins>: Append a `?` after `string`. This tells the compiler we are expecting a possilbe `null` variable, so it does not need to warn us.
+
+    string? firstName = Console.ReadLine();
+
+<ins>Option 2</ins>: Append a `!` before the semi-colon at the end of the statement. This is called the **null-forgiving operator** because it tells the compiler that, in this case, `ReadLine` will not return `null`, so it can stop showing the warning. It is now our responsibility to ensure the value is not `null`.
+
+    string firstName = Console.ReadLine()!;
+
+### Getting Key Input From the User
+
+We can get key input from the user using the `ReadKey` method. This method waits for the user to press a key or key combination that is then returned as a `ConsoleKeyInfo` value.
+
+NOTE:  `ReadKey` will not work in Polygot Notebook.
+
+### Passing Arguments to a Console App
+
+The `string[] args` arguments are declared and passed in the `Main` method of the `Program` class. They’re an array used to pass arguments into a console app. But in top-level programs, as used by the console app project template in .NET 6.0 and later, the `Program` class and its `Main` method are hidden, along with the declaration of the `args` array. The trick is that you must know it still exists.
+
+Command-line arguments are separated by spaces. Other characters like hyphens and colons are treated as part of an argument value.
+
+To include spaces in an argument value, enclose the argument value in single or double quotes.
+
+See Chapt02 folder within the Arguments project for further an argument passing example. Argument passing is not enabled within Polygot Notebooks.
+
+### Handling Platforms That do not Support an API
+
+<ins>Option 1</ins>: We can solve this by using an exception handler with `try-catch` statements.
+
+<ins>Option 2</ins>: Use the `OperatingSystem` class int the `System` namespace. The `OperatingSystem` class has equivalent methods for other common operating systems like Android, iOS, Linux, macOS, and even the browser, which is useful for Blazor web components.
+
+    if (OperatingSystem.IsWindows())
+    {
+        // execute code that only works on Windows
+    }
+    else if (OperatingSystem.IsWindowsVersionAtLeast(major: 10))
+    {
+        // execute code that only works on Windows 10 or later
+    }
+    else if (OperatingSystem.IsIOSVersionAtLeast(major: 14, minor: 5))
+    {
+        // execute code that only works on iOS 14.5 or later
+    }
+    else if (OperatingSystem.IsBrowser())
+    {
+        // execute code that only works in the browser with Blazor
+    }
+
+<ins>Option 3</ins>: Use conditional compiliation statements. There are four preprocessor directivest aht control conditional compilation: `#if`, `#elif`, `#else`, `#endif`.
+
+You define symbols using `#define`, but many are automatically defined for you.
+
+    #define MYSYMBOL
+
+| **Target Framework** | **Symbols** |  
+| ---------------- | -------------- |  
+| .NET Standard | `NETSTANDARD2_0`,`NETSTANDARD2_1`, and so on |  
+| Modern .NET | `NET7_0`,`NET7_0_ANDROID`,`NET7_0_IOS`,`NET7_0_WINDOWS`, and so on |
+
+You can then write statements that will compile only for the specified platforms:
+
+    #if NET7_0_ANDROID
+    // compile statements that only works on Android
+    #elif NET7_0_IOS
+    // compile statements that only works on iOS
+    #else
+    // compile statements that work everywhere else
+    #endif
+
+### Understanding `async` and `await`
+
+The `async` and `await` keywords enable easy multithreading with the `Task` type. They are especially useful when:
+
+* Implementing multitasking for a GUI
+* Improving the scalability of web applications and web services.
+* Preventing blocking calls when interacting with the filesystem, databases, and remote services, all of which tend to take a long time to complete their work.
+
+You can only use the `await` keyword inside methods that are marked `async`.
+
+#!csharp
+
+Console.WriteLine("--------------------------------------------------------------------------");
+Console.WriteLine($"Type    Byte(s) of memory               Min                            Max");
+Console.WriteLine("--------------------------------------------------------------------------");
+Console.WriteLine($"sbyte   {sizeof(sbyte),-4} {sbyte.MinValue,30} {sbyte.MaxValue,30}");
+Console.WriteLine($"byte    {sizeof(byte),-4} {byte.MinValue,30} {byte.MaxValue,30}");
+Console.WriteLine($"short   {sizeof(short),-4} {short.MinValue,30} {short.MaxValue,30}");
+Console.WriteLine($"ushort  {sizeof(ushort),-4} {ushort.MinValue,30} {ushort.MaxValue,30}");
+Console.WriteLine($"int     {sizeof(int),-4} {int.MinValue,30} {int.MaxValue,30}");
+Console.WriteLine($"uint    {sizeof(uint),-4} {uint.MinValue,30} {uint.MaxValue,30}");
+Console.WriteLine($"long    {sizeof(long),-4} {long.MinValue,30} {long.MaxValue,30}");
+Console.WriteLine($"ulong   {sizeof(ulong),-4} {ulong.MinValue,30} {ulong.MaxValue,30}");
+Console.WriteLine($"float   {sizeof(float),-4} {float.MinValue,30} {float.MaxValue,30}");
+Console.WriteLine($"double  {sizeof(double),-4} {double.MinValue,30} {double.MaxValue,30}");
+Console.WriteLine($"decimal {sizeof(decimal),-4} {decimal.MinValue,30} {decimal.MaxValue,30}");

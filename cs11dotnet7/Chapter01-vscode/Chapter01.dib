@@ -1,0 +1,24 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":"vscode","aliases":["frontend"],"languageName":null},{"name":"javascript","aliases":["js"],"languageName":"JavaScript"},{"name":"webview","aliases":[]}]}}
+
+#!csharp
+
+Console.WriteLine("Hello, Polygot!")
+
+#!csharp
+
+#!about
+
+#!markdown
+
+# Chapter 1 - Hello, C#! Welcome, .NET!
+Mixing *rich* **text** and code is cool!
+
+#!csharp
+
+int number = 8;
+
+#!csharp
+
+Console.WriteLine(number);
