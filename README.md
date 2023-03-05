@@ -22,6 +22,9 @@ If you'd like to know more specifically about my journey, please see [my blog](h
   - C#
     - Introduction to C# ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-QP5EQQDK))
     - C# Intermediate ([Sololearn Certifcate](https://www.sololearn.com/certificates/CC-ECCHUPFZ))
+  - C++
+    - Introduction to C++([Sololearn Certificate](https://www.sololearn.com/certificates/CC-SBY5HZIX))
+    - C++ Intermediate([Sololearn Certificate](https://www.sololearn.com/certificates/CC-N82V6KLU))
   - Miscellaneous
     - Git and GitHub Essentials ([IBM - Coursera Badge](https://www.credly.com/badges/2bb49166-4824-4ad2-bed9-133e654b3d0b))
     - Writing READMEs (Udacity)
