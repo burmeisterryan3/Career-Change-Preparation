@@ -1,0 +1,999 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":"vscode","aliases":["frontend"],"languageName":null}]}}
+
+#!markdown
+
+# <ins>**Chapter 03**</ins>: *Controlling Flow, Converting Types, and Handling Exceptions*
+
+##### Taken from *C11-DotNet7 - Modern Cross-Platform Development Fundamentals* by Mark J. Price
+
+https://github.com/markjprice
+https://github.com/markjprice/cs11dotnet7
+
+#!csharp
+
+global using static global::System.Console;
+global using static global::System.Convert;
+
+#!markdown
+
+## **Operating on Variables**
+
+**Operators** apply simple operations such as addition and multiplication to **operands** such as variables and literal values.
+
+Most *operators* are *binary*, meaning that they work on two *operands*, as shown in the following pseudo-code:
+
+    var resultOfOperation = firstOperand operator secondOperand;
+
+Examples of *binary operators* include adding and multiplying:
+
+    int x = 5;
+    int y = 3;
+    int resultOfAdding = x + y;
+    int resultOfMultiplying = x * y;
+
+Some *operators* are *unary*, meaning they work on a single *operand*, and can apply before or after the *operand*:
+
+    var resultOfOperationAfter = onlyOperand operator; 
+    var resultOfOperationBefore = operator onlyOperand;
+
+Examples of *unary operators* include incrementors and retrieving a type or its size in bytes:
+
+    int x = 5;
+    int postfixIncrement = x++;
+    int prefixIncrement = ++x;
+    Type theTypeOfAnInteger = typeof(int);
+    string nameOfVariable = nameof(x);
+    int howManyBytesInAnInteger = sizeof(int);
+
+#!csharp
+
+int a = 3; 
+int b = a++;
+WriteLine($"a is {a}, b is {b}");
+
+#!markdown
+
+The variable b has the value 3 because the ++ operator executes *after* the assignment; this is known as a **postfix operator**. If you need to increment *before* the assignment, then use the **prefix operator**.
+
+#!csharp
+
+int c = 3;
+int d = ++c; // increment c before assigning it
+WriteLine($"c is {c}, d is {d}");
+
+#!markdown
+
+### Exploring Binary Arithmetic Operators
+
+##### Int
+
+#!csharp
+
+int e = 11; 
+int f = 3;
+WriteLine($"e is {e}, f is {f}"); 
+WriteLine($"e + f = {e + f}"); 
+WriteLine($"e - f = {e - f}"); 
+WriteLine($"e * f = {e * f}"); 
+WriteLine($"e / f = {e / f}"); 
+WriteLine($"e % f = {e % f}");
+
+#!markdown
+
+##### Double
+
+#!csharp
+
+double g = 11.0;
+WriteLine($"g is {g:N1}, f is {f}"); 
+WriteLine($"g / f = {g / f}");
+
+#!markdown
+
+### Assignment Operators
+
+To make your code more concise, you can combine the assignment operator with other operators like arithmetic operators:
+
+    int p = 6;
+    p += 3; // equivalent to p = p + 3;
+    p -= 3; // equivalent to p = p - 3;
+    p *= 3; // equivalent to p = p * 3;
+    p /= 3; // equivalent to p = p / 3;
+
+#!markdown
+
+### Logical Operators
+
+Logical operators operate on Boolean values, so they return either `true` or `false`.
+
+#!csharp
+
+bool a = true;
+bool b = false;
+WriteLine($"AND | a     | b ");
+WriteLine($"a   | {a & a,-5} | {a & b,-5} ");
+WriteLine($"b   | {b & a,-5} | {b & b,-5} ");
+WriteLine();
+WriteLine($"OR  | a     | b ");
+WriteLine($"a   | {a | a,-5} | {a | b,-5} ");
+WriteLine($"b   | {b | a,-5} | {b | b,-5} ");
+WriteLine();
+WriteLine($"XOR | a     | b ");
+WriteLine($"a   | {a ^ a,-5} | {a ^ b,-5} ");
+WriteLine($"b   | {b ^ a,-5} | {b ^ b,-5} ");
+
+#!markdown
+
+### Conditional Logical Operators
+
+Conditional logical operators are like logical operators, but you use two symbols instead of one, for example, `&&` instead of `&`, or `||` instead of `|`.
+
+#!csharp
+
+static bool DoStuff()
+{
+    WriteLine("I am doing some stuff.");
+    return true;
+}
+
+WriteLine();
+WriteLine($"a & DoStuff() = {a & DoStuff()}");
+WriteLine($"b & DoStuff() = {b & DoStuff()}");
+
+WriteLine();
+WriteLine($"a && DoStuff() = {a && DoStuff()}");
+WriteLine($"b && DoStuff() = {b && DoStuff()} // DoStuff function is not executed");
+
+#!markdown
+
+Now you can see why the conditional logical operators are described as being *short-circuiting*. They can make your apps more efficient, but they can also introduce subtle bugs in cases where you assume that the function will always be called. It is safest to avoid them when used in combination with functions that cause side effects.
+
+### Bitwise and Binary Shift Operators
+
+Bitwise operators affect the bits in a number. Binary shift operators can perform some common arithmetic calculations much faster than traditional operators, for example, any multiplication by a factor of 2.
+
+#!csharp
+
+int a = 10; // 00001010
+int b = 6;  // 00000110
+
+WriteLine($"a = {a}");
+WriteLine($"b = {b}");
+WriteLine($"a & b = {a & b}"); // AND: 2-bit column only e.g. 00000010
+WriteLine($"a | b = {a | b}"); // OR: 8, 4, and 2-bit columns e.g. 00001110
+WriteLine($"a ^ b = {a ^ b}"); // XOR: 8 and 4-bit columns e.g. 00001100
+
+#!csharp
+
+// 01010000 left-shift a by three bit columns - multiply by 2^3 = 8
+WriteLine($"a << 3 = {a << 3}");
+
+// multiply a by 8
+WriteLine($"a * 8 = {a * 8}");
+
+// 00000011 right-shift b by one bit column - divide by 2^-1 = 2
+WriteLine($"b >> 1 = {b >> 1}");
+
+#!markdown
+
+### Miscellaneous Operators
+
+`nameof` and `sizeof` are convenient operators when working with types:
+
+* `nameof` returns the short name (without the namespace) of a variable, type, or member as a `string` value, which is useful when outputting exception messages.
+* `sizeof` returns the size in bytes of simple types, which is useful for determining the efficiency of data storage.
+
+#!csharp
+
+int age = 50;
+WriteLine($"The {nameof(age)} variable uses {sizeof(int)} bytes of memory.");
+
+#!markdown
+
+There are many other operators; for example, the dot between a variable and its members is called the **member access** operator and the round brackets at the end of a function or method name are called the **invocation operator**.
+
+    int age = 50;
+
+    // How many operators in the following statement?
+    char firstDigit = age.ToString()[0];
+
+    // There are four operators:
+    // = is the assignment operator
+    // . is the member access operator
+    // () is the invocation operator
+    // [] is the indexer access operator
+
+## **Selection Statements**
+
+The two selection methods in C# are `if` and `switch`. You can use `if` for all your code, but `switch` can simplify your code in some common scenarios, such as when there is a single variable that can have multiple values that each requires different processing.
+
+### Branching with the `if` Statement
+
+The `if` statement determines which branch to follow by evaluating a Boolean expression. If the expression is `true`, then the block executes. The `else` block is optional, and it executes if the `if` expression is `false`. The `if` statement can be nested and also combined with other `if` statemetns as `else if` branches.
+
+    if (expression1)
+    {
+        // runs if expression1 is true
+    }
+    else if (expression2)
+    {
+        // runs if expression1 is false and expression2 if true
+    }
+    else if (expression3)
+    {
+        // runs if expression1 and expression2 are false
+        // and expression3 is true
+    }
+    else
+    {
+        // runs if all expressions are false
+    }
+
+#!csharp
+
+string password = "ninja";
+
+if (password.Length < 8)
+{
+    WriteLine("Your password is too short. Use at least 8 characters.");
+}
+else
+{
+    WriteLine("Your password is strong.");
+}
+
+#!markdown
+
+##### Pattern Matching with the `if` Statement
+
+The `if` statement can use the `is` keyword in combination with declaring a local variable to make your code safer.
+
+#!csharp
+
+// add and remove the "" to change the behavior
+object o = "3"; 
+int j = 4;
+
+if (o is int i)
+{
+    WriteLine($"{i} x {j} = {i * j}");
+}
+else
+{
+    WriteLine("o is not an int so it cannot multiply!");
+}
+
+#!markdown
+
+### Branching with the `switch` Statement
+
+The `switch` statement is different from the `if` statement because `switch` compares a single expression against a list of multiple possible `case` statements. Every `case` statement is related to the single expression.
+
+Every `case` section must end with:
+
+* The `break` keyword (like case 1 in the following code)
+* Or the `goto case` keywords (like case 2 in the following code)
+* Or they should have no statements (like case 3 in the following code)
+* Or the `goto` keyword that references a named label (like case 5 in the following code)
+* Or the `return` keyword to leave the current function (not shown in the code
+
+#!csharp
+
+int number = Random.Shared.Next(1, 7);
+WriteLine($"My random number is {number}");
+
+switch (number)
+{
+    case 1: 
+        WriteLine("One");
+        break; // jumps to end of switch statement
+    case 2:
+        WriteLine("Two");
+        goto case 1;
+    case 3: // multiple case section
+    case 4:
+        WriteLine("Three or four");
+        goto case 1;
+     case 5:
+        goto A_label;
+    default:
+        WriteLine("Default");
+        break;
+} // end of switch statement
+
+WriteLine("After end of switch");
+A_label:
+WriteLine($"After A_label");
+
+#!markdown
+
+##### Pattern Matching with the `Switch` Statement
+
+Like the `if` statement, the `switch` statement supports pattern matching in C# 7.0 and later. The `case` values no longer need to be literal values; they can be patterns.
+
+In C# 7.0 and later, your code can more concisely branch, based on the subtype of a class, and declare and assign a local variable to safely use it. Additionally, `case` statements can include a `when` keyword to perform more specific pattern matching.
+
+See Program.cs and Animal.cs in Project03/SelectionStatements for the associated code.
+
+##### Simplifying `switch` Statements with `switch` Expressions
+
+In C# 8.0 or later, you can simplify `switch` statements using **switch expressions**.
+
+Most `switch` statements are very simple, yet they require a lot of typing. `switch` expressions are designed to simplify the code you need to type while still expressing the same intent in scenarios where all cases return a value to set a single variable. `switch` expressions use a lambda, `=>`, to indicate a return value.
+
+See Program.cs and Animal.cs in Project03/SelectionStatements for the associated code.
+
+## **Iteration Statements**
+
+Iteration statements repeat a block of statements either while a condition is `true` (`while` and `for` statemetns) or for each item in a collection (`foreach` statement).
+
+### Looping with the `while` statement
+
+The `while` statement evaluates a Boolean expression and continues to loop while it is `true`.
+
+#!csharp
+
+int x = 0;
+while (x < 10)
+{
+    WriteLine(x);
+    x++;
+}
+
+#!markdown
+
+### Looping with the `do` Statement
+
+The `do` statement is like `while`, except the Boolean expression is checked at the bottom/end of the block instead of the top/beginning, which means the block always executes at least once.
+
+See Program.cs and Animal.cs in Project03/IterationStatements for the associated code.
+
+### Looping with the `for` Statement
+
+The `for` is like `while`, except that it combines:
+
+* An optional **initializer expression**, which executes once at the start of the loop.
+* An optional **conditional expression**, which executes on every iteration at the start of the loop to check whether looping should continue. If the expression returns `true` or it is missing, the loop will execute again.
+* An optional **iterator expression**, which executes on every loop at the bottom of the statement. This is often used to increment a counter variable.
+
+#!csharp
+
+for (int y = 1; y <= 10; y++)
+{
+    WriteLine(y);
+}
+
+#!markdown
+
+##### Looping with the `foreach` Statement
+
+The `foreach` statement is a bit different from the previous three iteration statements.
+
+It is used to perform a block of statements on each item in a sequence, for example, an array or collection. Each item is usually read-only, and if the sequence structure is modified during iteration, for example, by adding or removing an item, then an exception will be thrown.
+
+#!csharp
+
+string[] names = { "Adam", "Barry", "Charlie" };
+foreach (string name in names)
+{
+    WriteLine($"{name} has {name.Length} characters.");
+}
+
+#!markdown
+
+##### Understanding how `foreach` Works Internally
+
+A creator of any type that represents multiple items, like an array or collection, should make sure taht a programmer can use the `foreach` statement to enumerate through the type's items.
+
+Technically, the `foreach` statement will work on any type that follows these rules:
+
+* The type must have method named `GetEnumerator` that return an object.
+* The returned object must have a property name `Current` and a method named `MoveNext`.
+* The `MoveNext` method must change teh value of `Current` and return `true` if there are more items to enumerate through or return `false` if there are no more items.
+
+There are interfaces named `IEnumerable` and `IEnumerable<T>` that formally define these rules, but technically the compiler does not require the type to implement these interfaces.
+
+The compiler turnt the `foreach` loop in the preceding code into something like the following pseudocode:
+
+    IEnumerator e = names.GetEnumerator();
+
+    while (e.MoveNext())
+    {
+        string name = (string)e.Current; // Current is read-only!
+        WriteLine($"{name} has {name.Length} characters.");
+    }
+
+#!markdown
+
+## **Storing Multiple Values in an Array**
+
+When you need to store multiple values of the same type, you can declare an **array**.
+
+Arrays are always of a fixed size at the time of memory allocation, so you need to decide how many items you want to store before instantiating them.
+
+### Single-dimensional Arrays
+
+| 0 | 1 | 2 | 3 |
+| ------ | ------ | ------ | ------ |
+| Kate | Jack | Rebecca | Tom |
+
+#!csharp
+
+string[] names; // can reference any size array of strings
+
+// allocating memory for four strings in an array
+names = new string[4];
+
+// storing items at index positions
+names[0] = "Kate";
+names[1] = "Jack"; 
+names[2] = "Rebecca"; 
+names[3] = "Tom";
+
+// looping through the names
+for (int i = 0; i < names.Length; i++)
+{
+    // output the item at index position i
+    WriteLine(names[i]);
+}
+
+WriteLine();
+
+// alternative to above
+string[] names2 = new[] { "Kate", "Jack", "Rebecca", "Tom" };
+
+// looping through the names
+for (int i = 0; i < names2.Length; i++)
+{
+    // output the item at index position i
+    WriteLine(names[i]);
+}
+
+#!markdown
+
+When you use the `new[]` syntax to allocate memory for the array, you must have at least one item in the curly braces so that the compiler can infer the data type.
+
+### Multi-dimensional Arrays
+
+|   | 0 | 1 | 2 | 3 |
+| --- | --- | --- | --- | --- |
+| 0 | Alpha | Beta | Gamma | Delta |
+| 1 | Anne | Ben | Charlie | Doug |
+| 2 | Aardvark | Bear | Cat | Dog |
+
+#!csharp
+
+string[,] grid1 = new[,] // two dimensions
+{
+    { "Alpha", "Beta", "Gamma", "Delta" },
+    { "Anne", "Ben", "Charlie", "Doug" },
+    { "Aardvark", "Bear", "Cat", "Dog" }
+};
+
+WriteLine($"Lower bound of the first dimension is: {grid1.
+GetLowerBound(0)}");
+WriteLine($"Upper bound of the first dimension is: {grid1.
+GetUpperBound(0)}");
+WriteLine($"Lower bound of the second dimension is: {grid1.
+GetLowerBound(1)}");
+WriteLine($"Upper bound of the second dimension is: {grid1.
+GetUpperBound(1)}");
+
+for (int row = 0; row <= grid1.GetUpperBound(0); row++)
+{
+    for (int col = 0; col <= grid1.GetUpperBound(1); col++)
+    {
+        WriteLine($"Row {row}, Column {col}: {grid1[row, col]}");
+    }
+}
+
+#!markdown
+
+You must supply a value for every row and every column when it is instantiated, or you will get compile errors. If you need to indicate a missing `string` value, then use `string.Empty`. Or if you declare the array to be nullable `string` values by using `string?[]`, then you can also use `null` for a missing value.
+
+If you cannot use the array initialization syntax, perhaps because you are loading values from a file or database, then you can separate the declaration of the array dimension and the allocation of memory from the assigning of values.
+
+    // alternative syntax
+    string[,] grid2 = new string[3,4]; // allocate memory
+
+    grid2[0, 0] = "Alpha"; // assign values
+    grid2[0, 1] = "Beta";
+    // and so on
+    grid2[2, 3] = "Dog";
+
+### Working with Jagged Arrays
+
+If you need a multi-dimensional array but the number of items stored in each dimension is different, then you can define an array of arrays, aka a jagged array.
+
+See p122 for visualization.
+
+#!csharp
+
+string[][] jagged = new[] // array of string arrays
+{
+    new[] { "Alpha", "Beta", "Gamma" },
+    new[] { "Anne", "Ben", "Charlie", "Doug" },
+    new[] { "Aardvark", "Bear" }
+};
+
+WriteLine("Upper bound of array of arrays is: {0}", jagged.GetUpperBound(0));
+
+for (int array = 0; array <= jagged.GetUpperBound(0); array++)
+{
+    WriteLine("Upper bound of array {0} is: {1}",
+    arg0: array,
+    arg1: jagged[array].GetUpperBound(0));
+}
+
+for (int row = 0; row <= jagged.GetUpperBound(0); row++)
+{
+    for (int col = 0; col <= jagged[row].GetUpperBound(0); col++)
+    {
+        WriteLine($"Row {row}, Column {col}: {jagged[row][col]}");
+    }
+}
+
+#!markdown
+
+### List Pattern Matching with Arrays
+
+List pattern matching works with any type that has a public `Length` or `Count` property and has an indexer using an `int` or `System.Index` parameter.
+
+When you define multiple list patterns in the same `switch` expression, you must order them so that the more specific one comes first, or the compiler will complain because a more general pattern will match all the more specific patterns too and make the more specific one unreachable.
+
+See pp123-124 for examples of list pattern matching.
+
+### Summarizing Arrays
+
+| **Type of Array** | **Declaration Syntax** |
+| ----------------- | ---------------------- |
+| Single dimension | `datatype[]`, for example, `string[]` |
+| Two dimensions | `string[,]` |
+| Three dimensions | `string[,,]` |
+| Ten dimensions | `string[,,,,,,,,,]` |
+| Array of arrays, aka jagged array | `string[][]` |
+| Array of arrays of arrays | `string[][][]` |
+
+Arrays are useful for temporarily storing multiple items, but collections are a more flexible option when adding and removing items dynamically.
+
+## **Casting and Converting Between Types**
+
+Converting is also known as **casting**, and it has two varieties: **implicit** and **explicit**. Implicit casting happens automatically, and it is safe, meaning that you will not lose any information.
+
+Explicit casting must be performed manually because it may lose information, for example, the precision of a number. By explicitly casting, you are telling the C# compiler that you understand and accept the risk.
+
+#!csharp
+
+// Casing int to double - safe
+int a = 10;
+double b = a; // an int can be safely cast into a double
+WriteLine(b);
+
+// Casting double to int - compiler error for implicit cast
+double c = 9.8;
+int d = c; // compiler gives an error for this line
+WriteLine(d);
+
+#!markdown
+
+You cannot implicitly cast a `double` variable into an `int` variable because it is potentially unsafe and could lose data, like the value after the decimal point. You must explicitly cast a `double` variable into an `int` variable using a pair of round brackets around the type you want to cast the `double` type into. The pair of round brackets is the **cast operator**. Even then, you must beware that the part after the decimal point will be trimmed off without warning because you have chosen to perform an explicit cast and therefore understand the consequences.
+
+We must perform a similar operation when converting values between larger integers and smaller integers. Again, beware that you might lose information because any value too big will have its bits copied and then be interpreted in ways that you might not expect!
+
+#!csharp
+
+long e = 10; 
+int f = (int)e;
+WriteLine($"e is {e:N0} and f is {f:N0}");
+
+e = long.MaxValue;
+f = (int)e;
+WriteLine($"e is {e:N0} and f is {f:N0}");
+
+e = 5_000_000_000;
+f = (int)e;
+WriteLine($"e is {e:N0} and f is {f:N0}");
+
+#!markdown
+
+### Converting with the `System.Convert` Type
+
+You can only cast between similar types, for example, between whole numbers like `byte`, `int`, and `long`, or between a class and its subclasses. You cannot cast a `long` to a `string` or a `byte` to a `DateTime`.
+
+An alternative to using the cast operator is to use the `System.Convert` type. The `System.Convert` type can convert to and from all the C# number types, as well as Booleans, strings, and date and time values.
+
+#!csharp
+
+double g = 9.8;
+int h = System.Convert.ToInt32(g);
+WriteLine($"g is {g} and h is {h}");
+
+#!markdown
+
+Ah important difference between casting and converting ist hat converting rounds the `double` value `9.8` up to `10` instead of trimming after the decimal.
+
+##### Rounding Numbers
+
+#!csharp
+
+double[] doubles = new[] { 9.49, 9.5, 9.51, 10.49, 10.5, 10.51 };
+foreach (double n in doubles)
+{
+    WriteLine($"Sytem.Convert.ToInt32({n}) is {System.Convert.ToInt32(n)}");
+}
+
+#!markdown
+
+We have shown that the rule for rounding in C# is subtly different from the primary school rule:
+
+* It always rounds *down* if the decimal part is less than the midpoint .5.
+* It always rounds *up* if the decimal part is more than the midpoint .5.
+* It will round *up* if the decimal part is the midpoint .5 and the non-decimal part is *odd*, but it will round *down* if the non-decimal part is *even*.
+
+This rule is known as **banker’s rounding**, and it is preferred because it reduces bias by alternating when it rounds up or down.
+
+#!csharp
+
+foreach (double n in doubles)
+{
+    WriteLine(
+      format: "Math.Round({0}, 0, MidpointRounding.AwayFromZero) is {1}",
+      arg0: n,
+      arg1: Math.Round(value: n, digits: 0, mode: MidpointRounding.AwayFromZero));
+}
+
+#!markdown
+
+##### Converting From Any Type to a `string`
+
+The most common conversion is from any type into a `string` variable for outputting as human-readable text, so all types have a method named `ToString` that they inherit from the `System.Object` class.
+
+The `ToString` method converts the current value of any variable into a textual representation. Some types can’t be sensibly represented as text, so they return their namespace and type name instead.
+
+#!csharp
+
+int number = 12; 
+WriteLine(number.ToString());
+bool boolean = true; 
+WriteLine(boolean.ToString());
+DateTime now = DateTime.Now; 
+WriteLine(now.ToString());
+object me = new(); 
+WriteLine(me.ToString());
+
+#!markdown
+
+##### Converting from a Binary Object to a `string`
+
+When you have a binary object like an image or video that you want to either store or transmit, you sometimes do not want to send the raw bits because you do not know how those bits could be misinterpreted, for example, by the network protocol transmitting them or another operating system that is reading the stored binary object.
+
+The safest thing to do is to convert the binary object into a `string` of safe characters. Programmers call this **Base64** encoding.
+
+The `Convert` type has a pair of methods, `ToBase64String` and `FromBase64String`, that perform this conversion for you. 
+
+#!csharp
+
+// allocate array of 128 bytes
+byte[] binaryObject = new byte[128];
+
+// populate array with random bytes
+Random.Shared.NextBytes(binaryObject); 
+
+WriteLine("Binary Object as bytes:");
+for(int index = 0; index < binaryObject.Length; index++)
+{
+    Write($"{binaryObject[index]:X} ");
+}
+WriteLine();
+
+// convert to Base64 string and output as text
+string encoded = ToBase64String(binaryObject);
+WriteLine($"Binary Object as Base64: {encoded}");
+
+#!markdown
+
+### Parsing from String to Numbers or Dates and Times
+
+The second most common conversion is from strings to numbers or date and time values.
+
+The opposite of `ToString` is `Parse`. Only a few types have a `Parse` method, including all number types and `DateTime`.
+
+Note: Use standard date and time format specifiers, as shown at [Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#table-of-format-specifiers).
+
+#!csharp
+
+int age = int.Parse("27");
+DateTime birthday = DateTime.Parse("4 July 1980");
+WriteLine($"I was born {age} years ago."); 
+WriteLine($"My birthday is {birthday}."); 
+WriteLine($"My birthday is {birthday:D}.");
+
+#!markdown
+
+One problem with `Parse` is that it gives errors if the `string` cannot be converted.
+
+    int count = int.Parse("abc");
+
+Results in
+    
+    Error: System.FormatException: The input string 'abc' was not in a correct format.
+
+##### Avoiding Exceptions Using the `TryParse` Method
+
+To avoid errors, you can use the `TryParse` method instead. `TryParse` attempts to convert the input `string` and returns `true` if it can convert it and `false` if it cannot. Exceptions are a relatively expensive operation so they should be avoided when you can.
+
+The `out` keyword is required to allow the `TryParse` method to set the count variable when the conversion work.
+
+#!csharp
+
+Write("How many eggs are there? ");
+string input = "12"; // uncomment next line to cause error
+// input = "twelve";
+
+if (int.TryParse(input, out int count))
+{
+    WriteLine($"There are {count} eggs.");
+}
+else
+{
+    WriteLine("I could not parse the input.");
+}
+
+#!markdown
+
+## **Handling Exceptions**
+
+.NET uses exceptions that are richer than error codes when something goes wrong. The exceptions are designed only for failure reporting. When this happens, we say *a runtime exception has been thrown*.
+
+When an exception is thrown, the thread is suspended adn if the calling code has defined a `try-catch` statement, then it is given a chance to handle the exception. If the current method does not handle it, then its calling method is given a chance, and so on up the stack.
+
+Your code should only catch and handle exceptions that it understands and can properly fix. Terminating your application is better than allowing the code to continue executing in a potentially corrupt state.
+
+*Avoid writing code that will throw an exception whenver possible, perhaps by performing `if` statement checks*. Sometimes you can't, and sometimes it is best to allow the exception to be caught by a higher-level component that is calling your code.
+
+### Wrapping Error-prone Code in a `try` Block
+
+When you know that a statement can cause an error, you should wrap that satement in a `try` block. Any statements in the `catch` block will be executed only if an exeption is thrown by a statement in the `try` block. Know you don't have to put anything in the `catch` block.
+
+    WriteLine("Before parsing"); 
+    Write("What is your age? "); 
+    string input = "49"; // "49" in a notebook
+    try
+    {
+        int age = int.Parse(input); 
+        WriteLine($"You are {age} years old.");
+    }
+    catch
+    {
+    }
+    WriteLine("After parsing");
+
+In the above code, the compiler will provide the following warning:
+
+    Warning CS8604 Possible null reference argument for parameter 's' in 'int int.Parse(string s)'.
+
+In production code, you should add code to check for `null`
+and handle that possibility appropriately.
+
+In this case, it is impossible for input to be null because the user must press *Enter* for `ReadLine` to return and that will return an empty `string`.
+
+To disable the compiler warning, change `input` to `input!`. An exclamation mark `!` after an expression is called the **null-forgiving operator** and it disables the compiler warning. The **null-forgiving operator** has no effect at runtime. If the expression could evaluate to `null` at runtime, perhaps because we assigned it in another way, then an exception would be thrown.
+
+Note: You should never use an empty `catch` statement as in the above in production code because it "swallows" exceptions and hides potential problems. You should at least log the exception if you cannot or do not want to handle it properly, or rethorw it so higher-level code can decide instead.
+
+### Catching All Exceptions
+
+To get information about any type of exception that might occur, you can declare a variable of type 
+System.Exception to the catch block:
+
+    catch (Exception ex)
+    {
+        WriteLine($"{ex.GetType()} says {ex.Message}");
+    }
+
+Results in:
+
+    System.FormatException says Input string was not in a correct format. 
+
+### Catching Specific Exceptions
+
+We can now improve our code by catching just that type of exception and customizing the message we display to the user.
+
+    catch (OverflowException) // enter 987654321
+    {
+        WriteLine("Your age is a valid number format but it is either too big or small.");
+    }
+    catch (FormatException) // enter "kermit"
+    {
+        WriteLine("The age you entered is not a valid number format.");
+    }
+    catch (Exception ex)
+    {
+        WriteLine($"{ex.GetType()} says {ex.Message}");
+    }
+
+### Catching with Filters
+
+You can also add filters to a `catch` statemetn using the `when` keyword.
+
+    Write("Enter an amount: ");
+    string amount = ReadLine()!;
+    if (string.IsNullOrEmpty(amount)) return;
+    try
+    {
+        decimal amountValue = decimal.Parse(amount);
+        WriteLine($"Amount formatted as currency: {amountValue:C}");
+    }
+    catch (FormatException) when (amount.Contains("$"))
+    {
+        WriteLine("Amounts cannot use the dollar sign!");
+    }
+    catch (FormatException)
+    {
+        WriteLine("Amounts must only contain digits!");
+    }
+
+### Throwing Overflow Exceptions with the `checked` Statement
+
+##### Runtime
+
+The `checked` statement tells .NET to throw an exception when an overflow happens instead of allowing it to happen silently, which is done by default for performance reasons.
+
+#!csharp
+
+int x = int.MaxValue - 1; 
+WriteLine($"Initial value: {x}"); 
+x++; // int.MaxValue
+WriteLine($"After incrementing: {x}"); 
+x++;
+WriteLine($"After incrementing: {x}"); 
+x++;
+WriteLine($"After incrementing: {x}");
+
+#!csharp
+
+// Have compiler check for overflow
+checked
+{
+    int x = int.MaxValue - 1; 
+    WriteLine($"Initial value: {x}"); 
+    x++;
+    WriteLine($"After incrementing: {x}"); 
+    x++;
+    WriteLine($"After incrementing: {x}"); 
+    x++;
+    WriteLine($"After incrementing: {x}");
+}
+
+#!csharp
+
+// Catch overflow
+try
+{
+    checked
+    {
+        int x = int.MaxValue - 1; 
+        WriteLine($"Initial value: {x}"); 
+        x++;
+        WriteLine($"After incrementing: {x}"); 
+        x++;
+        WriteLine($"After incrementing: {x}"); 
+        x++;
+        WriteLine($"After incrementing: {x}");
+    }
+}
+catch (OverflowException)
+{
+ WriteLine("The code overflowed but I caught the exception.");
+}
+
+#!markdown
+
+##### Compile-time
+
+The below will not compile because the compiler knows the statement would casue an overflow.
+
+#!csharp
+
+int y = int.MaxValue + 1;
+
+#!markdown
+
+To disable compile-time checks, wrap the statement in an `unchecked` block. Perhaps you want this behavior, but it is probably rare you want to explicitly switch of a check a like this because it allows an overflow to occur.
+
+#!csharp
+
+unchecked
+{
+    int y = int.MaxValue + 1; 
+    WriteLine($"Initial value: {y}"); 
+    y--;
+    WriteLine($"After decrementing: {y}"); 
+    y--;
+    WriteLine($"After decrementing: {y}");
+}
+
+#!markdown
+
+## **Exercises**
+
+### 3.2 - Explore Loops and Overflow
+
+#!csharp
+
+/*
+ * DO NOT RUN ME IN NOTEBOOK DUE TO REPEATED PRINTING
+ */
+int max = 500;
+checked
+{
+    for (byte i = 0; i < max; i++)
+    {
+        WriteLine(i);
+    }
+}
+
+#!markdown
+
+### 3.3 - Practice Loops and Operators
+
+#!csharp
+
+for (int i=1; i<=100; i++)
+{
+    if (i % 15 == 0)
+    {
+        Write("FizzBuzz");
+    }
+    else if (i % 5 == 0)
+    {
+        Write("Buzz");
+    }
+    else if (i % 3 == 0)
+    {
+        Write("Fizz");
+    }
+    else
+    {
+        Write($"{i}");
+    }
+
+    if (i != 100) { Write(", "); }
+    if (i % 10 == 0) { WriteLine(); }
+}
+
+#!markdown
+
+### 3.4 – Practice Exception Handling
+
+#!csharp
+
+Write("Enter a number between 0 and 255: ");
+string num1 = ReadLine()!;
+Write("Enter another number between 0 and 255: ");
+string num2 = ReadLine()!;
+
+try
+{
+    byte dividend = byte.Parse(num1);
+    byte divisor = byte.Parse(num2);
+    WriteLine($"{dividend} divided by {divisor} is {dividend/divisor}");
+}
+catch(DivideByZeroException d)
+{
+    WriteLine($"{d.GetType()}");
+}
+catch(FormatException f)
+{
+    WriteLine($"{f.GetType()}");
+}
+catch (Exception e)
+{
+    WriteLine($"{e.GetType()}: {e.Message}");
+}
+
+#!markdown
+
+### 3.5 - Test Your Knowledge of Operators

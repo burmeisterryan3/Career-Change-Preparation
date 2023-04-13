@@ -1,0 +1,1184 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","aliases":["c#","C#"],"languageName":"C#"},{"name":"vscode","aliases":["frontend"]},{"name":".NET","aliases":[]},{"name":"fsharp","aliases":["f#","F#"],"languageName":"F#"},{"name":"html","aliases":[],"languageName":"HTML"},{"name":"kql","aliases":[],"languageName":"KQL"},{"name":"mermaid","aliases":[],"languageName":"Mermaid"},{"name":"pwsh","aliases":["powershell"],"languageName":"PowerShell"},{"name":"sql","aliases":[],"languageName":"SQL"},{"name":"value","aliases":[]}]}}
+
+#!markdown
+
+# <ins>**Chapter 06**</ins>: *Implementing Interfaces and Inheriting Classes*
+
+##### Taken from *C11-DotNet7 - Modern Cross-Platform Development Fundamentals* by Mark J. Price
+
+https://github.com/markjprice
+https://github.com/markjprice/cs11dotnet7
+
+#!markdown
+
+## **Generics**
+
+In 2005, with C# 2.0 and .NET Framework 2.0, Microsoft introduced a feature named **generics**, which enables your types to be more safely reusable and more efficient. It does this by allowing a programmer to pass types as parameters, like how you can pass objects as parameter.
+
+### Working with Non-Generic Types - Example
+System.Collections.Hashtable can be used to store multiple values each with a unique key that can later be used to quickly look up its value. Both the key and value can be any object because they are declared as System.Object. Although this provides flexibility when storing value types like integers, it is slow, and bugs are easier to introduce because no type checks are made when adding items.
+
+    // non-generic lookup collection
+    System.Collections.Hashtable lookupObject = new();
+    lookupObject.Add(key: 1, value: "Alpha");
+    lookupObject.Add(key: 2, value: "Beta");
+    lookupObject.Add(key: 3, value: "Gamma");
+    lookupObject.Add(key: harry, value: "Delta");
+
+    int key = 2; // look up the value that has 2 as its key
+    WriteLine(format: "Key {0} has value: {1}",
+        arg0: key,
+        arg1: lookupObject[key]);
+
+    // look up the value that has harry as its key
+    WriteLine(format: "Key {0} has value: {1}",
+        arg0: harry,
+        arg1: lookupObject[harry]);
+
+Although the code works, there is potential for mistakes because literally any type can be used for the key or value. If another developer used your *lookup object* and expected all the items to be a certain type, they might cast them to that type and get exceptions because some values might be a different type. A lookup object with lots of items would also give poor performance.
+
+### Working with `generic` Types - Example
+
+`System.Collections.Generic.Dictionary<TKey, TValue>` can be used to store multiple values, each with a unique key that can later be used to quickly look up its value. Both the key and value can be any object, but you must tell the compiler what the types of the key and value will be when you 
+first instantiate the collection. You do this by specifying types for the **generic parameters** in angle brackets `<>`, `TKey`, and `TValue`.
+
+This provides flexibility, it is faster, and bugs are easier to avoid because type checks are made when adding items. We will not need to explicitly specify the `System.Collections.Generic` namespace that contains `Dictionary<TKey, TValue>` because it is implicitly and globally imported by default.
+
+#### Good Practice
+When a generic type has one definable type, it should be named `T`, for example, `List<T>`, where `T` is the type stored in the list. When a generic type has multiple definable types, they should use `T` as a name prefix and have a sensible name, for example, `Dictionary<TKey, TValue>`.
+
+#!markdown
+
+## **Raising and Handling Events**
+
+Methods are often described as *actions that an object can perform, either on itself or on related objects*. For example, `List<T>` can add an item to itself or clear itself, and `File` can create or delete a file in the filesystem.
+
+Events are often described as *actions that happen to an object*. For example, in a user interface, `Button` has a `Click` event, a click being something that happens to a button, and `FileSystemWatcher` listens to the filesystem for change notifications and raises events like `Created` and `Deleted` that are triggered when a directory or file changes.
+
+Another way of thinking of events is that they provide a way of exchanging messages between two objects.
+
+Events are built on **delegates**.
+
+### Calling Methods using Delegates
+
+The most common way to call or execute a method is to use the `.` opertor while using the methods name. For example, `Console.WriteLine` tells the `Console` type to call its `WriteLine` method.
+
+The other way to call or execute a method is to use a delgate. If you used languages taht support function pointers, then think of a delegate as being a **type-safe method pointer**.
+
+In other words, a delegate contains the memory address of a method taht matches the same signature as the delgate so that it can be called safely with the correct parameter types.
+
+For example, imagine there is a method in the `Person` class taht must have a `string` type passed as its only parameter, and it returns an `int` type.
+
+    public int MethodIWantToCall(string input)
+    {
+        return input.Length; // it doesn't matter what the method does
+    }
+
+I can call this method with an instance of `Person` named `p1`.
+
+    Person p1 = new();
+    int answer = p1.MethodIWantToCall("Frog");
+
+Alternatively, I can define a delgate with a matching signature to call the method indirectly. Note the names of the parameters do not have to match. ONly the types of parameters and return value must match.
+
+    delegate int DelegateWithMatchingSignatrue(string s);
+
+Now I can create an instance of the delgate, point it at the method, and finally, call the delgate (which calls the method).
+
+    // create a delegate instance that points to the method
+    DelegateWithMatchingSignature d = new(p1.MethodIWantToCall);
+
+    // call the delegate, who then calls the method
+    int answer2 = d("Frog");
+
+So, what's the point of that? Well, it provides flexibility.
+
+For example, we could use delgates to create a queue of methods that need to be called in order. Queuing actions that need to be performed is common in services to provide improved scalability.
+
+Another example is to allow multiple actions to perform in parallel. Delegates have built-in support of ansynchronous operations that run on a different thread, and that can provide improved responsiveness.
+
+The most important example is that delegates allow us to implement events for sending messages between different objects that do not need to know about each other. Events are an example of loose coupling between components because the components do not need to know about each other, they just need to know about the event signature.
+
+### Defining and Handling Delegates
+
+Microsoft has two predefined delgates for use as events. They both have two parameters.
+
+* `object? sender`
+    * This parameter is a reference to the object raising the vent or sending the message. The reference could be `null`.
+* `EventArgs e` or `TEventArgs e`
+    * This parameter contains additional relevant information about the event that is occurring.
+    * For example:
+        * In a GUI app, you might define `MouseMoveEventArgs` that has properties for the `X` and `Y` coordinates for the mouse pointer.
+        * A bank account might have a `WithdrawEventArgs` with a property for the amount to withdraw.
+
+Their signatures are simple, yet flexible.
+
+    // for methods that do not need additional argument values passed in
+    public delegate void EventHandler(object? sender, EventArgs e);
+
+    // for methods that need additional argument values passed in as
+    // defined by the generic type TEventArgs
+    public delegate void EventHandler<TEventArgs>(object? sender, TEventArgs e);
+
+Microsoft's convention for method names taht handle events is `ObjectName_EventName`.
+
+#### Good Practice
+
+When you want to define an event in your own type, you should use one of these two predefined delegates.
+
+### Defining and Handling Events
+
+With the `Harry_Shout` and `Shout` example (see Chapter06 solution), youve seen how delegates implement the most important functionality of events: the ability to define a signature for a method that can be implemented by a different piece of code, and then call that method any other methods that are hooked up to the delgate field.
+
+What about events?
+
+When assigning a method to a delgate field, you should not use the simple assignment operator.
+
+Delegates are multicast, meaning that you can assign multiple delegates to a  single delegate field. Instead of the `=` operator, we could have used the `+=` operator so that we could add more methods to the same delegate field. When the delegate is called, all the assigned methods are called, although you have no control over the order in which they are called.
+
+If the `Shout` delgate field was already referencing one or more methods, by assigning a method, it would replace all the others. With delegates that are used for events, we usually want to make sure taht a programmer only ever uses the `+=` operator or the `-=` operator to assign and remove methods.
+
+#!markdown
+
+## **Implementing Interfaces**
+
+Interfaces are a way to implement standard functionality and connect different types to make new things. Think of them like the studs on top of LEGO™ bricks, which allow them to “stick” together, or electrical standards for plugs and sockets.
+
+If a type implements an interface, then it is making a promise to the rest of .NET that it supports specific functionality. Therefore, they are sometimes described as contracts.
+
+### Common Interfaces
+
+| **Interface** | **Method(s)** | **Description** |
+| ------------- | ------------- | --------------- |
+| `IComparable` | `CompareTo(other)` | This defines a compairson method that a type implements to order or sorts its instances. Think *I'm comparable; I can be compared to something else.* |
+| `IComparer` | `Compare(first, second)` | This defines a comparison method that a secondary type implements to order or sort instances of a primary type. Think *I'm a comparer; I simply compare things*. |
+| `IDisposable` | `Dispose()` | This defines a disposal method to release unmanaged resources more efficnetly than waiting ofr a finalizer. |
+| `IFormattable` | `ToString(format, culture)` | This defines a culture-aware method to format the value of an object into a string representation. |
+| `IFormatter` | `Serialize(stream, object)` <br> `Deserialize(stream)` | This defines methods to convert an object to and from a stream of bytes for storage or transfer. |
+| `IFormatProvider` | `GetFormat(type)` | This defines a method to format inputs based on a language and region. |
+
+#### Comparing Objects When Sorting
+
+One of the most common interfaces that you will want to implement is `IComparable`. It has one method named `CompareTo`. It has two variations, one that works with a nullable `object` type and one that works with a nullable generic type `T`.
+
+    namespace System
+    {
+        public interface IComparable
+        {
+            int CompareTo(object? obj);
+        }
+        public interface IComparable<in T>
+        {
+            int CompareTo(T? other);
+        }
+    }
+
+If a type implements one of the `IComparable` interfaces, then arrays and collections containing instances of that type can be sorted.
+
+For example, the `string` type implements `IComparable` by returing `-1` if the `string` should be sorted before the `string` be compared to, `1` if it should be sorted after, and `0` if they are equal. The `int` type implements `IComparable` by returning `-1` if the `int` is less than the `int` being compared to, `1` if it is greater, and `0` if they are equal.
+
+##### Good Practice
+
+If anyone wants to sort an array or collection of instances of your type, then implement the `IComparable` interface.
+
+#### Comparing Objects Using a Separate Class
+
+Sometimes, you won't have access to the source code for a type, and it might not implement the `IComparable` interface. You can create a separate type taht implements a slightly different interface named `IComparer`.
+
+### Implicit and Explicit Interface Implementations
+
+Interfaces can be implemented implicitly and explicitly. Implicit implementations are simpler and more common. Explicit implementations are only necessary if a type must have multiple methods with the same name and signature.
+
+    public interface IGamePlayer
+    {
+        void Lose();
+    }
+
+    public interface IKeyHolder
+    {
+        void Lose();
+    }
+
+    public class Person : IGamePlayer, IKeyHolder
+    {
+        public void Lose() // implicit implementation
+        {
+            // implement losing a key
+        }
+        void IGamePlayer.Lose() // explicit implementation
+        {
+            // implement losing a game
+        }
+    }
+
+    // calling implicit and explicit implementations of Lose
+    Person p = new();
+    p.Lose(); // calls implicit implementation of losing a key
+
+    ((IGamePlayer)p).Lose(); // calls explicit implementation of losing a game
+
+    IGamePlayer player = p as IGamePlayer;
+    player.Lose(); // calls explicit implementation of losing a game
+
+### Defining Interfaces with Default Implementations
+
+A language feature introduced in C# 8.0 is **default implementations** for an interface.
+
+Before C# 8.0, adding an additional methods to interfaces is impossible once at least one type is implemented in teh original interface. One of the main points of an interface is that it is a fixed contract.
+
+C# 8.0 allows an interface to add new members after release as long as they have a default implementation. 
+
+    namespace Packt.Shared;
+    public interface IPlayable
+    {
+        void Play();
+        void Pause();
+        void Stop() // default interface implementation
+        {
+            WriteLine("Default implementation of Stop.");
+        }
+    }
+
+#!markdown
+
+## Managing Memory with Reference and Value Types
+
+There are two categories of memory: **stack** memory and **heap** memory. With modern operating systems, the stack and heap can be anywhere in physical or virtual memory.
+
+Stack memory is faster to work with (because it is managed directly by the CPU and because it uses a last-in, first-out mechanism, it is more likely to have data in its L1 or L2 cache) but limited in size, while heap memory is slower but much more plentiful.
+
+On Windows, for ARM64, x86, x65 machines, the default stack size is 1MB. It is 8 MB on a typical modern Linux-based operating system. For example, in a macOS terminal, I can enter the command `ulimit -a` to discover that the stack size is limited to 8,192 KB and that other memory is "unlimited." The limited amount of stack memory is why it is so easy to fill it up and get a "stack overflow."
+
+### Defining Reference and Value Types
+
+There are three C# keywards that you can use to define object types: `class`, `record`, and `struct`. All can have the same members, such as fields and methods. One main difference between them is how memory is allocated.
+
+* When you define a type using `record` or `class`, you are defining a **reference type**. This means that the memory itself is allocated on the heap, and only the memory address of the object (and a little overhead) is stored on the stack.
+* When you define a type using `record struct` or `struct`, you are defining a **value type**. This means that the memory for the object itself is allocated to the stack.
+
+If a `struct` uses field types that are not of the `struct` type, then those fields will be stored on the heap, meaning the data for that object is stored in both the stack and the heap!
+
+These are the most common `struct` types:
+
+* Number `System` types: `byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double`, and `decimal`
+* Other `System` types: `char`, `DateTime`, `DateOnly`, `TimeOnly`, and `bool`
+* `System.Drawing` types: `Color`, `Point`, `PointF`, `Size`, `SizeF`, `Rectangle`, and `RectangleF`
+
+Almost all other types are `class` types, including `string` aka `System.String` and `object` aka `System.Object`.
+
+Apart from the difference int erms of where  in memory the data for a type is stored, the other major difference is that you cannot inherit from a `struct`.
+
+Example:
+
+    int number1 = 49;
+    long number2 = 12;
+    System.Drawing.Point location = new(x: 4, y: 5);
+    Person kevin = new() { Name = "Kevin", 
+        DateOfBirth = new(year: 1988, month: 9, day: 23) };
+    Person sally;
+
+* The `number1` variable is a value type (also known as `struct`), so it is allocated on the stack, and it uses 4 bytes of memory since it is a 32-bit integer. Its value, `49`, is stored directly in the variable
+* The `number2` variable is also a value type, so it is also allocated on the stack, and it uses 8 bytes since it is a 64-bit integer.
+* The `location` variable is also a value type, so it is allocated on the stack, and it uses 8 bytes since it is made up of two 32-bit integers, `x` and `y`.
+* The `kevin` variable is a reference type (also known as `class`), so 8 bytes for a 64-bit memory address (assuming a 64-bit operating system) are allocated on the stack and enough bytes on the heap to store an instance of a `Person`.
+* The `sally` variable is a reference type, so 8 bytes for a 64-bit memory address are allocated on the stack. It is currently `null`, meaning no memory has yet been allocated for it on the heap. If we were to later assign `kevin` to `sally`, then the memory address of the `Person` on the heap would be copied into `sally`.
+
+    sally = kevin; // both variables point at the same Person on heap
+
+[Stack-Heap](/images/stack-heap.png)
+
+All the allocated memory for  areference type is stored ont he heap. If a value type such as `DateTime` is used for a field of a reference type like `Person`, then the `DateTime` value is stored on the heap.
+
+If a value type has a field that is a reference type, then the part of the value type is stored on the heap. `Point` is a value type that consists of two fields, both of which are themselves value types, so the entire object can be allocated on the stack. If the `Point` value type had a field that was a reference type, like `string`, then the `string` bytes would be stored on the heap.
+
+#### Good Practice
+
+If the total memory used by all the fields in your type is 16 bytes or less, your type only uses value types for its fields, and you will never want to derive from your type, then Microsoft recommends that you use `struct`. If your type uses more than 16 bytes of stack memory, if it uses referencet ypes for its fields, or if you might want to inherit from it, then use `class`.
+
+### Value Type Constructors
+
+Value types always have a default constructor even if an explicit one is not defined because the values on the stack must be initialized, even if to default values. As an example, any `int` will initialized to `0` if not assigned a value.
+
+### **Equality of Types**
+
+It is common to compare two variables using the `==` and `!=` operators. The behavor of these two operators is different for reference types and value types.
+
+When you check the equality of two value types, .NET literally compares the *values* of those two variables on the stack and returns `true` if they are equal.
+
+When you check the equality of two reference types, .NET compares the memory addresses of those two variables and returns `true` if they are equal. This is because they are not the same object. If both variables pointed to the same object on the heap, then they would be equal.
+
+#### `string`
+
+The one exception to this behavior of reference types is the `string` type. it is a reference type, but the equality operators have been overridden to make them behave as if they were value types.
+
+You can do something similar to new classes. Alternatively, use a `record class` becuase one of its benefits is that it implements this behavior for you.
+
+### Defining Record Struct Types
+
+C# 10 introduced the ability to use the `record` keyword with `struct` types as well as with `class` types.
+
+    public record struct DisplacementVector(int X, int Y);
+
+A `record struct` has all the same benefits over a `record class` that a `struct` has over a `class`. One major defference between `record struct` and `record class` is that `record struct` is not immutable unless you also apply the `readonly` keyword to the `record struct` declaration. A `struct` does not implement the `==` or `!=` operators, but they are automatically implemented with a `record struct`.
+
+With this change, Microsoft recommends explicitly specifying `class` if you want to define a `record class` even though the `class` keyword is optional.
+
+    // NOT RECOMMENDED
+    public record ImmutableAnimal(string Name);
+
+    // RECOMMENDED
+    public record class ImmutableAnimal(string Name);
+
+#!csharp
+
+public struct DisplacementVector
+{
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    public DisplacementVector(int initialX, int initialY)
+    {
+        X = initialX;
+        Y = initialY;
+    }
+
+    public override string ToString()
+    {
+        return $"({X}, {Y})";
+    }
+
+    public static DisplacementVector operator+(
+        DisplacementVector vector1, DisplacementVector vector2)
+    {
+        return new(vector1.X + vector2.X, vector1.Y + vector2.Y);
+    }
+
+    // Gives the same functionality as 'record struct'; see code below
+    public static bool operator==(
+        DisplacementVector vector1, DisplacementVector vector2)
+    {
+        return ((vector1.X == vector2.X) && (vector1.Y == vector2.Y));
+    }
+
+    public static bool operator!=(
+        DisplacementVector vector1, DisplacementVector vector2)
+    {
+        return ((vector1.X != vector2.X) || (vector1.Y != vector2.Y));
+    }
+    
+}
+
+#!csharp
+
+DisplacementVector dv1 = new(3, 5);
+DisplacementVector dv2 = new(-2, 7);
+DisplacementVector dv3 = dv1 + dv2;
+Console.WriteLine($"{dv1} + {dv2} = {dv3}");
+
+// Gives compilation error if not overloaded above
+Console.WriteLine($"dv1 == dv2:  {(dv1 == dv2)}");
+Console.WriteLine($"dv1 == dv2:  {(dv1 != dv2)}");
+Console.WriteLine($"dv3 == (dv1 + dv2): {dv3 == (dv1 + dv2)}");
+
+#!csharp
+
+public record struct RDisplacementVector
+{
+    // NOTE: NOT immutable unless set to readonly
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    public RDisplacementVector(int initialX, int initialY)
+    {
+        X = initialX;
+        Y = initialY;
+    }
+
+    public override string ToString()
+    {
+        return $"({X}, {Y})";
+    }
+
+    public static RDisplacementVector operator+(
+        RDisplacementVector vector1, RDisplacementVector vector2)
+    {
+        return new(vector1.X + vector2.X, vector1.Y + vector2.Y);
+    }
+}
+
+#!csharp
+
+RDisplacementVector dv1 = new(3, 5);
+RDisplacementVector dv2 = new(-2, 7);
+RDisplacementVector dv3 = dv1 + dv2;
+Console.WriteLine($"{dv1} + {dv2} = {dv3}");
+
+// with `record struct`, no need to overload explicitly
+Console.WriteLine($"dv1 == dv2:  {(dv1 == dv2)}");
+Console.WriteLine($"dv1 != dv2: {(dv1 != dv2)}");
+Console.WriteLine($"dv3 == (dv1 + dv2): {dv3 == (dv1 + dv2)}");
+
+#!markdown
+
+## **[Managed Code](https://learn.microsoft.com/en-us/dotnet/standard/managed-code)**
+
+Managed code is just that: code whose execution is managed bya runtime. In this case, the runtime in question is call the **Common Language Runtime** or CLR, regardless of the implementation. CLR is in charge of taking managed code, compiling it into machine code and then exeucting it.
+
+Managed code is written in one of the high-level languages that can be run on top of .NET, such as C#, Visual Basic, F#, and others. When you compile code written in those languages with their respective compiler, you don't get machine code. You get **Intermediate Language** code which then runtime then compiles and executes.
+
+### Intermediate Language and Execution
+
+What is "Intermediate Language" (or IL for short)? It is a product of comilation of code written in high-level .NET languages. Once you compile your code written in one of these languages, you wil get a binary that is made out of IL. It is important to note that the IL is independent of any specific langague that runs on top of the runtime.
+
+Once you produce IL from your high-level code, you will most likely want to run it. This is where the CLR takes over and starts the process of **Just-In-Time** compiling, or **JIT-ing** your code from IL to machine code that can actually run on your CPU. In this way, the CLR knows exactly what your code is doing and can effectively *manage* it.
+
+IL is sometimes also called Common Intermediate Language (CIL) or Microsoft Intermediate Language (MSIL).
+
+### Unmanaged Code Interoperability
+
+The CLR allows passing the boundaries between managed and unmanaged world. This is called **interoperability** or just **interop** for short. When the code passess the boundaries of the runtime, the actual management is again in the hand of unmanaged code, and thus falls under the same restrictions.
+
+#!markdown
+
+## **[Automatic Memory Management](https://learn.microsoft.com/en-us/dotnet/standard/automatic-memory-management)**
+
+Automatic memory management is one of the services the CLR provides during [Managed Execution](https://learn.microsoft.com/en-us/dotnet/standard/managed-execution-process).
+
+1. Choosing a comiler.
+2. Compiling your code to MSIL.
+3. Compiling MSIL to native code.
+4. Running code.
+
+The CLR's [garbage collector](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/) manages the allocation and release of memory for an application.
+
+### Allocating Memory
+
+When you initialize a new process, the runtime reserves a contiguous region of address space for the process. This reserved address space is called the heap. The managed heap maintains a pointer to the address where the next object in the heap will be allocated. Initially this pointer is set to the managed heap's base address. All reference types are allocated on the managed heap.
+
+When an application creates the first reference type, memory is allocated for the type at the base address of the managed heap. When the application creates the next object, the garbage collector allocates memory for it in the address space immediately following the first object. As long as address space is available, the garbage collector continues to allocate space for new objects in this manner.
+
+Allocating memory from the managed heap is faster than unmanaged memory allocation. Because the runtime allocates memory for an object by adding a value to a pointer, it is almost as fast as allocating memory from the stack. In addition, because new objects that are allocated consecutively are stored contiguously in the managed heap, an application can access the objects very quickly.
+
+### Releasing Memory
+
+The garbage collector's optimizing engine determines the best time to perform a collection based on the allocations being made. When the garbage collector performs a collection, it releases the memory for objects that are no longer being used by the application. It determines which objects are no longer being used by examining the application's roots. Every application has a set of roots. Each root either refers to an object on the managed heap or is set to null. An application's roots include static fields, local variables and parameters on a thread's stack, and CPU registers. The garbage collector has access to the list of active roots that the just-in-time (JIT) compiler and the runtime maintain. Using this list, it examines an application's roots, and in the process creates a graph that contains all the objects that are reachable from the roots.
+
+Objects that are not in the graph are unreachable from the application's roots. The garbage collector considers unreachable objects garbage and will release the memory allocated for them. During a collection, the garbage collector examines the managed heap, looking for the blocks of address space occupied by unreachable objects. As it discovers each unreachable object, it uses a memory-copying function to compact the reachable objects in memory, freeing up the blocks of address spaces allocated to unreachable objects. Once the memory for the reachable objects has been compacted, the garbage collector makes the necessary pointer corrections so that the application's roots point to the objects in their new locations. It also positions the managed heap's pointer after the last reachable object. Note that memory is compacted only if a collection discovers a significant number of unreachable objects. If all the objects in the managed heap survive a collection, then there is no need for memory compaction.
+
+To improve performance, the runtime allocates memory for large objects in a separate heap. The garbage collector automatically releases the memory for large objects. However, to avoid moving large objects in memory, this memory is not compacted.
+
+#!markdown
+
+## **[Cleaning Up Unmanaged Resources](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/unmanaged)**
+
+For a majority of the objects that your app creates, you can rely on the .NET garbage collector to handle memory management. However, when you create objects that include unmanaged resources, you **must** explicitly release those resources when you finish using them. The most common types of unmanaged resources are objects that wrap operating system resources, such as files, windows, network connections, or database connections. Although the garbage collector is able to track the lifetime of an object that encapsulates an unmanaged resource, it doesn't know how to release and clean up the unmanaged resource.
+
+A type is an [unmanaged type](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/unmanaged-types) if it's any of the following types:
+
+* `sbyte`, `byte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `nint`, `nuint`, `char`, `float`, `double`, `decimal`, or `bool`
+* Any `enum` type
+* Any `pointer` type
+* Any user-defined `struct` type that contains fields of unmanaged types only
+
+If your types use unmanaged resources, you should do the following:
+
+* Implement the [dispose pattern](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose). This requires that you provide an `IDisposable.Dispose` implementation to enable the *deterministic* release of unmanaged resources. A consumer of your type calls `Dispose` when the object (and the resources it uses) are no longer needed. The `Dispose` method immediately releases the unmanaged resources.
+* In the event that a consumer of your type forgets to call `Dispose`, provide a way for your unmanaged resources to be released. There are two ways to do this:
+    * Use a safe handle to wrap your unmanaged resource. This is the recommended technique. Safe handles are derived from the `System.Runtime.InteropServices.SafeHandle` abstract class and include a robust `Finalize` method. When you use a safe handle, you simply implement the `IDisposable` interface and call your safe handle's `Dispose` method in your `IDisposable.Dispose` implementation. The safe handle's finalizer is called automatically by the garbage collector if its `Dispose` method is not called.
+    * Define a finalizer. Finalization enables the non-deterministic release of unmanaged resources when the consumer of a type fails to call `IDisposable.Dispose` to dispose of them deterministically.
+
+Consumers of your type can then call your `IDisposable.Dispose` implementation directly to free memory used by unmanaged resources. When you properly implement a `Dispose` method, either your safe handle's `Finalize` method or your own override of the `Object.Finalize` method becomes a safeguard to clean up resources in the event that the `Dispose` method is not called.
+
+### [Implement a `Dispose` Method](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose)
+
+The .NET garbage collector does not allocate or release unmanaged memory. The pattern for disposing an object, referred to as the dispose pattern, imposes order on the lifetime of an object. The dispose pattern is used for objects that implement the `IDisposable` interface. This pattern is common when interacting with file and pipe handles, registry handles, wait handles, or pointers to blocks of unmanaged memory, because the garbage collector is unable to reclaim unmanaged objects.
+
+To help ensure that resources are always cleaned up appropriately, a `Dispose` method should be idempotent, such that it is callable multiple times without throwing an exception. Furthermore, subsequent invocations of `Dispose`should do nothing.
+
+### [Safe Handles](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose#safe-handles)
+
+Writing code for an object's finalizer is a complex task that can cause problems if not done correctly. Therefore, we recommend that you construct [System.Runtime.InteropServices.SafeHandle](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.safehandle) objects instead of implementing a finalizer.
+
+A `System.Runtime.InteropServices.SafeHandle` is an abstract managed type that wraps an [System.IntPtr](https://learn.microsoft.com/en-us/dotnet/api/system.intptr) that identifies an unmanaged resource. On Windows it might identify a handle, and on Unix, a file descriptor. The `SafeHandle` provides all of the logic necessary to ensure that this resource is released once and only once, either when the `SafeHandle` is disposed of or when all references to the `SafeHandle` have been dropped and the `SafeHandle` instance is finalized.
+
+The `System.Runtime.InteropServices.SafeHandle` is an abstract base class. Derived classes provide specific instances for different kinds of handle. These derived classes validate what values for the `System.IntPtr` are considered invalid and how to actually free the handle. For example, [SafeFileHandle](https://learn.microsoft.com/en-us/dotnet/api/microsoft.win32.safehandles.safefilehandle) derives from `SafeHandle` to wrap `IntPtrs` that identify open file handles/descriptors, and overrides its `SafeHandle.ReleaseHandle()` method to close it (via the `close` function on Unix or `CloseHandle` function on Windows). Most APIs in .NET libraries that create an unmanaged resource will wrap it in a `SafeHandle` and return that `SafeHandle` to you as needed, rather than handing back the raw pointer.
+
+Derived classes can be found in the [Microsoft.Win32.SafeHandles](https://learn.microsoft.com/en-us/dotnet/api/microsoft.win32.safehandles?view=net-7.0) namespace.
+
+### [Dispose() and Dispose(bool)](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose#dispose-and-disposebool)
+
+The `IDisposable` interface requires the implementation of a single parameterless method, `Dispose`. Also, any non-sealed class should have an additional `Dispose(bool)` overload method.
+
+Method signatures are:
+
+* `public` non-virtual (`IDisposable.Disposable` implementation)
+* `protected virtual Dispose(bool)`
+
+### [The `Dispose()` Method](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose#the-dispose-method)
+
+Because the `public`, non-virtual, parameterless `Dispose` method is called when it is no longer needed (by a consumer of the type), its purpose is to free unmanaged resources, perform general cleanup, and to indicate that the finalizer, if one is present, doesn't have to run.
+
+    public void Dispose()
+    {
+        // Dispose of unmanaged resources (deterministically).
+        Dispose(true);
+
+        // Suppress finalization
+        GC.SuppressFinalize(this);
+    }
+
+The call to `SuppressFinalize` method prevents the garbage collector from funning the finalizer. The actual cleanup is performed by the `Dispose(bool)` method overload.
+
+### [The `Dispose(bool)` Method Overload](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose#the-disposebool-method-overload)
+
+In the overload, the `disposing` parameter is a `Boolean` that indicates whether the method call comes from a `Dispose` method (its value is `true` & called deterministically) or from a finalizer (its values is `false` & called non-deterministically).
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (diposed) return;
+
+        if (disposing)
+        {
+            // TODO: dispose manage state (managed objects).
+        }
+
+        // TODO: fre unmanaged resources (unmanaged objects) and override a finalizer below
+        // TODO: set large fields to null
+
+        disposed = true;
+    }
+
+The body of the method consists of three blocks of code:
+
+* A block for conditional return is the object is already disposed.
+* A block taht frees unmanaged resources. This block executes regardless of the value of the `disposing` parameter.
+* A conditional block that frees managed resources. This block executes if the value of `disposing` is `true`. The managed resources that it frees can include:
+    * **Managed objects taht implement `IDisposable`**. The conditional block can be used to call their `Dispose` implementation (aka cascade dispose). If you have used a derived class of `System.Runtime.InteropServices.SafeHandle` to wrap your unmanaged resource, you should call the `SafeHandle.Dispose()` implementation here.
+    * **Managed objectst hat consume large amounts of memory or consume scarce resources**. Assign large managed object references to `null` to make them more likely to be unreachable. This releases them faster than if they were reclaimed non-deterministically (by the GC).
+
+If the method call comes from a finalizer, only the code that frees unmanaged resources should execute. The implementer is responsible for ensuring that the `false` path doesn't interact with managed objects that may have been disposed. This is important because the order in which the garbage collector disposes managed objects during finalization is non-deterministic.
+
+### [Cascade Dispose Calls](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose#cascade-dispose-calls)
+
+If your class owns a field or property and its type implements `IDisposable`, the containing class itself should also implement `IDisposable`. A class that instantiates an `IDisposable` implementation and stores it as an instance member is also responsible for its cleanup. This helps ensure that the referenced disposable types are given the opportunity to deterministically perform cleanup through the `Dispose` method. In the following example, the class is `sealed`.
+
+    using System;
+
+    public sealed class Foo : IDisposable
+    {
+        private readonly IDisposable bar;
+
+        public Foo()
+        {
+            bar = new Bar();
+        }
+
+        public void Dispose() => bar.Dispose();
+    }
+
+If your class has an `IDisposable` field or property but doesn't own it, meaning the class doesn't create the object, then the class doesn't need to implement `IDisposable`.
+
+### Ensuring the `Dispose` is Called
+
+When someone uses a type that implements `IDisposable`, they can ensure that the `public Dispose` method is called with the `using` statement.
+
+    using (ObjectWithUnmanagedResources thing = new())
+    {
+        // code that uses thing
+    }
+
+
+The compiler converts your code into something like the following, which guarantees that even if an exception occurs, the `Dispose` method will still be called.
+
+    ObjectWithUnmanagedResources thing = new(); 
+    try
+    {
+        // code that uses thing
+    }
+    finally
+    {
+        if (thing != null) thing.Dispose();
+    }
+
+When someone uses a type that implements `IAsyncDisposable`, they can ensure that the `public Dispose` method is called with the `using` statement as shown:
+
+    await using (ObjectWithUnmanagedResources thing = new())
+    {
+        // code that uses thing
+    }
+
+#!markdown
+
+### [Implement the Dispose Pattern](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose#implement-the-dispose-pattern)
+
+All non-sealed classes should be considered a potential base class, because they could be inherited. If you implement the dispose pattern for any potential base class, you must provide the following:
+
+* A `Dispose` implementation that calls the `Dispose(bool)` method
+* A `Dispose(bool)` method that performs the actual cleanup.
+* Either a class derived from `SafeHandle` that wraps your unamanged resource (recommended), or an override to the `Object.Finalize` method. The `SafeHandle` class provides a finalizer, so you don't have to write one yourself.
+
+#### Dispose Pattern for Base Class that Uses a SafeHandle
+
+    using Microsoft.Win32.SafeHandles;
+    using System;
+    using System.Runtime.InteropServices;
+
+    class BaseClassWithSafeHandle : IDisposable
+    {
+        // To detect redundant calls
+        private bool disposed;
+
+        // Instantiate a SafeHandle instance (imporoperly here)
+        private SafeHandle safeHandle = new SafeFileHandle(IntPtr.Zero, true);
+
+        // Public implementation of Dispose pattern callable by consumers.
+        public void Dispose() => Dispose(true);
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    safeHandle.Dispose();
+                }
+
+                disposed = true;
+            }
+        }
+    }
+
+#### Dispose Pattern for Base Class that Overrides [Object.Finalize](https://learn.microsoft.com/en-us/dotnet/api/system.object.finalize)
+
+    using System;
+
+    class BaseClassWithFinalizer : IDisposable
+    {
+        // To detect redundant calls
+        private bool disposed;
+
+        ~BaseClassWithFinalizer() => Dispose(false);
+
+        // Public implementation of Dispose pattern callable by consumers.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposed = true;
+            }
+        }
+    }
+
+### [Implement the Dispose Pattern for a Derived Class](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose#implement-the-dispose-pattern-for-a-derived-class)
+
+A class derived from a class that implements the `IDisposable` interface shouldn't implement `IDisposable`, because the base class implementation of `IDisposable.Dispose` is inherited by the derived classes. Instead, to clean up a derived class, you provide the following:
+
+* A `protected override void Dispose(bool)` method that overrides the base class method and performs the acutal cleanup of the derived class. This method must also call the `base.Dispose(bool)` method passing it the disposing status (`bool disposing` parameter) as an argument.
+* Either a class derived from `SafeHandle` that wraps your unmanaged resource (recommended), or an override to the `Object.Finalize` method. The `SafeHandle` class provides a finalizer that frees you from having to write one. If you do provide a finalizer, it must call the `Dispose(bool)` overload with a `false` argument.
+
+#### Dispose Pattern for a Derived Class that Uses a SafeHandle
+
+    using Microsoft.Win32.SafeHandles;
+    using System;
+    using System.Runtime.InteropServices;
+
+    class DerivedClassWithSafeHandle : BaseClassWithSafeHandle
+    {
+        // To detect redundant calls
+        private bool disposed;
+
+        // Instantiate a SafeHandle instance (improperly implemented)
+        private SafeHandle safeHandle = new SafeFileHandle(IntPtr.Zero, true);
+
+        // Protected implementation of Dispose pattern.
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    safeHandle.Dispose();
+                }
+
+                disposed = true;
+            }
+
+            // Call base class implementation.
+            base.Dispose(disposing);
+        }
+    }
+
+#### Dispose Pattern for a Derived Class that Overrides `Object.Finalize`
+
+    class DerivedClassWithFinalizer : BaseClassWithFinalizer
+    {
+        // To detect redundant calls
+        private bool disposed;
+
+        ~DerivedClassWithFinalizer() => this.Dispose(false);
+
+        // Protected implementation of Dispose pattern.
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+                disposed = true;
+            }
+
+            // Call the base class implementation.
+            base.Dispose(disposing);
+        }
+    }
+
+#!markdown
+
+## Working with `null` Values
+
+C# has the concept of a `null` value, which can be used to indicate that a variable has not been set.
+
+### Making a Value Type Nullable
+
+By default, **value types** like `int` and `DateTime` must always have a *value*, hence their name. Sometimes, for example, when reading values stored in a database taht allows empty, missing, or `null` values, it is convenient to allow a value type to be `null`. We call this a **nullable value type**.
+
+You enable this by adding a `?` as a suffix to the type when declaring a variable. When you append a `?` after a struct, you are changing it to a different `struct`.
+
+`int? thisCouldBeNull = null;` is equivalent to `Nullable<int> thisCouldBeNull = null;`.
+
+### Unerstanding null-related initialisms
+
+| Initialism | Meaning | Description |
+| ---------- | ------- | ----------- |
+| NRT | Nullable reference types | A compiler feature introduced with C# 8 and enabled by default in new projects with C# 10 that performs static analysis of your code at design time and shows warnings and potential misuse of `null` values for reference types. |
+| NRE | `NullReferenceException` | An exception thrown when **dereferencing** a `null` value, aka accessing a variable or member that has a `null` value. |
+| ANE | `ArgumentNullException` | An exception thrown at runtime by a method invocation when an argument has a `null` value when that is not valid. |
+
+### Controlling the Nullability Warning Check Feature
+
+To *enable* the nullability warning check feature at the *project level*, add the following to your project file:
+
+    <Property Group>
+        ...
+        <Nullable>enable</Nullable>
+    </Property Group>
+
+To *disable* the nullability warning check feature at the *project level*, add the following to your project file:
+
+    <Property Group>
+        ...
+        <Nullable>disable</Nullable>
+    </Property Group>
+
+To *disable* the feature at the *file level*, add the following to the top of a code file:
+
+    #nullable disable
+
+To *enable* the feature at the *file level*, add the following to the top of a code file:
+
+    #nullable enable
+
+#### NOTE
+
+An NRT is only about asking the compiler to provide warnings about potentional `null` values that might cause problems. It does not actually change the behavior of your code. It performs a static analysis of your code at compile time.
+
+#### NOTE
+
+Suffixing a reference type with `?` does not change the type. This is different from suffixing a value type with `?` that changes its type to `Nullable<T>`. Reference types can already have `null` values. All you are doing with **NRTs** is telling the compiler that you expect it could be `null`, so the compiler does not need to warn you.
+
+### Checking for `null`
+
+Checking whether a nullable reference type or nullable value type variable currently contains `null` is important because if you do not, a `NullReferenceException` can be thrown, which results in an error. You should check for a `null` value before using a nullable variable.
+
+    // check that the variable is not null before using it
+    if (thisCouldBeNull is not null)
+    {
+        // access a member of thisCouldBeNull
+        int length = thisCouldBeNull.Length; // could throw exception
+        ...
+    }
+
+If you are trying to use a member of a variable that might be null, use the null-conditional operator, `?.`.
+
+    string authorName = null;
+
+    // the following throws a NullReferenceException
+    int x = authorName.Length;
+
+    // instead of throwing an exception, null is assigned to y
+    int? y = authorName?.Length;
+
+Sometimes, you want to either assign a variable to a result or use an alternative value, such as `3`, if the variable is `null`. You do this using the null-coalescing operator, `??`.
+
+    // result will be 3 if authorName?.Length is null 
+    int result = authorName?.Length ?? 3; 
+    Console.WriteLine(result);
+
+#### Good Practice
+
+Even if you enable nullable reference types, you should still check non-nullable parameters for `null` and `throw` an `ArgumentNullException`.
+
+### Checking for `null` in Method Parameters
+
+When defining methods with arguments, it is good practice to check for `null` values.
+
+In earlier versions of C#, you would have to write `if` statements to check for `null` parameter values and then `throw` an `ArgumentNullException` for any parameter that is `null`.
+
+    public void Hire(Person manager, Person employee)
+    {
+        ArgumentNullException.ThrowIfNull(manager);
+        ArgumentNullException.ThrowIfNull(employee);
+        ...
+    }
+
+#!markdown
+
+## **Inheritance & Extending Class Functionality**
+
+### From Classes
+
+Use a `:` after a class to indicate it should be derived from a class.
+
+    public class Employee : Person
+
+#### Hiding Members
+
+You can hide a method of the base class and deliberately replace the base classes method using the `new` keyword.
+
+    public new void WriteToConsole()
+
+#### Overriding Members
+
+Rather than hiding a method, it is usually better to **override** it. You can only override if the base class chooses to allow overriding by applying the `virtual` keyword to any methods that should allow overriding.
+
+The `base` keyword allows a subclass to access members of its superclass, that is, the **base class** that it inherits or derives from.
+
+    public override string ToString()
+    {
+        return $"{Name} is a {base.ToString()}";
+    }
+
+### From Abstract Classes
+
+Using interfaces, you can define a set of members that a type must have to meet a basic level of functionality. Their main limitation is that, until C# 8, they could not provide any implementation of their own.
+
+This is a particular problem if you still need to create class libraries that will work with .NET Framework and other platforms that do not support .NET Standard 2.1.
+
+In those earlier platforms, you could use abstract classes as a sort of halfway house between a pure interface and a fully implemented class.
+
+When a class is marked `abstract`, this means that it cannot be instantiated because you are indicating the class is not complete. For example, the `System.IO.Stream` class is `abstract` because it implements common functionality that all streams would need but is not complete, so you cannot instantiate it using `new Stream()`.
+
+    public interface INoImplementation // C# 1.0 and later
+    {
+        void Alpha(); // must be implemented by derived type
+    }
+
+    public interface ISomeImplementation // C# 8.0 and later
+    {
+        void Alpha(); // must be implemented by derived type
+
+        void Beta()
+        {
+            // default implementation; can be overridden
+        }
+    }
+
+    public abstract class PartiallyImplemented // C# 1.0 and later
+    {
+        public abstract void Gamma(); // must be implemented by derived type
+
+        public virtual void Delta() // can be overridden
+        {
+            // implementation
+        }
+    }
+
+    public class FullyImplemented : PartiallyImplemented, ISomeImplementation
+    {
+        public void Alpha()
+        {
+            // implementation
+        }
+
+        public override void Gamma()
+        {
+            // implementation
+        }
+    }
+
+    // you can only instantiate the fully implemented class
+    FullyImplemented a = new();
+
+    // all the other types give compile errors
+    PartiallyImplemented b = new(); // compile error!
+    ISomeImplementation c = new(); // compile error!
+    INoImplementation d = new(); // compile error!
+
+### Preventing Inheritance and Overriding
+
+You can prevent another developer from inheriting from your class by applying the `sealed` keyword to its definition.
+
+    public sealed class ScroogeMcDuck
+    {
+    }
+
+An example of `sealed` in .NET is the `string` class. Microsoft has implemented some extreme optimizations inside the `string` class that could be negatively affected by your inheritance, so Microsoft prevents that.
+
+You can prevent someone from further overriding a `virtual` method in your class by applying the `sealed` keyword to the method.
+
+    public class Singer
+    {
+        // virtual allows this method to be overridden
+        public virtual void Sing()
+        {
+            WriteLine("Singing...");
+        }
+    }
+
+    public class LadyGaga : Singer
+    {
+        // sealed prevents overriding the method in subclasses
+        public sealed override void Sing()
+        {
+            WriteLine("Singing with style...");
+        }
+    }
+
+### Understanding Polymorphism
+
+There are two ways to change the behavior of an inherited method. We can *hide* it using the `new` keyword (known as **non-polymorphic inheritance**), or we can *override* it (known as **polymorphic inheritance**).
+
+Both ways can access members of the base or superclass by using the `base` keyword.
+
+It all depends on the type of variable holding a reference to the object. For example, a variable of the `Person` type can hold a reference to a `Person` class or any type that derives from `Person`.
+
+    Employee aliceInEmployee = new()
+    {
+        Name = "Alice",
+        EmployeeCode = "AA123"
+    };
+
+    Person aliceInPerson = aliceInEmployee;
+    aliceInEmployee.WriteToConsole();
+    aliceInPerson.WriteToConsole();
+    WriteLine(aliceInEmployee.ToString());
+    WriteLine(aliceInPerson.ToString());
+
+When a method is hidden with `new`, the compiler is not smart enough to know that the object is an `Employee`, so it calls the `WriteToConsole` method in `Person`.
+
+When a method is overridden with `virtual` and `override`, the compiler is smart enough to know that although the variable is declared as a `Person` class, the object itself is an `Employee` class and, therefore, the `Employee` implementation of `ToString` is called.
+
+#### Good Practice
+
+You should use `virtual` and `override` rather than `new` to change the implementation of an inherited method whenever possible.
+
+### Casting with Inheritance Hierarchies
+
+**Casting** between types is subtly different from converting between types. Casting is between similar types, like between a 16-bit integer and a 32-bit integer, or etween a superclass and one of its subclasses. **Converting** is between dissimilar types, such as between text and a number.
+
+#### Implicit Casting
+
+In the `Employee` example above, you see how an instance of a derived type can be stored in a variable of its base type (or its base's base type, and so on). When we do this, it is called **implicit casting**.
+
+#### Explicit Casting
+
+Going the other way is an explicit cast, and you must use parentheses around the type you want to cast into as a prefix to do it.
+
+    Employee explicitAlice = (Employee)aliceInPerson;
+
+#### Using `is` to Check a Type
+
+We can check the type of an object using the `is` keyword.
+
+    if (aliceInPerson is Employee)
+    {
+        WriteLine($"{nameof(aliceInPerson)} IS an Employee");
+
+        Employee explicitAlice = (Employee)aliceInPerson;
+
+        // safely do something with explicitAlice
+    }
+
+The cde can be simplified further using a declaration pattern. This will avoid needing to perform an explicit cast.
+
+    if (aliceInPerson is Employee explicitAlice) 
+    {
+        WriteLine($"{nameof(aliceInPerson)} IS an Employee"); 
+        // safely do something with explicitAlice
+    }
+
+What if you want to execute a block of statements when Alice is not an employee?
+
+    if (aliceInPerson is not Employee)
+
+#### Using `as` to Cast a Type
+
+Alternatively, you can use the `as` keywor to cast. Instead of throwing an exception, the `as` keyword returns `null` if the type cannot be cast.
+
+    Employee? aliceAsEmployee = aliceInPerson as Employee; // could be null
+
+    if (aliceAsEmployee is not null) // Avoid thrown NullReferenceException
+    {
+        WriteLine($"{nameof(aliceInPerson)} AS an Employee");
+
+        // safely do something with aliceAsEmployee
+    }
+
+##### Good Practice
+
+Use the `is` and `as` keywords to avoid throwing exceptions when casting between derived types. If you don't do this, you must write `try-catch` statements for `InvalidCastException`.
+
+### Inheriting and Extending .NET Types
+
+.NET has pre-built class libraries containing hundreds of thousands of types. Rather than creating your own completely new types, you can often get a head start by deriving from one of Microsoft’s types to inherit some or all of its behavior and then overriding or extending it.
+
+#### Example:  Inheriting `Exception`s
+
+    public class PersonException : Exception
+    {
+        public PersonException() : base() { }
+
+        public PersonException(string message) : base(message) { }
+
+        public PersonException(string message, Exception innerException)
+            : base(message, innerException) { }
+    }
+
+Unlike ordinary methods, contructors are not inherited, so we must explicitly declare and explicitly call the `base` constructor implementations in `System.Exception` (or whichever exception class you derived from) to make them available to programmers who might want to use those constructors with our custom exception.
+
+##### Good Practice
+
+When defining your own exceptions, give them the same three constructors that explicitly call the built-in `System.Exception` constructors. Other exceptions that you might inherit from may have more.
+
+### Extending Types When You Can't Inherit
+
+Above, we saw how the `sealed` modifier can be used to prevent inheritance.
+
+Microsoft has applied the `sealed` keyword to the `System.String` class so that no one can inherit and potentially break the behavior of strings.
+
+Can we still add new methods to strings? Yes, if we use a language feature named **extension methods**, which was introduced in C# 3.0.
+
+#### Using `static` Methods to Reuse Functionality
+
+Since the first version of C#, we've been able to create `static` methods to reuse functionality, such as the ability to validate taht a `string` contains an email address.
+
+    public static class StringExtensions
+    {
+        public static bool IsValidEmail(this string input)
+        {
+            // use a simple regular expression to check
+            // that the input string is a valid email
+
+            return Regex.IsMatch(input, @"[a-zA-Z0-9\.-_]+@[a-zA-Z0-9\.-_]+");
+        }
+    }
+
+The `static` class modifier and `this` modifier before `string` tell the compiler that it should treat the method as one that extends the `string` type.
+
+##### Good Practice
+
+Extension methods cannot replace or override existing instance methods. You cannot, for example, redefine the `Insert` method. The extension method will appear as an overload in IntelliSense, but an instance method will be called in preference to an extension method with the same name and signature.
+
+#!markdown
+
+## **Writing Better Code**
+
+### [Treating Warning as Errors](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings)
+
+A simple yet effective way to write better code is to force yourself to fix compiler warnings. By default, warnings can be ignored. You can ask the compiler to prevent you from ignoring them.
+
+In the project file, add a property group to treat warnings as errors, which will cause the build to fail.
+
+    <PropertyGroup>
+        ...
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+#### Good Practice
+
+Do not ignore warnings. The compiler is warning you for a reason. At the project level, treat warnings as errors to force yourself to fix the issue. For an individual issue, you can disable that indiviual warning.
+
+### [Understanding Warning Waves](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings)
+
+New warning and errors may be introduced in each release of the C# compiler.
+
+When new warnings could be reported on existing code, those warnings are introduced under an opt-in system referred to as a **warning wave**. The opt-in system means that you shouldn't see new warnings on existing code without taking action to enable them.
+
+Warning waves are enabled using the `AnalysisLevel` element in your project file. For example, if you want to disable the wave warnings introduced with .NET 7, you set the analysis level to 6.0.
+
+    <Project Sdk="Microsoft.NET.Sdk">
+        <PropertyGroup>
+            <OutputType>Exe</OutputType>
+            <TargetFramework>net7.0</TargetFramework>
+            <ImplicitUsings>enable</ImplicitUsings>
+            <Nullable>enable</Nullable>
+            <AnalysisLevel>6.0</AnalysisLevel>
+        </PropertyGroup>
+    </Project>
+
+There are many potential values for the analysis level setting.
+
+| **Level** | **Description** |
+| --------- | --------------- |
+| 5.0 | Enables only up to warning wave 5 warnings. |
+| 6.0 | Enables only up to warning wave 6 warnings. |
+| 7.0 | Enables only up to warning wave 7 warnings. |
+| `latest` (default) | Enables all warning wave warnings up to and including the current release. |
+| `preview` | Enables all warning wave warnings, including preview waves. |
+| `none` | Disables all warnings. |
+
+If you tell the compiler to treat warnings as errors, enabled warning wave warnings generate errors.
+
+### Using an Analyzer
+
+.NET analyzers find potential issues and suggest fixes from them. **StyleCop** is a commonly used analyzer for helping you write better C# code.
+
+#### Understanding Common StyleCop Recommendations
+
+Inside a code file, you should order the contents as in the following list:
+
+1. External alias directives
+2. Using directives
+3. Namespaces
+4. Delegates
+5. Enums
+6. Interfaces
+7. Structs
+8. Classes
+
+Within a class, record, struct, or interface, you should order the contents as in the following list:
+
+1. Fields
+2. Constructors
+3. Destructors (finalizers)
+4. Delegates
+5. Events
+6. Enums
+7. Interfaces
+8. Properties
+9. Indexers
+10. Methods
+11. Structs
+12. Nested classes and records

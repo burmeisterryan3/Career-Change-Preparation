@@ -1,0 +1,74 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":".NET","aliases":[],"languageName":null},{"name":"vscode","aliases":["frontend"],"languageName":null}]}}
+
+#!markdown
+
+# <ins>**Chapter 04**</ins>: *Writing, Debugging, and Testing Functions*
+
+##### Taken from *C11-DotNet7 - Modern Cross-Platform Development Fundamentals* by Mark J. Price
+
+https://github.com/markjprice
+https://github.com/markjprice/cs11dotnet7
+
+#!markdown
+
+A fundamental principle of programming is **Don’t Repeat Yourself (DRY)**.
+
+While programming, if you find yourself writing the same statements over and over again, then turn those statements into a function. Functions are like tiny programs that complete *one small task*.
+
+See pp146-148 for an understanding of **top-level** programs and functions. To summarize, create any functions that you will call in `Program.cs` in a separate file and manually define them inside a `partial Program` class. This will merge them into the automatically generated `Program` class *at the same level* as the `<Main>$` method, instead of as local functions *inside* the `<Main>$` method.
+
+#!csharp
+
+using static System.Console;
+
+#!csharp
+
+void TimesTable(byte number, byte size = 12)
+{
+    WriteLine($"This is the {number} times table with {size} rows:");
+    for (int row = 1; row <= size; row++)
+    {
+        WriteLine($"{row} x {number} = {row * number}");
+    }
+    WriteLine();
+}
+
+#!csharp
+
+// TimesTable(7);
+TimesTable(7, 20);
+
+#!markdown
+
+If a function has one or more paramters where just passing the values may not provide enough meaning, then you can optionally specify the name of hte parameter as well as its value:
+
+    TimesTable(number: 7, size: 10);
+
+##### A Brief Aside about Arguments and Parameters
+
+Strictly speaking, the terms **argument** and **parameter** have specific and subtly different meanings. Parameters define inputs to a function, and arguments are passed to a function when calling the function.
+
+Example:
+
+    DateTime when = new(year; 2022, month: 11, day: 8);
+    Hire(startDate: when);
+
+`startDate` is the parameter, and `when` is the argument.
+
+#!csharp
+
+var person = new { FirstName = "Alice", Age = 56 };
+string json = $$"""
+              {
+                   "first_name": "{{person.FirstName}}",
+                   "age": {{person.Age}},
+                   "calculation", "{{{ 1 + 2 }}}"
+              }
+              """;
+Console.WriteLine(json);
+
+#!markdown
+
+***Chapter 4 requires most of the code to be run using features of VS or VS Code. See Chapter04 folder for code base and the corresponding book chapter for details.***
