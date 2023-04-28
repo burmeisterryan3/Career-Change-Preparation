@@ -11,6 +11,12 @@ If you'd like to know more specifically about my journey, please see [my blog](h
 ## Courses Taken
 
 - Programming Languages
+  - C#
+    - Introduction to C# ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-QP5EQQDK))
+    - C# Intermediate ([Sololearn Certifcate](https://www.sololearn.com/certificates/CC-ECCHUPFZ))
+  - C++
+    - Introduction to C++([Sololearn Certificate](https://www.sololearn.com/certificates/CC-SBY5HZIX))
+    - C++ Intermediate([Sololearn Certificate](https://www.sololearn.com/certificates/CC-N82V6KLU))
   - HTML / CSS / JavaScript
     - Introduction to Web Development with HTML, CSS, JavaScript ([IBM - Coursera Badge](https://www.credly.com/badges/561cf0a2-a37c-4c2a-b915-335127086e4c))
     - JavaScript Intermediate ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-FWUIMPVO))
@@ -19,17 +25,14 @@ If you'd like to know more specifically about my journey, please see [my blog](h
     - jQuery ([Sololearn Certificate]())
   - Python
     - Programming for Data Science with Python ([Udacity Certificate](https://confirm.udacity.com/HJRUWETD))
-  - C#
-    - Introduction to C# ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-QP5EQQDK))
-    - C# Intermediate ([Sololearn Certifcate](https://www.sololearn.com/certificates/CC-ECCHUPFZ))
-  - C++
-    - Introduction to C++([Sololearn Certificate](https://www.sololearn.com/certificates/CC-SBY5HZIX))
-    - C++ Intermediate([Sololearn Certificate](https://www.sololearn.com/certificates/CC-N82V6KLU))
-  - Miscellaneous
-    - Git and GitHub Essentials ([IBM - Coursera Badge](https://www.credly.com/badges/2bb49166-4824-4ad2-bed9-133e654b3d0b))
-    - Writing READMEs (Udacity)
+  - SQL
+    - Programming for Data Science with Python ([Udacity Certificate](https://confirm.udacity.com/HJRUWETD))
+    - Introduction to SQL ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-Q6J7EQ3B))
 - Cloud Computing
   - Introduction to Cloud Computing - ([IBM - Coursera Badge](https://www.credly.com/earner/earned/badge/4d4bcc02-ce1c-42b1-a100-6d47a179b54f))
+- Miscellaneous
+  - Git and GitHub Essentials ([IBM - Coursera Badge](https://www.credly.com/badges/2bb49166-4824-4ad2-bed9-133e654b3d0b))
+  - Writing READMEs (Udacity)
 
 ## Employment
 
