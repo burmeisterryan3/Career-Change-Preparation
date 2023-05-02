@@ -28,6 +28,7 @@ If you'd like to know more specifically about my journey, please see [my blog](h
   - SQL
     - Programming for Data Science with Python ([Udacity Certificate](https://confirm.udacity.com/HJRUWETD))
     - Introduction to SQL ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-Q6J7EQ3B))
+    - SQL Intermediate ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-GZEEC1W5))
 - Cloud Computing
   - Introduction to Cloud Computing - ([IBM - Coursera Badge](https://www.credly.com/earner/earned/badge/4d4bcc02-ce1c-42b1-a100-6d47a179b54f))
 - Miscellaneous
