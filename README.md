@@ -9,10 +9,10 @@ What is this repository? This is a small base of code for various coures and tut
 - 2018
   - [Mapping Questions to Textbook Content](https://scholarship.rice.edu/handle/1911/105706) - Master's Thesis - [Rice University Digital Signals Processing Group](http://dsp.rice.edu/)
 - 2016
-  - [Training Nerual Nets Without Gradients: A Scalable ADMM Approach](https://www.usna.edu/Users/cs/taylor/pubs/icml16.pdf) - [Code](https://gitlab.umiacs.umd.edu/tomg/admm_nets) - [ICML 2016](https://icml.cc/2016/index.html)
+  - [Training Nerual Nets Without Gradients: A Scalable ADMM Approach](https://www.usna.edu/Users/cs/taylor/pubs/icml16.pdf) - [ICML 2016](https://icml.cc/2016/index.html) - [Code](https://gitlab.umiacs.umd.edu/tomg/admm_nets)
   - [Fast, Distributed Algorithms in Deep Networks](https://apps.dtic.mil/sti/pdfs/AD1013468.pdf) - [Undergraduate Thesis](https://www.usna.edu/TridentProgram/Trident%20Scholar%20Abstracts/Abstracts%202016.php) - [Code](https://gitlab.umiacs.umd.edu/tomg/admm_nets)
 - 2015
-  - [Neural Net Weight Initialization via Kernal Approximation](https://nips.cc/Conferences/2015/Schedule?showEvent=4908) - [NeurIPS 2015 - Making Sense of Big Neural Data Workshop](https://neurips.cc/Conferences/2015)
+  - [Neural Net Weight Initialization via Kernal Approximation](https://nips.cc/Conferences/2015/Schedule?showEvent=4908) - [NeurIPS 2015 - Making Sense of Big Neural Data Workshop](https://neurips.cc/Conferences/2015) - [Code](https://github.com/burmeisterryan3/USNA/tree/main/kernel-approximation)
 
 ## Courses Taken
 
