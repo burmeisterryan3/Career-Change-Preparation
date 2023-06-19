@@ -4,12 +4,20 @@
 
 What is this repository? This is a small base of code for various coures and tutorials I've taken to refresh and learn knew skills. I'm currently a U.S. Navy Officer with the goal of transitioning into the private sector sometime in the middle of 2024. Broadly speaking, my goal is to (re)learn the full-stack of web development while learning cloud offerings, with the goal of narrowing into the data engineering and data science disciplines.
 
-## About Me
+## Research
 
-If you'd like to know more specifically about my journey, please see [my blog](https://burmeisterryan3.wixsite.com/home).
+- 2018
+  - [Mapping Questions to Textbook Content](https://scholarship.rice.edu/handle/1911/105706) - Master's Thesis - [Rice University Digital Signals Processing Group](http://dsp.rice.edu/)
+- 2016
+  - [Training Nerual Nets Without Gradients: A Scalable ADMM Approach](https://www.usna.edu/Users/cs/taylor/pubs/icml16.pdf) - [Code](https://gitlab.umiacs.umd.edu/tomg/admm_nets) - [ICML 2016](https://icml.cc/2016/index.html)
+  - [Fast, Distributed Algorithms in Deep Networks](https://apps.dtic.mil/sti/pdfs/AD1013468.pdf) - [Undergraduate Thesis](https://www.usna.edu/TridentProgram/Trident%20Scholar%20Abstracts/Abstracts%202016.php) - [Code](https://gitlab.umiacs.umd.edu/tomg/admm_nets)
+- 2015
+  - [Neural Net Weight Initialization via Kernal Approximation](https://nips.cc/Conferences/2015/Schedule?showEvent=4908) - [NeurIPS 2015 - Making Sense of Big Neural Data Workshop](https://neurips.cc/Conferences/2015)
 
 ## Courses Taken
 
+- Project Management
+  - Foundations of Project Management - [Google - Coursera Certificate](https://coursera.org/share/1432598ce174fd68be59314dac68c7a2)
 - Programming Languages
   - C#
     - Introduction to C# ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-QP5EQQDK))
@@ -37,4 +45,4 @@ If you'd like to know more specifically about my journey, please see [my blog](h
 
 ## Employment
 
-If your visiting this repository for employment purposes, I try to keep my [LinkedIn](https://www.linkedin.com/in/burmeisterryan3/) as up-to-date as possible.
+If your visiting this repository for employment purposes, I try to keep my [LinkedIn](https://www.linkedin.com/in/burmeisterryan3/) profile as up-to-date as possible.
