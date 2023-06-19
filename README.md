@@ -17,7 +17,7 @@ What is this repository? This is a small base of code for various coures and tut
 ## Courses Taken
 
 - Project Management
-  - Foundations of Project Management - [Google - Coursera Certificate](https://coursera.org/share/1432598ce174fd68be59314dac68c7a2)
+  - Foundations of Project Management ([Google - Coursera Certificate](https://coursera.org/share/1432598ce174fd68be59314dac68c7a2))
 - Programming Languages
   - C#
     - Introduction to C# ([Sololearn Certificate](https://www.sololearn.com/certificates/CC-QP5EQQDK))
