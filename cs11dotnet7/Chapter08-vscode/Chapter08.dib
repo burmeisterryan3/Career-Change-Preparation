@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":"vscode","aliases":["frontend"],"languageName":null}]}}
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":["C#","c#"],"languageName":"C#","name":"csharp"},{"aliases":["frontend"],"name":"vscode"}]}}
 
 #!markdown
 
@@ -17,6 +17,8 @@ https://github.com/markjprice/cs11dotnet7
 using static System.Console;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Net; // IPHostEntry, Dns, IPAddress
+using System.Net.NetworkInformation; // Ping, PingReply, IPStatus
 
 static void Output(string title, IEnumerable<string> collection)
 {
@@ -695,7 +697,7 @@ Objects in a list can be accesse by passing an integer into their indexer.
 The `Index` value is a more formal way of identifying a position, and supports counting from the end.
 
     // two ways to define the same index, 3 in from the start
-    Index i1 = new(value: 3); // counts from the tart
+    Index i1 = new(value: 3); // counts from the start
     Index i2 = 3; // using implicit int coversion operator
 
     // two ways to define the same index, 5 from the end
@@ -725,3 +727,58 @@ Sometimes you will need to work with network resources.
 | **Namespace** | **Example type(s)** | **Description** |
 | ------------- | ------------------- | --------------- |
 | `System.Net` | `Dns`, `Uri`, `Cookie`, `WebClient`, `IPAddress` | These are for working with DNS servers, URIs, IP addresses, and so on. |
+| `System.Net` | `FtpStatusCode`, `FtpWebRequest`, `FtpWebResponse` | These are for working with FTP servers. |
+| `System.Net` | `HttpStatusCode`, `HttpWebRequest`, `HttpWebResponse` | These are for working with HTTP servers; that is, websites and services. Types from `System.Net.Http` are easier to use. |
+| `System.Net.Http` | `HttpClient`, `HttpMethod`, `HttpRequestMessage`, `HttpResponseMessage` | These are for working with HTTP servers; that is websites and services. |
+| `System.Net.Mail` | `Attachment`, `MailAddress`, `MailMessage`, `SmtpClient` | These are for working with SMTP servers; that is, sending email messages. |
+| `System.Net.NetworkInformation` | `IPStatus`, `NetworkChange`, `Ping`, `TcpStatistics` | These are for working with low-level network protocols. |
+
+#!csharp
+
+Write("Enter a valid web address (or press Enter): ");
+string? url = ReadLine();
+
+if (string.IsNullOrWhiteSpace(url)) // if they enter nothing...
+{
+    // ... set a default URL
+    url = "https://stackoverflow.com/search?q=securestring";
+}
+
+Uri uri = new(url);
+WriteLine($"URL: {url}");
+WriteLine($"Scheme: {uri.Scheme}");
+WriteLine($"Port: {uri.Port}");
+WriteLine($"Host: {uri.Host}");
+WriteLine($"Path: {uri.AbsolutePath}");
+WriteLine($"Query: {uri.Query}");
+
+#!csharp
+
+IPHostEntry entry = Dns.GetHostEntry(uri.Host);
+WriteLine($"{entry.HostName} has the following IP addresses:");
+foreach (IPAddress address in entry.AddressList)
+{
+    WriteLine($" {address} ({address.AddressFamily})");
+}
+
+#!csharp
+
+try
+{
+    Ping ping = new();
+
+    WriteLine("Pinging server. Please wait...");
+    PingReply reply = ping.Send(uri.Host);
+    WriteLine($"{uri.Host} was pinged and replied: {reply.Status}.");
+
+    if (reply.Status == IPStatus.Success)
+    {
+        WriteLine("Reply from {0} took {1:N0}ms",
+        arg0: reply.Address,
+        arg1: reply.RoundtripTime);
+    }
+}
+catch (Exception ex)
+{
+    WriteLine($"{ex.GetType()} says {ex.Message}");
+}
