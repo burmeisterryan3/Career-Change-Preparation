@@ -83,9 +83,9 @@ Output(cohort3, "Cohort 3");
 SectionTitle("Set operations");
 
 Output(cohort2.Distinct(), "cohort2.Distinct()");
-Output(cohort2.DistinctBy(name => name.Substring(0, 2)), "cohort2.DistinctBy(name => name.Substring(0, 2)):"); // second number is length
+Output(cohort2.DistinctBy(name => name.Substring(0, 2)), "cohort2.DistinctBy(name => name.Substring(0,2))"); // name => name[..2]
 Output(cohort2.Union(cohort3), "cohort2.Union(cohort3)");
 Output(cohort2.Concat(cohort3), "cohort2.Concat(cohort3)");
 Output(cohort2.Intersect(cohort3), "cohort2.Intersect(cohort3)");
 Output(cohort2.Except(cohort3), "cohort2.Except(cohort3)");
-Output(cohort1.Zip(cohort2, (c1, c2) => $"{c1} matched with {c2}"), "cohort1.Zip(cohort2)");
+Output(cohort1.Zip(cohort2, (c1, c2) => $"{c1} is matched with {c2}"), "cohort1.Zip(cohort2)");

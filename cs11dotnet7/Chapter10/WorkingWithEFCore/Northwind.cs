@@ -22,7 +22,9 @@ public class Northwind : DbContext
         ForegroundColor = previousColor;
 
         optionsBuilder.UseSqlite(connection);
-        optionsBuilder.LogTo(WriteLine, new[] {RelationalEventId.CommandExecuting}).EnableSensitiveDataLogging();
+
+        // optionsBuilder.LogTo(WriteLine).EnableSensitiveDataLogging(); // Includes connection opening [20000] & connection opened [20001]
+        optionsBuilder.LogTo(WriteLine, new[] {RelationalEventId.CommandExecuting}).EnableSensitiveDataLogging(); // Only includes command executing [20100]
 
         optionsBuilder.UseLazyLoadingProxies();
     }

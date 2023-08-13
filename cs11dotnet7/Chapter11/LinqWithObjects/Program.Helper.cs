@@ -16,7 +16,7 @@
         {
             WriteLine(description);
         }
-        Write(" ");
+        Write("");
         WriteLine(string.Join(", ", cohort.ToArray()));
         WriteLine();
     }
