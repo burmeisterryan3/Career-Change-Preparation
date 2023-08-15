@@ -8,21 +8,15 @@ public static class P876
         * The number of nodes in the list is in the range [1, 100].
         * 1 <= Node.val <= 100
         */
-        int length = 0;
         ListNode? iter = head;
-        ListNode? half = head;
+        ListNode middle = head!;
 
-        while (iter != null)
+        while (iter != null && iter.next != null)
         {
-            iter = iter.next;
-            length++;
-
-            if (length % 2 == 0)
-            {
-                half = half.next!;
-            }
+            iter = iter.next.next;
+            middle = middle.next!;
         }
 
-        return half!;
+        return middle;
     }
 }
