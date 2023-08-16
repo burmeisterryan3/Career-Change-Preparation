@@ -13,14 +13,11 @@ public static class P1672
     public static int MaximumWealth(int[][] accounts)
     {
         int maxSum = 0;
-        // for(int m = 0; m < accounts.Length; m++)
-        foreach (int[] customers in accounts)
+        foreach (int[] customers in accounts) // m
         {
             int individualSum = 0;
-            // for (int n = 0; n < accounts[m].Length; n++)
-            foreach (int bank in customers)
+            foreach (int bank in customers) // n
             {
-                // individualSum += accounts[m][n];
                 individualSum += bank;
             }
 
@@ -32,4 +29,6 @@ public static class P1672
 
         return maxSum;
     }
+    // time complexity = O(nm)
+    // space complexity = O(1)
 }

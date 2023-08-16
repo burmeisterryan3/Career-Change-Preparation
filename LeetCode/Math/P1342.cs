@@ -22,4 +22,6 @@ public static class P1342
 
         return steps;
     }
+    // time complexity = O(logn)
+    // space complexity = O(1)
 }

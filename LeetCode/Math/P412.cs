@@ -31,4 +31,6 @@ public static class P412
 
         return list;
     }
+    // time complexity = O(n)
+    // space complexity = O(1)
 }

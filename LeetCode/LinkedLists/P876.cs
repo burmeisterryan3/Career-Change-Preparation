@@ -19,4 +19,6 @@ public static class P876
 
         return middle;
     }
+    // time compexity = O(m)
+    // space complexity = O(1)
 }

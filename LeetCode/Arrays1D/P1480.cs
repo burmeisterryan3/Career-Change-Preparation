@@ -14,4 +14,6 @@ public static class P1480
         }
         return nums;
     }
+    // time complexity = O(n)
+    // space complexity = O(1)
 }
