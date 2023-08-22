@@ -1,7 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace Arrays2D;
 
-namespace Arrays2D;
-
+// https://leetcode.com/problems/richest-customer-wealth/
 public static class P1672
 {
     /* Constraints

@@ -8,15 +8,15 @@ public class P876Tests
         // Arrange
         int[] nums = { 1, 2, 3, 4, 5 };
         ListNode head = LinkedList.CreateFromArray(nums);
-        int[] actual = nums[2..^0];
+        int[] expected = nums[2..^0];
         // ListNode actual = LinkedList.CreateFromArray(nums[2..^0]);
 
         // Act
         ListNode resultList = P876.MiddleNode(head);
-        int[] result = LinkedList.ToArray(resultList);
+        int[] actual = LinkedList.ToArray(resultList);
 
         // Assert
-        Assert.Equal(actual, result);
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
@@ -25,14 +25,14 @@ public class P876Tests
         // Arrange
         int[] nums = { 1, 2, 3, 4, 5, 6 };
         ListNode head = LinkedList.CreateFromArray(nums);
-        int[] actual = nums[3..^0];
+        int[] expected = nums[3..^0];
         // ListNode actual = LinkedList.CreateFromArray(nums[3..^0]);
 
         // Act
         ListNode resultList = P876.MiddleNode(head);
-        int[] result = LinkedList.ToArray(resultList);
+        int[] actual = LinkedList.ToArray(resultList);
 
         // Assert
-        Assert.Equal(actual, result);
+        Assert.Equal(expected, actual);
     }
 }

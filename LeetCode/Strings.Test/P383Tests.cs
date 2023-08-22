@@ -1,6 +1,6 @@
 namespace Strings.Test;
 
-public class P876Tests
+public class P383Tests
 {
     [Fact]
     public void Test1()
@@ -10,10 +10,10 @@ public class P876Tests
         string magazine = "b";
 
         // Act
-        bool result = P383.CanConstruct(ransomNote, magazine);
+        bool actual = P383.CanConstruct(ransomNote, magazine);
 
         // Assert
-        Assert.False(result);
+        Assert.False(actual);
     }
 
     [Fact]
@@ -24,10 +24,10 @@ public class P876Tests
         string magazine = "ab";
 
         // Act
-        bool result = P383.CanConstruct(ransomNote, magazine);
+        bool actual = P383.CanConstruct(ransomNote, magazine);
 
         // Assert
-        Assert.False(result);
+        Assert.False(actual);
     }
 
     [Fact]
@@ -38,9 +38,9 @@ public class P876Tests
         string magazine = "aab";
 
         // Act
-        bool result = P383.CanConstruct(ransomNote, magazine);
+        bool actual = P383.CanConstruct(ransomNote, magazine);
 
         // Assert
-        Assert.True(result);
+        Assert.True(actual);
     }
 }

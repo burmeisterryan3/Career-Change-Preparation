@@ -1,5 +1,6 @@
 namespace Math;
 
+// https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/
 public static class P1342
 {
     public static int NumberOfSteps(int num)

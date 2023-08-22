@@ -7,13 +7,13 @@ public class P1342Tests
     {
         // Arrange
         int n = 14;
-        int actual = 6;
+        int expected = 6;
 
         // Act
-        int result = P1342.NumberOfSteps(n);
+        int actual = P1342.NumberOfSteps(n);
 
         // Assert
-        Assert.Equal(actual, result);
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
@@ -21,13 +21,13 @@ public class P1342Tests
     {
         // Arrange
         int n = 8;
-        int actual = 4;
+        int expected = 4;
 
         // Act
-        int result = P1342.NumberOfSteps(n);
+        int actual = P1342.NumberOfSteps(n);
 
         // Assert
-        Assert.Equal(actual, result);
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
@@ -35,12 +35,12 @@ public class P1342Tests
     {
         // Arrange
         int n = 123;
-        int actual = 12;
+        int expected = 12;
 
         // Act
-        int result = P1342.NumberOfSteps(n);
+        int actual = P1342.NumberOfSteps(n);
 
         // Assert
-        Assert.Equal(actual, result);
+        Assert.Equal(expected, actual);
     }
 }

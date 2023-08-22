@@ -1,5 +1,6 @@
 ﻿namespace Math;
 
+// https://leetcode.com/problems/fizz-buzz/
 public static class P412
 {
     public static IList<string> FizzBuzz(int n)

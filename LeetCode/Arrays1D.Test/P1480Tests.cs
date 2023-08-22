@@ -1,5 +1,6 @@
 namespace Arrays.Test;
 
+// https://leetcode.com/problems/running-sum-of-1d-array/
 public class P1480Tests
 {
     [Fact]
@@ -7,13 +8,13 @@ public class P1480Tests
     {
         // Arrange
         int[] ints = { 1, 2, 3, 4 };
-        int[] actual = { 1, 3, 6, 10 };
+        int[] expected = { 1, 3, 6, 10 };
         
         // Act
-        int[] result = P1480.RunningSum1dArray(ints);
+        int[] actual = P1480.RunningSum1dArray(ints);
         
         // Assert
-        Assert.Equal(actual, result);
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
@@ -21,13 +22,13 @@ public class P1480Tests
     {
         // Arrange
         int[] ints = { 1, 1, 1, 1 };
-        int[] actual = { 1, 2, 3, 4, };
+        int[] expected = { 1, 2, 3, 4, };
 
         // Act
-        int[] result = P1480.RunningSum1dArray(ints);
+        int[] actual = P1480.RunningSum1dArray(ints);
 
         // Assert
-        Assert.Equal(actual, result);
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
@@ -35,12 +36,12 @@ public class P1480Tests
     {
         // Arrange
         int[] ints = { 3, 1, 2, 10, 1 };
-        int[] actual = { 3, 4, 6, 16, 17 }; 
+        int[] expected = { 3, 4, 6, 16, 17 }; 
 
         // Act
-        int[] result = P1480.RunningSum1dArray(ints);
+        int[] actual = P1480.RunningSum1dArray(ints);
 
         // Assert
-        Assert.Equal(actual, result);
+        Assert.Equal(expected, actual);
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace LinkedLists;
 
+// https://leetcode.com/problems/middle-of-the-linked-list/
 public static class P876
 {
     public static ListNode MiddleNode(ListNode head)

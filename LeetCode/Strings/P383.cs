@@ -1,5 +1,6 @@
 ﻿namespace Strings;
 
+// https://leetcode.com/problems/ransom-note/
 public static class P383
 {
     /* Constraints
