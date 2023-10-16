@@ -1,0 +1,23 @@
+﻿@page
+@model WebImplementation.Pages.FactorialsModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    string title = "Factorials";
+    ViewData["Title"] = title;
+}
+
+<div class="row">
+    <h1 class="display-2">Compute Factorials</h1>
+    <hr />
+</div>
+<div class="row">
+    <p>Enter the number for whose factorial you want to compute:</p>
+    <form method="post">
+        <div>Number:&emsp;<input asp-for="number" placeholder="0" /></div>
+        <br />
+        <input type="submit" value="Compute Factorial" />
+    </form>
+    <p style="white-space:pre-line">
+        @ViewData["Result"]
+    </p>
+</div>

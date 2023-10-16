@@ -9,21 +9,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Debugging", "Debugging\Debu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotReloading", "HotReloading\HotReloading.csproj", "{77E71A75-CEC1-45FE-B6C9-955956B7CA68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Instrumenting", "Instrumenting\Instrumenting.csproj", "{FAB917AD-8A7F-4E55-9E9D-8A7370C8EC33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Instrumenting", "Instrumenting\Instrumenting.csproj", "{FAB917AD-8A7F-4E55-9E9D-8A7370C8EC33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorLib", "CalculatorLib\CalculatorLib.csproj", "{EEF5E797-A383-4363-A81B-0BAB0907A9A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorLib", "CalculatorLib\CalculatorLib.csproj", "{EEF5E797-A383-4363-A81B-0BAB0907A9A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorLibUnitTests", "CalculatorLibUnitTests\CalculatorLibUnitTests.csproj", "{085FE459-BD92-4D17-8B51-892F8AFC9E56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorLibUnitTests", "CalculatorLibUnitTests\CalculatorLibUnitTests.csproj", "{085FE459-BD92-4D17-8B51-892F8AFC9E56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallStackExceptionHandlingLib", "ClassStackExceptionHandlingLib\CallStackExceptionHandlingLib.csproj", "{D035DF03-F73A-469F-8B6E-19EF3AC55641}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallStackExceptionHandlingLib", "ClassStackExceptionHandlingLib\CallStackExceptionHandlingLib.csproj", "{D035DF03-F73A-469F-8B6E-19EF3AC55641}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallStackExceptionHandling", "CallStackExceptionHandling\CallStackExceptionHandling.csproj", "{4655FE25-FEFC-460D-8131-97EBA93C7315}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallStackExceptionHandling", "CallStackExceptionHandling\CallStackExceptionHandling.csproj", "{4655FE25-FEFC-460D-8131-97EBA93C7315}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch04Ex02PrimeFactorsLib", "Ch04Ex02PrimeFactorsLib\Ch04Ex02PrimeFactorsLib.csproj", "{9D526F72-941B-4CED-A844-CFA8DC036C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ch04Ex02PrimeFactorsLib", "Ch04Ex02PrimeFactorsLib\Ch04Ex02PrimeFactorsLib.csproj", "{9D526F72-941B-4CED-A844-CFA8DC036C1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch04Ex02PrimeFactorsTests", "Ch04Ex02PrimeFactorsTests\Ch04Ex02PrimeFactorsTests.csproj", "{9BDBDAC7-E76D-44AD-B615-5014BF4B0500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ch04Ex02PrimeFactorsTests", "Ch04Ex02PrimeFactorsTests\Ch04Ex02PrimeFactorsTests.csproj", "{9BDBDAC7-E76D-44AD-B615-5014BF4B0500}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch04Ex02PrimeFactorsApp", "Ch04Ex02PrimeFactorsApp\Ch04Ex02PrimeFactorsApp.csproj", "{6A6654CF-1802-40F4-91A1-CBF6D75F5EFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ch04Ex02PrimeFactorsApp", "Ch04Ex02PrimeFactorsApp\Ch04Ex02PrimeFactorsApp.csproj", "{6A6654CF-1802-40F4-91A1-CBF6D75F5EFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebImplementation", "WebImplementation\WebImplementation.csproj", "{B4C984EB-8C18-44AB-A92A-8CFACFE81439}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{6A6654CF-1802-40F4-91A1-CBF6D75F5EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A6654CF-1802-40F4-91A1-CBF6D75F5EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A6654CF-1802-40F4-91A1-CBF6D75F5EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4C984EB-8C18-44AB-A92A-8CFACFE81439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4C984EB-8C18-44AB-A92A-8CFACFE81439}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4C984EB-8C18-44AB-A92A-8CFACFE81439}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C984EB-8C18-44AB-A92A-8CFACFE81439}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
