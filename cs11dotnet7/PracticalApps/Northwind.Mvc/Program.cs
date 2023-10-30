@@ -1,12 +1,14 @@
 /*
  * SECTION 1 - import namespaces
  */
+using System.Net; // HttpVersion
 using Microsoft.AspNetCore.Identity; // IdentityUser
 using Microsoft.EntityFrameworkCore; // UseSqlServer, UseSqlite (for SQLite)
 using Northwind.Mvc.Data; // ApplicationDbContext
 // See obj\Debug\net7.0\Northwind.Mvc.GlobalUsings.g.cs for the generated global usings
 
 using Packt.Shared; // AddNorthwindContext extension method
+using System.Net.Http.Headers;
 
 /*
  * SECTION 2 - configure the host web server including services
@@ -18,8 +20,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString)); // or UseSqlite for SQLite
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(
-    options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>() // enable role management
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
@@ -39,6 +40,23 @@ builder.Services.AddOutputCache(options =>
 {
     options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(20); // default is 60 seconds
     options.AddPolicy("views", p => p.SetVaryByQuery("alertstyle"));
+});
+
+builder.Services.AddHttpClient(name: "Northwind.WebApi", configureClient: options =>
+{
+    options.DefaultRequestVersion = HttpVersion.Version30;
+    options.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionExact; // HttpVersionPolicy.RequestVersionOrLower;
+
+    options.BaseAddress = new Uri("https://localhost:5002/");
+    options.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue(mediaType: "application/json", quality: 1.0));
+});
+
+builder.Services.AddHttpClient(name: "Minimal.WebApi", configureClient: options =>
+{
+    options.BaseAddress = new Uri("https://localhost:5003/");
+    options.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue("application/json", 1.0));
 });
 
 var app = builder.Build();

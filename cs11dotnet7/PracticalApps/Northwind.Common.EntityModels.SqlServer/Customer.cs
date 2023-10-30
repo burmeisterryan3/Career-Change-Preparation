@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Xml.Serialization; // [XmlIgnore]
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -48,9 +47,11 @@ public partial class Customer
     public string? Fax { get; set; }
 
     [InverseProperty("Customer")]
+    [XmlIgnore]
     public virtual ICollection<Order> Orders { get; } = new List<Order>();
 
     [ForeignKey("CustomerId")]
     [InverseProperty("Customers")]
+    [XmlIgnore]
     public virtual ICollection<CustomerDemographic> CustomerTypes { get; } = new List<CustomerDemographic>();
 }
