@@ -1,0 +1,24 @@
+﻿@page
+@model WebImplementation.Pages.TimesTablesModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    string title = "Times Tables";
+    ViewData["Title"] = title;
+}
+
+<div class="row">
+    <h1 class="display-2">Compute Times Tables</h1>
+    <hr />
+</div>
+<div class="row">
+    <p>Enter the number for whose times table you'd like to compute with the associated number of factors:</p>
+    <form method="post">
+        <div>Number:&emsp;<input asp-for="number" placeholder="1" /></div>
+        <div>Size:&emsp;<input asp-for="size" placeholder="10" /></div>
+        <br />
+        <input type="submit" value="Show Times Table" />
+    </form>
+    <p style="white-space:pre-line">
+        @ViewData["Result"]
+    </p>
+</div>

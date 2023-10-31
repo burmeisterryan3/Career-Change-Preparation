@@ -1,0 +1,555 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":"vscode","aliases":["frontend"]}]}}
+
+#!markdown
+
+# <ins>**Chapter 05**</ins>: *Building Your Own Types with Object-Oriented Programming*
+
+##### Taken from *C11-DotNet7 - Modern Cross-Platform Development Fundamentals* by Mark J. Price
+
+https://github.com/markjprice
+https://github.com/markjprice/cs11dotnet7
+
+#!markdown
+
+## **Talking About OOP**
+
+In C#, we use `class` and `record` (mostly) or `struct` (sometimes) C# keywords to define a type of object. A type can be thought of as a blueprint or a template for an object.
+
+The concepts of OOP include:
+
+* **Encapsulation**
+    * Describes mechanisms for control of what can access the data and actions related to an object, e.g. private, protected, or public
+* **Composition**
+    * Describes what an object is made of, e.g. properties and methods
+* **Aggregation**
+    * Describes what an dbe combined with an object
+* **Inheritance**
+    * Reuse of code by having a **subclass** derive from a **base** or **superclass**. Functionality in the base class is inherited by, and becomes available in, the **derived** class.
+* **Abstraction**
+    * Describes capturing the core idea of an object and ignoring the details or specifics.
+    * If a class is not explicitly **abstract**, then it can be described as **concrete**.
+        * Base or superclasses are often abstract.
+        * Only concerete classes can be used to create objects.
+        * Abstract classes can only be used as the base for other classes because they are missing some implementation.
+* **Polymorphism**
+    * Allows a dervied class to override an inherited action to provide custom behavior.
+
+### Access Modifiers
+
+| **Access Modifiers** | **Description** |
+| --------------- | ---------------- |
+| `private` | Member is accessible inside the type only. This is the default for members. |
+| `internal` | Member is acessible inside the type and any type in the same assembly. For classes, this is the defualt. |
+| `protected` | Member is accessible inside the type and any type that inherits from the type. |
+| `public` | Member is accessible everywhere. For classes, allows for any other code to access this class even when outside the class library. |
+| `internal protected` | Member is accessible insde the type, any type in the same assembly, or any type that inherits from the type. Equivalent to a fictional access modifier named `internal_or_protected`. |
+| `private protected` | Member is accessible inside the type and any type that inherits from the type and is in the same assembly. Equialent to a fictional access modifier named `internal_and_protected`. This combination is only available with C# 7.2 or later. |
+
+Explicitly apply one of the access modifiers to all type members, even if you want to use the implicit access modifier for members, which is `private`. Fields should usually be `private` or `protected`, and you should then create `public` properties to get or set the field values. The property then controls access to the field.
+
+### Understanding Members
+
+* **Fields** - used to store data and include three specialized categories
+    * **Constant** - data never changes
+    * **Read-only** - data cannot change after the class is instantiated, but the data can be calculated or loaded from an external source at the time of instantiation
+    * **Event** - The data references one or more methods that you want to execute when something happens, e.g. clicking on a button or responding to a request from some other code
+* **Methods** - used to execute statements and include four specialized categories
+    * **Constructor** - execute when you use the `new` keyword to allocate memory to instantiate a class
+    * **Property** - execute when you get or set data. The data is commonly stored in a field but could be stored externally or calculated at runtime. Properties are the preferred way to encapsulate fields unless the memory address of the field needs to be exposed.
+    * **Indexer** - execute when you get or set dta using "array" syntax `[]`
+    * **Operator** - execute when you use an operator like `+` or `/` operands on your type
+
+#### Making a Field Static
+
+**Instance** members are fields for which different values exist for each instance of the class that is created.
+
+Sometimes, you want to define a field that only has one value that is shared across all instance.
+
+These are called **static members** because fields are not the only members that can be static.
+
+#### Making a Field Constant
+
+If the value of a field will never change, you can use the `const` keyword and assign a literal value at compile time. To get the value of a constant field, you must write the name of the class, not the name of an instance of the class.
+
+    // in class definition
+    public const string Species = "Homo Sapiens";
+
+    WriteLine($"{bob.Name} is a {Person.Species}.");
+
+Constants are not always the best choice for two important reasons: the value must be known at compile time, and it must be expressible as a literal `string`, `Boolean`, or number value. Every reference to the `const` field is replaced with the literal value at compile time, which will, therefore, not be reflected if the value changes in a future version and you do not recompile any assemblies that reference it to get the new value.
+
+#### Making a Field Read-Only
+
+Often, a better choice for fields that should not change (as opposed to is to mark them `readonly` (as opposed to `const`).
+
+    // in the class definition
+    public readonly string HomePlanet = "Earth";
+
+    WriteLine($"{bob.Name} was born on {bob.HomePlanet}.");
+
+Use read-only fields over constant fields for two important reasons: the value can be calculated or loaded at runtime and can be expressed using any executable statement. So, a read-only field can be set using a constructor or a field assignment. Every reference to the read-only field is a live reference, so any future changes will be correctly reflected by the calling code.
+
+### Understanding Objects
+
+All types ultimately inherit directly or indirectly from a special type named `System.Object`.
+
+    public class Person : System.Object
+
+or with the alias
+
+    public class Person : Object
+
+When class B inherits from Class A, we say that A is hte base or superclass and B is the derived or subclass. In this case, `System.Object` is the base class or superclass and `Person` is the derived or subclass.
+
+## **Defining a Class in a Namespace**
+
+You can end a namespace declaration with a semicolon and remove the curly braces to create a **file-scoped namespace**. You can only have one file-scoped namespace per file.
+
+*Good Practice:  Put each type that you create in its own file so that you can use file-scoped namespace declarations.*
+
+### Aliasing a Namespace
+
+It is possible that there are two namespaces that contain the same type name, and importing both namespaces causes ambiguity. We can define an alias for one of the namespaces to differentiate it.
+
+    using France;
+    Using us = Texas; // us becomes alias for the namespace and it is not imported
+
+    Paris p1 = new();
+    us.Paris p2 = new();
+
+Latnernatively, you might want to use an alias if you would like to rename a type, e.g. if you use a class a lot.
+
+    using Env = System.Environment;
+
+    WriteLine(Env.OSVersion);
+    WriteLine(Env.Machinename);
+    WriteLine(Env.CurrentDirectory);
+
+#!markdown
+
+## **Enum Type**
+
+Sometimes, a vlue needs to be one of a limited set of options. An `enum` is a very efficient way of storing one or more choices because, internally, it uses inteer values in combination with a lookup table of `string` descriptions.
+
+    [Flags]
+    public enum WondersOfTheAncientWorld : byte
+    {
+    None = 0b_0000_0000, // i.e. 0
+    GreatPyramidOfGiza = 0b_0000_0001, // i.e. 1
+    HangingGardensOfBabylon = 0b_0000_0010, // i.e. 2
+    StatueOfZeusAtOlympia = 0b_0000_0100, // i.e. 4
+    TempleOfArtemisAtEphesus = 0b_0000_1000, // i.e. 8
+    MausoleumAtHalicarnassus = 0b_0001_0000, // i.e. 16
+    ColossusOfRhodes = 0b_0010_0000, // i.e. 32
+    LighthouseOfAlexandria = 0b_0100_0000 // i.e. 64
+    }
+
+Decorating the `enum` type with the `System.Flags` attribute ensure that mutliple values can be returned as a comma-separated `string` instead of an `int` value.
+
+We can use the `|` operator (bitwise logical `OR`) to combine `enum` values.
+
+    bob.BucketList = 
+        WondersOfTheAncientWorld.HangingGardensOfBabylon
+        | WondersOfTheAncientWorld.MausoleumAtHalicarnassus;
+
+    // bob.BucketList = (WondersOfTheAncientWorld)18;
+
+    WriteLine($"{bob.Name}'s bucket list is {bob.BucketList}");
+
+Output:
+
+    Bob Smith's bucket list is HangingGardensOfBabylon, MausoleumAtHalicarnassus
+
+Use the `enum` values to store combinations of discrete options. Derive an enum type from `byte` if there are up to eight options, from `ushort` if there are up to 16 options, from `uint` if there are up to 32 options, and from `ulong` if there are up to 64 options.
+
+## **Understanding Generic Collections**
+
+The angle brackets in `List<T>` is a feature of C# called **generics** that was introduced in 2005 with C# 2.0. It's a fancy term for making a collection strongly typed, that is, the compiler knows specifically what type of object can be stored in the collection, which improves the performance and correctness of your code.
+
+**Strongly typed** has a different meaning than **statically typed**. The old `System.Collection` types are statically typed to contain weakly typed `System.Object` items. The newer `System.Collection.Generic` types are statically typed to contain strongly typed `<T>` instances.
+
+Ironically, the term *generics* means we can use a more specific static type.
+
+#!markdown
+
+## **Tuples**
+
+### Combining Multiple Returned Values Using Tuples
+
+Each method can only return a single value that has a single type. That type could be a simple type, such as `string`, a complex type, such as `Person`, or a collection type, such as `List<Person>`.
+
+Previously, you would have had to define a new class and add fields which could be returned within an instance of the complex type.
+
+    // DON'T DO THIS
+    public class TextAndNumber
+    {
+        public string Text;
+        public int Number;
+    }
+
+    public class LifeTheUniverseAndEverything
+    {
+        public TextAndNumber GetTheData()
+        {
+            return new TextAndNumber
+            {
+                Text = "What's the meaning of life?",
+                Number = 42
+            };
+        }
+    }
+
+**Tuples** are an efficient way to combine two or more values into a single unit.
+
+    // NEW BETTER WAY
+
+    // in the class definition
+    public (string, int) GetFruit()
+    {
+        return ("Apples", 5);
+    }
+
+    (string, int) fruit = bob.GetFruit();
+    WriteLine($"{fruit.Item1}, {fruit.Item2} there are.");
+
+### Naming the Fields of a Tuple
+
+To access the fields of a tuple, the default names are Item1, Item2, and so on.
+
+You can explicitly specify the field names.
+
+    public (string Name, int Number) GetNamedFruit()
+    {
+        return (Name: "Apples", Number: 5);
+    }
+
+    var fruitNamed = bob.GetNamedFruit();
+    WriteLine($"There are {fruitNamed.Number} {fruitNamed.Name}.");
+
+If you are constructing a tuple from another object, you can use a feature introduced in C#7.1 called **tuple name inference**.
+
+    var thing1 = ("Neville", 4);
+    WriteLine($"{thing1.Item1} has {thing1.Item2} children.");
+
+    var thing2 = (bob.Name, bob.Children.Count); 
+    WriteLine($"{thing2.Name} has {thing2.Count} children.");
+
+### Deconstructing Tuples
+
+You can also deconstruct tuples into separate variables. The deconstructing declaration has the same syntax as named field tuples, but without a named variable for the tuple, as shown in the following code.
+
+    // store return value in a tuple variable with two fields
+    (string TheName, int TheNumber) tupleWithNamedFields = bob.GetNamedFruit();
+    // tupleWithNamedFields.TheName
+    // tupleWithNamedFields.TheNumber
+
+    // deconstruct return value into two separate variables
+    (string name, int number) = bob.GetNamedFruit();
+    // name
+    // number
+
+## **Deconstructing Types**
+
+Tuples are not the only type that can be deconstructed. Any type can have special methods, named `Deconstruct`, that break down the object into parts.
+
+    // deconstructors
+    public void Deconstruct(out string? name, out DateTime dob)
+    {
+        name = Name;
+        dob = DateOfBirth;
+    }
+
+    public void Deconstruct(out string? name, out DateTime dob, out WondersOfTheAncientWorld fav)
+    {
+        name = Name;
+        dob = DateOfBirth;
+        fav = FavoriteAncientWonder;
+    }
+
+    // Deconstructing a Person
+    var (name1, dob1) = bob; // implicitly calls the Deconstruct method
+    WriteLine($"Deconstructed: {name1}, {dob1}");
+
+    var (name2, dob2, fav2) = bob;
+    WriteLine($"Deconstructed: {name2}, {dob2}, {fav2}");
+
+You do not explicitly call the `Deconstruct` method. It is called implicitly when you assign an object to a tuple variable.
+
+#!markdown
+
+## **Initializing Fields with Constructors**
+
+Fields often need to be initialized at runtime. You do this in a constructor that will called when you make an instance of the class using the `new` keyword. Constructors execute before any fields are set by teh code taht is using the type.
+
+    public Person()
+    {
+        // some code
+    }
+
+### Defining Multiple Constructors
+
+You can have multiple constructors in a type. This is especially useful to encourage developers to set initial values for fields.
+
+    public Person(string initialName, string homePlanet)
+    {
+        // some code
+    }
+
+#!markdown
+
+## **Writing and Calling Methods**
+
+**Methods** are members of a type that execute a block of statements. They are functions that belong to a type.
+
+### Returning Values from Methods
+
+Methods can return a single value or return nothing.
+
+* `void` - method that performs some actions but does not return a value
+* type - method that performs some actions and returns a value
+
+### Defining and Passing Parameters to Methods
+
+Methods can have parameters passed to them to change their behavior. Parameters are defined like variable declarations but inside the parentheses of the method.
+
+#### Passing Optional and Named Parameters
+
+You can assign a default value inside the method parameter list. Optional parameters must always come last in the list of parameters.
+
+    public string OptionalParameters(string command = "Run!", double number = 0.0, bool active = true)
+    {
+        // some code
+    }
+
+    WriteLine(bob.OptionalParameters());
+    WriteLine(bob.OptionalParameters("Jump!", 98.5));
+
+Optional parameters are often combined with naming parameters when you call the method, because naming a parameter allows the values to be passed in a different order than how they were declared.
+
+    WriteLine(bob.OptionalParameters(number: 52.7, command: "Hide!"));
+    WriteLine(bob.OptionalParameters("Poke!", active: false));
+
+#### Controlling How Parameters are Passed
+
+When a parameter is passed into a method, it can be passed in one of three ways:
+
+* By **value**
+    * Think of these as *in-only*
+    * By default, when passing a variable as a parameter, its current value gets passed, not the variable (memory location) itself. The method or function receives a copy of the value of the variable while the variable retains its orginal value.
+* As an `out` parameter
+    * Think of these as *out-only*
+    * `out` parameters cannot have a default value assigned in the parameter declaration and they cannot be left unitialized.
+    * They must be set inside the method or the compiler will give an error.
+    * When passing a vriable as an `out` parameter, a reference to the variable gets passed into the method. The value of the variable gets replaced by whatever code executes inside the method.
+* By **reference** as a `ref` parameter
+    * Think of these as *in-and-out*
+    * `ref` parameters cannot have default values, but since they can already be set outsidet the method, they do not need to be set inside the method
+    * When passing a variable as a `ref` parameter, a reference to the variable gets passed into the method. The argument/parameter is a reference to the variable's memory location.
+
+In C# 7.0 and later, we can include `out` parameters declared inline.
+
+    int d = 10;
+    int e = 20;
+    WriteLine($"Before: d = {d}, e = {e}, f doesn't exist yet!");
+    
+    // simplified C# 7.0 or later syntax for the out parameter 
+    bob.PassingParameters(d, ref e, out int f); 
+    WriteLine($"After: d = {d}, e = {e}, f = {f}");
+
+Note:  In C# 7.0 and later, the `ref` keyword is not just for passing parameters into a method; it can also be applied to the `return` value.
+
+### Overloading Methods
+
+Instead of having two different mehod names, we can give both methods the same name. This is allowed becasue the methods have a different signature.
+
+A **method signature** is a list of parameter types that can be passed when calling the method. Overloaded methods cannot differ only in the return type.
+
+    public string SayHello()
+    {
+        return $"{Name} says 'Hello!'";
+    }
+
+    public string SayHello(string name)
+    {
+        return $"{Name} says 'Hello, {name}!'";
+    }
+
+#!markdown
+
+## **Splitting Classes Using Partial**
+
+When working on large projects with multiple team members, or when working with especially large and complex class implementations, it is useful to be able to split the definition of a class across multiple files. You do this using the partial keyword.
+
+## **Controlling Access with Properties and Indexers**
+
+A **property** is simply a method (or a pair of methods) that acts and looks like a field when you want to get or set a value, thereby simplifying the syntax.
+
+### Defining Read-Only Properties
+
+A `readonly` property only has a `get` implementation.
+
+### Defining Settable Properties
+
+To create a settable property, you must use the older syntax an dprovide a pair of methods - not just a `get` part, but also a `set` part.
+
+    // a read-write property defined using C# 3.0 syntax
+    public string? FavoriteIceCream { get; set; } // auto-syntax
+
+Although there is not a manually created field to store the person's favorite ice cream, it is automatically created by the compiler.
+
+Sometimes, you need more control over what happens when a property is set. In this scenario, you must use a more detailed syntax and manually create a `private` field to store the value for the property.
+
+    // a private field to store the property value
+    private string? favoritePrimaryColor;
+
+    // a public property to read and write to the field
+    public string? FavoritePrimaryColor
+    {
+        get
+        {
+            return favoritePrimaryColor;
+        }
+        set
+        {
+            switch (value?.ToLower())
+            {
+                case "red":
+                case "green":
+                case "blue":
+                    favoritePrimaryColor = value;
+                    break;
+                default:
+                    throw new ArgumentException(
+                    $"{value} is not a primary color. " + 
+                    "Choose from: red, green, blue.");
+            }
+        }
+    }
+
+Avoid adding too much code to your getters and setters. This could indicate a problem with your design. Consider adding `private` methods that you call in setters and getters to simplify your implmentations.
+
+### Defining Indexers
+
+**Indexers** allow the calling code to use the array syntax to access a property. For example, the `string` type defines an indexer so that the calling code can access individual characters in the `string`
+
+    string alphabet = "abcdefghijklmnopqrstuvwxyz";
+    char letterF = alphabet[5];
+
+### Static vs Instance Methods
+
+Having both static and instance methods to perform similar actions often makes sense. For example, `string` has both a `Compare` static method and a `CompareTo` instance method. This puts the choice of how to use the functionality in the hands of the programmers using your type, giving them more flexibility.
+
+### Implementing Functionality Using Operators
+
+Operators can be added by defining `static` methods with symbol names, e.g. *, /, or +.
+
+The return type for an operator does not need to match method types, but the return type cannot be `void`.
+
+For every operator you define, make a method as well, because it may not be obvious to a programmer that the operator is available. The implementation of the operator can then call the method, reusing the code you've written. A second reason for providing a method is that operators are not supported by every language compiler.
+
+### Implementing Functionality Using Local Functions
+
+**Local functions** are the method equivalent of local variables. In other words, they are methods that are only accessible from within the containing method in which they have been defined. In other languages, they are sometimes called **nested** or **inner functions**.
+
+Local functions can be defined anywhere inside a method:  the top, the bottom, or even somewhere in the middle.
+
+    public static int Factorial(int number)
+    {
+        if (number < 0)
+        {
+            throw new ArgumentException(
+            $"{nameof(number)} cannot be less than zero.");
+        }
+        return localFactorial(number);
+
+        int localFactorial(int localNumber) // local function
+        {
+            if (localNumber == 0) return 1;
+            return localNumber * localFactorial(localNumber - 1);
+        }
+    }
+
+#!markdown
+
+## **Pattern Matching with Objects**
+
+    foreach (Passenger passenger in passengers)
+    {
+        decimal flightCost = passenger switch
+        {
+            /* C# 8 syntax
+            FirstClassPassenger p when p.AirMiles > 35000 => 1500M,
+            FirstClassPassenger p when p.AirMiles > 15000 => 1750M,
+            FirstClassPassenger _                         => 2000M, */
+
+            /* C# 9 syntax
+            FirstClassPassenger p => p.AirMiles switch
+            {
+                > 35000 => 1500M,
+                > 15000 => 1750M,
+                _ => 2000M
+            }, */
+            
+            // Relational pattern in combination with the property pattern
+            FirstClassPassenger { AirMiles: > 35000 }     => 1500M,
+            FirstClassPassenger { AirMiles: > 15000 }     => 1750M,
+            FirstClassPassenger                           => 2000M,
+            BusinessClassPassenger _                      => 1000M,
+            CoachClassPassenger p when p.CarryOnKG < 10.0 => 500M,
+            CoachClassPassenger _                         => 650M,
+            _                                             => 800M
+        }
+    }
+
+#!markdown
+
+## **Working with Records**
+
+### Init-only Properties
+
+Sometimes, you want to treat properties like `readonly` fields so they can be set during instantiation but not after. The `init` keyword enables this.
+
+    public class ImmutablePerson
+    {
+        public string? FirstName { get; init; }
+        public string? LastName { get; init; }
+    }
+
+    // Results in error due to attempting to set init-only property outside of the initializer
+    // jeff.FirstName = "Geoff";
+
+NOTE: `init` does not enforce required initial value like `required` keyword. (p 231)
+
+### Understanding Records
+
+Init-only properties provide some immutability to C#. You can take the concept further by using **records**. These are defined by using the `record` keyword instead of the `class` keyword. That can make the whole object immutable, and it acts like a value when compared.
+
+Records should not have any state (properties and fields) that changes after instantiation. Instead, the idea is that you create new records from existing ones. The new record has the changed state. This is called non-destructive mutation. To do this, C# 9 introduced the `with` keyword.
+
+#### Simplifying Data Members in Records
+
+Instead of using object initialization syntax with curly braces, sometimes you might prefer to provide a constructor iwth positional parameters. You can combine this with a deconstructor for splitting the object into individual parts.
+
+    public record ImmutableAnimal
+    {
+        public string Name { get; init; }
+        public string Species { get; init; }
+        public ImmutableAnimal(string name, string species)
+        {
+            Name = name;
+            Species = species;
+        }
+        public void Deconstruct(out string name, out string species)
+        {
+            name = Name;
+            species = Species;
+        }
+    }
+
+The properties, constructor, and deconstructor can also be generated for you.
+
+    // simpler way to define a record
+    // auto-generates the properties, constructor, and deconstructor
+    public record ImmutableAnimal(string Name, string Species);

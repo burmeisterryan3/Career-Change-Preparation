@@ -1,0 +1,24 @@
+﻿@page
+@model WebImplementation.Pages.TaxesModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    string title = "Taxes";
+    ViewData["Title"] = title;
+}
+
+<div class="row">
+    <h1 class="display-2">Compute Taxes</h1>
+    <hr />
+</div>
+<div class="row">
+    <p>Enter the bill amount prior to taxes:</p>
+    <form method="post">
+        <div>Amount:&emsp;<input asp-for="amount" placeholder="0.00" /></div>
+        <div>Region Code:&emsp;<input asp-for="twoLetterRegionCode" placeholder="Region Code" /></div>
+        <br />
+        <input type="submit" value="Compute Taxes" />
+    </form>
+    <p style="white-space:pre-line">
+        @ViewData["Result"]
+    </p>
+</div>

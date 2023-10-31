@@ -1,0 +1,784 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":["C#","c#"],"languageName":"C#","name":"csharp"},{"aliases":["frontend"],"name":"vscode"}]}}
+
+#!markdown
+
+# <ins>**Chapter 08**</ins>: *Working with Common .NET Types*
+
+##### Taken from *C11-DotNet7 - Modern Cross-Platform Development Fundamentals* by Mark J. Price
+
+https://github.com/markjprice
+
+https://github.com/markjprice/cs11dotnet7
+
+#!csharp
+
+using static System.Console;
+using System.Numerics;
+using System.Text.RegularExpressions;
+using System.Net; // IPHostEntry, Dns, IPAddress
+using System.Net.NetworkInformation; // Ping, PingReply, IPStatus
+
+static void Output(string title, IEnumerable<string> collection)
+{
+    WriteLine(title);
+    foreach (string item in collection)
+    {
+        WriteLine($" {item}");
+    }
+}
+
+#!markdown
+
+## **Working with Numbers**
+
+| **Namespace** | **Example Type(s)** | **Description** |
+| ------------- | ------------------- | --------------- |
+| `System` | `Sbyte`, `Int16`, `Int32`, `Int64` | Integers; zero and positive and whole numbers |
+| `System` | `Byte`, `UInt16`, `UInt32`, `UInt64` | Cardinals; zero and whole numbers, aka *unsigned* - hence the *U* |
+| `System` | `Half`, `Single`, `Double` | Reals; floating-point numbers |
+| `System` | `Decimal` | Accurate reals; for use in science and engineering, or financial scenarios |
+| `System.Numerics` | `BigInteger`, `Complex`, `Quanternion` | Arbitrarily large integers, complex numbers, and quaternion numbers |
+
+.NET has had the 32-bit `float` and 64-bit `double` types since .NET Framework 1.0. The IEEE 754 specification also defines a 16-bit floating-point standard. Machine learning and other algorithms would benefit from this smaller, lower-precision number type so Microsoft introduced the `System.Half` type with .NET 5 and later.
+
+Currently, the C# language does not define a `half` alias, so you must use the `.NET` type `System.Half`.
+
+### Working with Big Integers
+
+#!csharp
+
+WriteLine("Working with large integers:");
+WriteLine("---------------------------------");
+
+ulong big = ulong.MaxValue;
+WriteLine($"{big,40:N0}"); // 40 = right-align 40 characters, line up to right-hand edge
+
+BigInteger bigger = BigInteger.Parse("123456789012345678901234567890");
+WriteLine($"{bigger,40:N0}"); // line up to right-hand edge
+
+#!markdown
+
+### Working with Complex Numbers
+
+#!csharp
+
+WriteLine("Working with complex numbers:");
+WriteLine("---------------------------------");
+
+Complex c1 = new(real: 4, imaginary: 2);
+Complex c2 = new(real: 3, imaginary: 7);
+Complex c3 = c1 + c2;
+
+// output using default ToString implementation
+WriteLine($"{c1} added to {c2} is {c3}");
+
+// output using custom format
+WriteLine("{0} + {1}i added to {2} + {3}i is {4} + {5}i",
+    c1.Real, c1.Imaginary,
+    c2.Real, c2.Imaginary,
+    c3.Real, c3.Imaginary);
+
+#!markdown
+
+### Generating Random Numbers for Games and Similar Apps
+
+In scenarios where you don't need truly random numbers, like games, you can create an instance of the `Random` class. In scenarios that do need truly random numbers, like cryptography, there are specialized types, like `RandomNumberGenerator`.
+
+#!csharp
+
+Random r = new();
+Random r2 = new(Seed: 46738);
+Random r3 = Random.Shared; // .NET 6
+
+// minValue is an inclusive lower bound, i.e. 1 is a possible value
+// maxValue is an exclusive upper bound, i.e. 7 is NOT a possible value
+int dieRoll = r3.Next(minValue: 1, maxValue: 7);  // returns 1 to 6
+WriteLine($"{dieRoll}");
+
+double randomReal = r.NextDouble(); // returns 0.0. to less than 1.0
+WriteLine($"{randomReal}");
+
+byte[] arrayOfBytes = new byte[256];
+r.NextBytes(arrayOfBytes); // 256 random bytes in an array
+WriteLine($"First Byte: {arrayOfBytes[0]}");
+WriteLine($"Last Byte: {arrayOfBytes[255]}");
+
+#!markdown
+
+## **Workign with Text**
+
+| **Namespace** | **Type** | **Description** |
+| ------------- | -------- | --------------- |
+| `System` | `Char` | Storage for a single text character |
+| `System` | `String` | Storage for multiple text characters |
+| `System.Text` | `StringBuilder` | Efficiently manipulates strings |
+| `System.Text.RegularExpressions` | `Regex` | Efficiently pattern-matches strings |
+
+### Getting the Length of a String
+
+#!csharp
+
+string city = "London";
+WriteLine($"{city} is {city.Length} characters long.");
+
+#!markdown
+
+### Getting the Characters of a String
+
+#!csharp
+
+WriteLine($"First char is {city[0]} and fourth is {city[3]}.");
+
+#!markdown
+
+### Splitting a String
+
+#!csharp
+
+string cities = "Paris,Tehran,Chennai,Sydney,New York,Medellín";
+
+string[] citiesArray = cities.Split(',');
+
+WriteLine($"There are {citiesArray.Length} items in the array:");
+
+foreach (string item in citiesArray)
+{
+    WriteLine(item);
+}
+
+#!markdown
+
+### Getting Part of a String
+
+#!csharp
+
+string fullName = "Alan Shore";
+
+int indexOfTheSpace = fullName.IndexOf(' ');
+
+string firstName = fullName.Substring(
+    startIndex: 0, length: indexOfTheSpace);
+
+string lastName = fullName.Substring(
+    startIndex: indexOfTheSpace+1);
+
+WriteLine($"Original: {fullName}");
+WriteLine($"Swapped: {lastName}, {firstName}");
+
+#!markdown
+
+### Checking a String for Content
+
+#!csharp
+
+string company = "Microsoft";
+bool startsWithM = company.StartsWith("M");
+bool containsN = company.Contains("N");
+
+WriteLine($"Text: {company}");
+WriteLine($"Starts with M: {startsWithM}, contains an N: {containsN}");
+
+#!markdown
+
+### Joining, Formatting, and Other String Members
+
+| **Member** | **Description** |
+| ---------- | --------------- |
+| `Trim`, `TrimStart`, `TrimEnd` | These methods trim whitespace characters such as space, tab, and carriage return from the beginning and/or end. |
+| `ToUpper`, `ToLower` | These convert all the characters into uppercase or lowercase. |
+| `Insert`, `Remove` | These methods insert of remove some text. |
+| `Replace` | This replaces some text with other text. |
+| `string.Empty` | This can be used of allocating memory each time you usea  literal string value using an empty pair of double quotes (""). |
+| `string.Concat` | This concatenates two string variables. The `+` oeprator does the equivalent when used between string operands. |
+| `string.Join` | This concatenates one or more string variables with a character in between each one. |
+| `string.IsNullOrEmpty` | This checks whether a string variable is null or empty. |
+| `string.IsNullOrWhitespace` | This checks whether is a string variable is null or whitespace; that is, a mix of any number of horizontal and vertical spaceing characters, for example, tab, space, carriage return, line feed, and so on. |
+| `string.Format` | An alterantive method to string inerpolation for outputting string values, which uses a positioned instead of named parameters. |
+
+`static` methods are indicated above by the prefix `string.`.
+
+#!csharp
+
+string recombined = string.Join("=>", citiesArray);
+WriteLine(recombined);
+
+#!csharp
+
+string fruit = "Apples"; 
+decimal price = 0.39M; 
+DateTime when = DateTime.Today;
+
+WriteLine($"Interpolated: {fruit} cost {price:C} on {when:dddd}."); 
+WriteLine(string.Format("string.Format: {0} cost {1:C} on {2:dddd}.",
+    arg0: fruit, arg1: price, arg2: when));
+
+#!markdown
+
+### Building Strings Efficiently: [StringBuilder](https://learn.microsoft.com/en-us/dotnet/api/system.text.stringbuilder?view=net-7.0#examples)
+
+You can conatenate two strings to make a new `string` using the `String.Concat` method or simply using the `+` operator. However, both choices are bad practices because .NET must create a completely new `string` in memory.
+
+This might not be noticeable if you are only adding two `string` values, but if you concatenate inside a loop with many iterations, it can have a significant negative impact on performance and memory use.
+
+You can concatenate `string` variables more efficiently using the `StringBuilder` type.
+
+#!markdown
+
+## **Pattern Matching with Regular Expressions**
+
+### Checking for Digits Entered as Text
+
+The `@` character switches off the ability to use escape characters in the `string`. Escape characters are prefixed with a backslash. For example, `\t` means a tab and `\n` means a new line. When writing regular expressions, we need to disable this feature.
+
+Once escape characters are disabled with `@`, then they can be interpreted by a regular expression. For example, `\d` means digit
+
+#!csharp
+
+Write("Enter your age: "); 
+string input = ReadLine()!; // null-forgiving
+
+// Only checks if there is a single digit - doesn't specify what can be entered before or after the digit
+// Regex ageChecker = new(@"\d");
+
+// Ensure that we specify the start and end of the string as a number - fails for 2 or more digits
+// Regex ageChecker = new(@"^\d$");
+
+// Allow for one or more digits
+Regex ageChecker = new(@"$\d+$");
+
+if (ageChecker.IsMatch(input))
+{
+    WriteLine("Thank you!");
+}
+else
+{
+    WriteLine($"This is not a valid age: {input}");
+}
+
+#!markdown
+
+### Understnding the Syntax of a Regular Expression
+
+| **Symbol** | **Meaning** | **Symbol** | **Meaning** |
+| ---------- | ----------- | ---------- | ----------- |
+| `^`| Start of input | `$` | End of input |
+| `\d` | A single digit | `\D` | A single *non*-digit |
+| `\s` | Whitespace | `\S` | *Non*-whitespace* |
+| `\w` | Word characters | `W` | *Non*-word characters |
+| `[A-Za-z0-9]` | Range(s) of characters | `\^` | ^ (caret) character |
+| `[aeiou]` | Set of characters | `[^aeiou]` | *Not* in a set of characters |
+| `.` | Any single character | `\.`| . (dot) character |
+
+There are some regular expression quantifiers that affect the previous symbols in a regular expression.
+
+| **Symbol** | **Meaning** | **Symbol** | **Meaning** |
+| ---------- | ----------- | ---------- | ----------- |
+| `+` | One or more | `?` | Zero or one |
+| `*` | Zero or more | |
+| `{3}` | Exactly three | `{3, 5}` | Three to five |
+| `{3, }` | At least three | `{, 3}` | Up to three |
+
+There are additional symbols used for capturing and non-capturing groups.
+
+| **Symbol** | **Meaning** |
+| ---------- | ----------- |
+| `()` | [Capturing](https://www.regular-expressions.info/brackets.html) group |
+| `(?:)` | [Non-capturing](https://www.regular-expressions.info/brackets.html) group |
+| `(?=)` | Positive [lookahead](https://www.regular-expressions.info/lookaround.html) |
+| `(?!)` | Negative [lookahead](https://www.regular-expressions.info/lookaround.html) |
+| `(?<=)` | Positive [lookbehind](https://www.regular-expressions.info/lookaround.html) |
+| `(?<!)` | Negative [lookbehind](https://www.regular-expressions.info/lookaround.html) |
+
+#### Examples of Regular Expressions
+
+| **Expression** | **Meaning** |
+| -------------- | ----------- |
+| `\d` | A single digit somewhere in the input. |
+| `a` | The character "a" somewhere in the input. |
+| `Bob` | The word "Bob" somewhere in the input. |
+| `^Bob` | The word "Bob" at the start of the input. |
+| `Bob$`| The word "Bob" at the end of the input. |
+| `^\d{2}$` | Exactly two digits. |
+| `^[0-9]{2}$` | Exactly two digits. |
+| `^[A-Z]{4, }$` | At least four uppercase English letters in the ASCII character set only. |
+| `^[A-Za-z]{4, }$` | At least four upper or lowercase English letters in the ASCII character set only. |
+| `^[A-Z]{2}\d{3}$` | Two uppercase English letters in the ASCII character set and three digits only. |
+| `$[A-Za-z\u00c0-\u017e]+$` | At least one uppercase or lowercase English letter in the ASCII character set or European letters int eh Unicode character set, as shown: ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿıŒœŠšŸŽž |
+| `^d.g$` | The letter `d`, then any character, and then the letter `g`. It could match `dig` and `dog` or any single character between the `d` and `g`. |
+| `^d\.g$` | The letter `d`, then a dot `.`, and then the letter `g`. It would match `d.g` only. |
+| `set(value)?` | Matches `set` or `setvalue`. In `set`, the first (and only) capturing group remains empty. In `setvalue`, the first capturing group matches `value` using a capturing group. |
+| `color=(?:red\|blue\|green)` | Matches `color=red`, `color=blue`, or `color=green` but does not capture `red`, `blue`, or `green` using a *non-capturing group*. |
+| `q(?!u)` | Matches a `q` not followed by a `u` using *negative lookahead*. |
+| `q(?=u)` | Matches a `q` followed by a `u` using *positive lookahead*. |
+| `q(?=(u))` | Captures `u` if preceeded by a `q` using *positive lookahead*. |
+| `(?<!a)b` | Matches a "b" that is not preceeded by an "a" using *negative lookbehind*. For example, it does not match `cab` but matches the `b` (and only the `b`) in `bed` or `debt`. |
+| `(?<=a)b` | Matches a "b" that is preceeded by an "a" using *positive lookbehind*. For example, matches the `b` (and only the `b`) in `cab` but does not match `bed` or `debt`.
+
+
+##### Good Practice
+
+Use regular expressions to validate input from the user. The same regular expressions can be reused in other languages such as JavaScript and Python.
+
+#!csharp
+
+Regex checker = new(@"^d.g$"); // modify regex to try others
+
+if (checker.IsMatch("dg")) { // modify string to test
+    WriteLine("Match!");
+} else {
+    WriteLine("Try again!");
+}
+
+#!markdown
+
+### Splitting a Complex Comma-separated String
+
+#!csharp
+
+// C# 1 to 10: Use escaped double-quote characters \"
+// string films = "\"Monsters, Inc.\",\"I, Tonya\",\"Lock, Stock and Two Smoking Barrels\"";
+
+// C# 11 or later: Use """ to start and end a raw string literal
+string films = """
+"Monsters, Inc.","I, Tonya","Lock, Stock and Two Smoking Barrels"
+""";
+
+WriteLine($"Films to split: {films}");
+
+string[] filmsDumb = films.Split(',');
+
+WriteLine("Splitting with string.Split method:"); 
+foreach (string film in filmsDumb)
+{
+    WriteLine(film);
+}
+WriteLine();
+
+Regex csv = new("(?:^|,)(?=[^\"]|(\")?)\"?((?(1)[^\"]*|[^,\"]*))\"?(?=,|$)");
+
+MatchCollection filmsSmart = csv.Matches(films);
+
+WriteLine("Splitting with regular expression:"); 
+foreach (Match film in filmsSmart)
+{
+    WriteLine(film.Groups[2].Value);
+}
+
+#!markdown
+
+### Improving Regular Expression Performance with Source Generators
+
+When you pass a `string` literal or `string` constant to the constructor of `Regex`, the class parses the string and transforms it into an internal tree structure that represents the expression in an optimized way that can be executed efficiently by a regular expression interpreter.
+
+You can also compile regular expressions by specifying a `RegexOption`, as shown in the following code: 
+    
+    Regex ageChecker = new(digitsOnlyText, RegexOptions.Compiled);
+    
+Unfortunately, compiling has the negative affect of slowing down the initial creation of the regular expression. After creating the tree structure that would then be executed by the interpreter, the compiler then has to convert the tree into IL code, and then that IL code needs to be JIT compiled into native code. If you only run the regular expression a few times, it is not worth compiling it, which is why it is not the default behavior.
+
+.NET 7 introduces a source generator for regular expressions which recognizes if you decorate a partial 
+method that returns Regex with the `[GeneratedRegex]` attribute. It generates an implementation of 
+that method which implements the logic for the regular expression.
+
+See `Chapter08` solution in the corresponding folder under the `WorkingWithRegularExpressions` console application. The files `Program.Regexs.cs` and `Program.Strings.cs` implement the source generator.
+
+#!markdown
+
+## **Storing Multiple Objects in Collections**
+
+Another of the most common types of data is collections. If you need to store multiple values in a variable, then you can use a collection.
+
+A collection is a data structure in memory that can manage multiple items in different ways, although all collections have some shared functionality.
+
+The most common types in .NET for working with collections are shown in the following table:
+
+| **Namespace** | **Example type(s)** | **Description** |
+| ------------- | ------------------- | --------------- |
+| `System.Collections` | `IEnumerable`, `IEnumerable<T>` | Interfaces and base classes used by collections. |
+| `System.Collections.Generic` | `List<T>`, `Dictionary<T>`, `Queue<T>`, `Stack<T>` | Introduced in C# 2.0 with .NET Framework 2.0. These collections allow you to specify the type you want to store using a generic type parameter (which is safer, faster, and more efficient). |
+| `System.Collections.Concurrent` | `BlockingCollection`, `ConcurrentDictionary`, `ConcurrentQueue` |These collections are safe to use in multithreaded scenarios. |
+| `System.Collections.Immutable` | `ImmutableArray`, `ImmutableDictionary`, `ImmutableList`, `ImmutableQueue` | Designed for scenarios where the contents of the original collection will never change, although they can create modified collections as a new instance. |
+
+### Common Features of All Collections
+
+All collections implement the `ICollection` interface; this means they must have a `Count` property to tell you how many objects are in them.
+
+All collections implement the `IEnumerable` interface, which means that the can be iterated using the `foreach` statement. They must have a `GetEnumerator` method that returns an object that implements `IEnumerator`; this means that the returned `object` must have `MoveNext` and `Reset` methods for navigating through the collection and a `Current` property containing the current item in the collection.
+
+As well as `object`-based collection interfaces, there are also generic interfaces and classes, where generic type defines the type stored in the collection.
+
+#### Improving Performance by Ensuring the Capacity of a Collection
+
+Using the method `EnsureCapacity` of certain collections pre-seizes the internal storage aray to the expected final size. This improves performance because it does not have to repeatedly increment the size of the array as more characters are appended.
+
+### Understanding Collection Choices
+
+There are several different choices of collections that you can ue for different purposes: lists, dictionaries, stacks, queues, sets, and many other specialized collections.
+
+#### Lists
+
+Lists, a type that implements `IList<T>`, are ordered collections.
+
+Lists are a good choice when you want to manually control the order of items in a collection. Each item in a list has a unique index that is automatically assigned. Items can be any type defined by `T` and items can be duplicated. Indexes are `int` types and start from `0`, so the first item in a list is at index `0`.
+
+| **Index** | **Item** |
+| --------- | -------- |
+| 0 | London |
+| 1 | Paris |
+| 2 | London |
+| 3 | Sydney |
+
+If a new item is inserted between London and Sydney, then the index of Sydney is automatically incremented. Therefore, you must be aware that an items's index can change after inserting or removing items.
+
+| **Index** | **Item** |
+| --------- | -------- |
+| 0 | London |
+| 1 | Paris |
+| 2 | London |
+| 3 | Santiago |
+| 4 | Sydney |
+
+##### Good Practice
+
+Some developers can get into a poor habit of using `List<T>` and other collections when an array would be better. Use arrays instead of collections if the data will not change size after instantiation.
+
+#### Dictionaries
+
+Dictionaries are a good choice when each **value** has a unique sub-value that can be used as a **key** to quickly find a value in the collection later. The key must be unique. For example, if you are storing a list of people, you could choose to use a government-issued identity number as the key. Dictionaries are called **hashmaps** in other languages like Python and Java.
+
+Think of the key as being llike an index entry in a real-world dictionary. It allows you to quikcly find the definition of a word because the words (i.e. keys) are kept sorted.
+
+Dictionaries must implement the interface `IDictionary<TKey, TValue>`.
+
+Items in a dictionary are instaces of the `struct`, aka value type, `KeyValuePair<TKey, TValue>`, where `TKey` is the type of the key and `TValue` is the type of the value.
+
+An example `Dictionary<string, Person>` uses a `string` as the key and `Person` instance as the value.
+
+| **Key** | **Value** |
+| ------- | --------- |
+| BSA | Bob Smith |
+| MW | Max Williams |
+| BSB | Bob Smith |
+| AM | Amir Mohammaed |
+
+#### Stacks
+
+Stacks are a good choice when you want to implement **last-in, first-out (LIFO)** behavior. With a stack you can only directly access or remove the one item at the top of the stack, although you can enumerate to read through the whole list of items.
+
+Example: Word processors use a stack to remember the sequence of actions you have recently performed, and then when you press *Ctrl* + *Z*, it will undo the last action in the stack.
+
+#### Queues
+
+Queues are a good choice when you want to implement **first-in, first-out (FIFO)** behavior. With a queue, you can only directly access or remove the one time at the front of the queue, although you can enumerate to read through the whole queue of items. You cannot, for example, directly access the second item in a queue.
+
+.NET 6 introduced `PriorityQueue`, where each item in the queue has a priority value assigned, as well as its position in the queue.
+
+Example: Background processes use a queue to process work items in the order that they arrive.
+
+#### Sets
+
+Sets are a good choic when you want to perform set operations between two collections.
+
+Example:  You may have two collections of city names, and you want to know when names appear in both sets (i.e. *intersection*). Items in a set must be unique.
+
+#### Collection Methods Summary
+
+| **Collection** | **Add methods** | **Remove methods** | **Description** |
+| -------------- | --------------- | ------------------ | --------------- |
+| `List` | `Add`, `Insert` | `Remove`, `RemoveAt` | Lists are ordered so items have an integer index position. `Add` will add a new item at the end of the list. `Insert` will add a new item at the index position specified. |
+| `Dictionary` | `Add` | `Remove` | Dictionaries are not ordered so items do not have integer index positions. You can check if a key has been used by calling the `ContainsKey` method. |
+| `Stack` | `Push` | `Pop` | Stacks always add a new item at the top of the stack using the `Push` method. The first item is at the bottom. Items are always removed from the top of the stack using the `Pop` method. Call the `Peek` method to see this value without removing it. |
+| `Queue` | `Enqueue` | `Dequeue` | Queues always add a new item at the end of the queue using the `Enqueue` method. The first item is at the front of the queue. Items are always removed from the front of the queue using the `Dequeue` method. Call the `Peek` method to see this value without removing it. |
+
+#!markdown
+
+#### Working with Lists
+
+#!csharp
+
+// Simple syntax for creating a list and adding three items
+List<string> cities = new();
+cities.Add("London");
+cities.Add("Paris");
+cities.Add("Milan");
+
+/* Alternative syntax that is converted by the compiler into the three Add method calls above
+List<string> cities = new() { "London", "Paris", "Milan" }; */
+
+/* Alternative syntax that passes an array of string values to AddRange method
+List<string> cities = new(); 
+cities.AddRange(new[] { "London", "Paris", "Milan" }); */
+
+Output("Initial list", cities);
+WriteLine($"The first city is {cities[0]}.");
+WriteLine($"The last city is {cities[cities.Count - 1]}.");
+
+cities.Insert(0, "Sydney");
+Output("After inserting Sydney at index 0", cities);
+
+cities.RemoveAt(1);
+cities.Remove("Milan");
+Output("After removing two cities", cities);
+
+#!markdown
+
+### Working with Dictionaries
+
+#!csharp
+
+Dictionary<string, string> keywords = new();
+
+// add using named parameters
+keywords.Add(key: "int", value: "32-bit integer data type");
+
+// add using positional parameters
+keywords.Add("long", "64-bit integer data type");
+keywords.Add("float", "Single precision floating point number");
+
+/* Alternative syntax; compiler converts this to calls to Add method
+Dictionary<string, string> keywords = new()
+{
+    { "int", "32-bit integer data type" },
+    { "long", "64-bit integer data type" },
+    { "float", "Single precision floating point number" },
+}; */
+
+/* Alternative syntax; compiler converts this to calls to Add method
+Dictionary<string, string> keywords = new()
+{
+    ["int"] = "32-bit integer data type",
+    ["long"] = "64-bit integer data type",
+    ["float"] = "Single precision floating point number", // last comma is 
+    optional
+}; */
+
+Output("Dictionary keys:", keywords.Keys);
+Output("Dictionary values:", keywords.Values);
+
+WriteLine("Keywords and their definitions");
+foreach (KeyValuePair<string, string> item in keywords)
+{
+    WriteLine($" {item.Key}: {item.Value}");
+}
+
+// look up a value using a key
+string key = "long";
+WriteLine($"The definition of {key} is {keywords[key]}");
+
+#!markdown
+
+### Working with Queues
+
+#!csharp
+
+Queue<string> coffee = new();
+coffee.Enqueue("Damir"); // front of queue
+coffee.Enqueue("Andrea");
+coffee.Enqueue("Ronald");
+coffee.Enqueue("Amin");
+coffee.Enqueue("Irina"); // back of queue
+
+Output("Initial queue from front to back", coffee);
+
+// server handles next person in queue
+string served = coffee.Dequeue();
+WriteLine($"Served: {served}.");
+
+// server handles next person in queue
+served = coffee.Dequeue();
+WriteLine($"Served: {served}.");
+Output("Current queue from front to back", coffee);
+
+WriteLine($"{coffee.Peek()} is next in line.");
+Output("Current queue from front to back", coffee);
+
+#!csharp
+
+static void OutputPQ<TElement,TPriority>(string title, IEnumerable<(TElement Element, TPriority Priority)> collection)
+{
+    WriteLine(title);
+    foreach ((TElement, TPriority) item in collection)
+    {
+        WriteLine($" {item.Item1}: {item.Item2}");
+    }
+}
+
+#!csharp
+
+PriorityQueue<string, int> vaccine = new();
+
+// add some people
+// 1 = high priority people in their 70s or poor health
+// 2 = medium priority e.g. middle-aged
+// 3 = low priority e.g. teens and twenties
+
+vaccine.Enqueue("Pamela", 1); // my mum (70s)
+vaccine.Enqueue("Rebecca", 3); // my niece (teens)
+vaccine.Enqueue("Juliet", 2); // my sister (40s)
+vaccine.Enqueue("Ian", 1); // my dad (70s)
+
+OutputPQ("Current queue for vaccination:", vaccine.UnorderedItems);
+
+WriteLine($"{vaccine.Dequeue()} has been vaccinated.");
+WriteLine($"{vaccine.Dequeue()} has been vaccinated.");
+OutputPQ("Current queue for vaccination:", vaccine.UnorderedItems);
+
+WriteLine($"{vaccine.Dequeue()} has been vaccinated.");
+
+WriteLine("Adding Mark to queue with priority 2");
+vaccine.Enqueue("Mark", 2); // me (40s)
+
+WriteLine($"{vaccine.Peek()} will be next to be vaccinated.");
+OutputPQ("Current queue for vaccination:", vaccine.UnorderedItems);
+
+#!markdown
+
+### Sorting Collections
+
+A `List<T>` class can be sorted by manually calling its `Sort` method (but remember that the indexes of each item will change). Manually sorting a list of string values or other built-in types will work without extra effort on your part, but if you create a collection of your own type, then that type must implement an interface named `IComparable`. You learned how to do this in *Chapter 6, Implementing Interfaces and Inheriting Classes*.
+
+A `Stack<T>` or `Queue<T>` collection cannot be sorted because you wouldn’t usually want that functionality; for example, you would probably never sort a queue of guests checking into a hotel. But sometimes, you might want to sort a dictionary or a set.
+
+Sometimes it would be useful to have an automatically sorted collection, that is, one that maintains the items in a sorted order as you add and remove them.
+
+There are multiple auto-sorting collections to choose from. The differences between these sorted collections are often subtle but can have an impact on the memory requirements and performance of your application, so it is worth putting effort into picking the most appropriate option for your 
+requirements.
+
+Some common auto-sorting collections are shown in the following table:
+
+| **Collection** | **Description** |
+| -------------- | --------------- |
+| `SortedDictionary<TKey, TValue>` | This represents a collection of key/value pairs that are sorted by key. |
+| `SortedList<TKey, TValue>` | This represents a collection of key/value pairs that are sorted by key. |
+| `SortedSet<T>` | This represents a collection of unique objects that are maintained in a sorted order. |
+
+### Specialized Collections
+
+#### Working with a Compact Array of Bit Values
+
+The `System.Collections.BitArray` collection manages a compact array of bit values, which are represented as Booleans, where `true` indicates that the bit is on (value is `1`) and `false` indicates the bit is off (value is `0`).
+
+#### Working with Efficient Lists
+
+The `System.Collections.Generics.LinkedList<T>` collection represents a doubly linked list where every item has a reference to its previous and next items. They provide better performance compared to `List<T>` for scenarios where you will frequently insert and remove items from the middle of the list. In a `LinkedList<T>` the items do not have to be rearranged in memory.
+
+#### Working with Immutable Collections
+
+Sometimes you need to make a collection immutable, meaning that the members cannot change; that is, you cannot add or remove them.
+
+If you import the `System.Collections.Immutable` namespace, then any collection that implements `IEnumerable<T>` is given six extension methods to convert it into an immutaable list, dictionary, has set, and so on.
+
+##### Good Practice
+
+To improve performance, many applications store a shared copy of commonly accessed objects in a central cache. To safely allow multiple threads to work with those objects knowing they won't change, you should make them immutable or use a [concurrent collection type](https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent).
+
+#!markdown
+
+## **Working with Spans, Indexes, and Ranges**
+
+One of Microsoft's goals with .NET Core 2.1 was to improve performance and resource usage. A key .NET feature that enables this is the `Span<T>` type.
+
+### Using Memory More Efficiently Using Spans
+
+If you need to work with a subset of an array, use a **span** because it is like a window into the original array. This is more efficient than creating new copies of subsets of existing arrays and improves performance. Spans only work with arrays, not collections, because the memory must be contiguous.
+
+### Identifying Positions with the `Index` Type
+
+C# 8.0 introduced two features for identifying an item's index position within an array anda  range of items using two indexes.
+
+Objects in a list can be accesse by passing an integer into their indexer.
+
+    int index = 3;
+    Person p = people[index];
+    char latter = name[index];
+
+The `Index` value is a more formal way of identifying a position, and supports counting from the end.
+
+    // two ways to define the same index, 3 in from the start
+    Index i1 = new(value: 3); // counts from the start
+    Index i2 = 3; // using implicit int coversion operator
+
+    // two ways to define the same index, 5 from the end
+    Index i3  = new(value: 5, fromEnd: true);
+    Index i4 = ^5; // using the caret operator
+
+### Identifying Ranges with the Range Type
+
+The `Range` value type uses `Index` values to indicate the start and end of its range, using its constructor, C# syntax, or its static methods.
+
+    Range r1 = new(start: new Index(3), end: new Index (7));
+    Range r2 = new(start: 3, end: 7); // using implicit int conversion
+    Range r3 = 3..7; // using C# 8.0 or later syntax
+    Range r4 = Range.StartAt(3); // from index 3 to last index
+    Range r5 = 3..; // from index 3 to last index
+    Range r6 = Range.EndAt(3); // from index 0 to index 3
+    Range r7 = ..3; from index 0 to index 3
+
+Extension methods have been added to `string` values (which internally use an array of `char`), `int` arrays, and spans to make ranges easier to work with. These extension methods accept a range as a parameter and return `Span<T>`. This makes them very memory-efficent.
+
+#!markdown
+
+## **Working with Network Resources**
+
+Sometimes you will need to work with network resources.
+
+| **Namespace** | **Example type(s)** | **Description** |
+| ------------- | ------------------- | --------------- |
+| `System.Net` | `Dns`, `Uri`, `Cookie`, `WebClient`, `IPAddress` | These are for working with DNS servers, URIs, IP addresses, and so on. |
+| `System.Net` | `FtpStatusCode`, `FtpWebRequest`, `FtpWebResponse` | These are for working with FTP servers. |
+| `System.Net` | `HttpStatusCode`, `HttpWebRequest`, `HttpWebResponse` | These are for working with HTTP servers; that is, websites and services. Types from `System.Net.Http` are easier to use. |
+| `System.Net.Http` | `HttpClient`, `HttpMethod`, `HttpRequestMessage`, `HttpResponseMessage` | These are for working with HTTP servers; that is websites and services. |
+| `System.Net.Mail` | `Attachment`, `MailAddress`, `MailMessage`, `SmtpClient` | These are for working with SMTP servers; that is, sending email messages. |
+| `System.Net.NetworkInformation` | `IPStatus`, `NetworkChange`, `Ping`, `TcpStatistics` | These are for working with low-level network protocols. |
+
+#!csharp
+
+Write("Enter a valid web address (or press Enter): ");
+string? url = ReadLine();
+
+if (string.IsNullOrWhiteSpace(url)) // if they enter nothing...
+{
+    // ... set a default URL
+    url = "https://stackoverflow.com/search?q=securestring";
+}
+
+Uri uri = new(url);
+WriteLine($"URL: {url}");
+WriteLine($"Scheme: {uri.Scheme}");
+WriteLine($"Port: {uri.Port}");
+WriteLine($"Host: {uri.Host}");
+WriteLine($"Path: {uri.AbsolutePath}");
+WriteLine($"Query: {uri.Query}");
+
+#!csharp
+
+IPHostEntry entry = Dns.GetHostEntry(uri.Host);
+WriteLine($"{entry.HostName} has the following IP addresses:");
+foreach (IPAddress address in entry.AddressList)
+{
+    WriteLine($" {address} ({address.AddressFamily})");
+}
+
+#!csharp
+
+try
+{
+    Ping ping = new();
+
+    WriteLine("Pinging server. Please wait...");
+    PingReply reply = ping.Send(uri.Host);
+    WriteLine($"{uri.Host} was pinged and replied: {reply.Status}.");
+
+    if (reply.Status == IPStatus.Success)
+    {
+        WriteLine("Reply from {0} took {1:N0}ms",
+        arg0: reply.Address,
+        arg1: reply.RoundtripTime);
+    }
+}
+catch (Exception ex)
+{
+    WriteLine($"{ex.GetType()} says {ex.Message}");
+}

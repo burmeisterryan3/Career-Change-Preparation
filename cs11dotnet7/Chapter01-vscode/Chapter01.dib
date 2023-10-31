@@ -1,0 +1,121 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":"vscode","aliases":["frontend"],"languageName":null},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"webview","aliases":[]}]}}
+
+#!markdown
+
+# <ins>**Chapter 01**</ins>: *Hello, C#! Welcome, .NET!*
+
+##### Taken from *C11-DotNet7 - Modern Cross-Platform Development Fundamentals* by Mark J. Price
+
+https://github.com/markjprice
+https://github.com/markjprice/cs11dotnet7
+
+#!markdown
+
+## **Understanding .NET**
+
+Throughout the book, the author uses **modern .NET** to refer to .NET 7 and its predecessors like .NET 5 and .NET 6 that come from .NET Core. The term **legacy .NET** is used to refer to .NET Framework, Mono, Xamarin, and .NET Standard. Modern .NET is a unification of those legacy platforms and standards.
+
+.NET 7, .NET Core, .NET Framework, and Xamarin are related and overlapping for developers used to build appliations and services.
+
+### Understanding .NET Framework (legacy)
+
+.NET Framework is a development platform that includes a **Common Language Runtime (CLR)**, which manages the execution of code, and **Base Class Library (BCL)**, which provides a rich library to build applications.
+
+Microsoft originally designed .NET Framework to have the possiblity of being cross-platform, but Microsoft put their implementation efforts into making it work best with Windows.
+
+Practically speaking, .NET Framework is Windows-only and a legacy platform. Do not create new apps using it.
+
+### Understanding Mono, Xamarin, and Unity Projects
+
+Third parties developed a .NET Framework implementation named the **Mono** project. Mono is cross-platform, but it fell behind the official implementation of .NET Framework.
+
+Mono has found a niche as the foundation of the **Xamarin** platform as well as cross-platform game development platforms like **Unity**.
+
+### Understanding .NET Core
+
+Today, we live in a truly cross-platform world where modern mobile and cloud development have made Windows, as an OS, much less important. Because of that, Microsoft has been working since 2015 on an effort to decouple .NET from its close ties to Windows. While rewriting .NET Framework to be truly cross-platform, they've taken the opportunity to refactor major parts and remove parts that are no longer considered core.
+
+This new modernized product was initially branded **.NET Core** and includes a cross-platform implementation of the CLR known **CoreCLR** and a streamlined BCL known as **CoreFX**.
+
+Most improvements that Microsoft makes to .NET Core and modern .NET cannot be easily added to .NET Framework.
+
+.NET Core has been renamed .NET and the major version number has skipped 4 to avoid confusion with .NET Framework 4.x.
+
+### Understanding .NET Support
+
+.NET releases are either **Long Term Support**, **Standard Support** (formerly known as **Current**), or **Preview**.
+
+* **LTS** releases are stable and require fewer updates over their lifetime. These are good for applications that you do not intend to update frequently. LTS releases are supported by Microsoft for 3 years after general availability, or 1 year after the next LTS release ships, whichever is longer.
+* **Standard** or **Current** releases include features that may change based on feedback. These are a good choice for applications that you are actively developing because they provide access to the latet improvements. Standard releases are supported by Microsoft for 18 months after general availability, or 6 months after the next Standard or LTS release ships, which ever is longer.
+* **Preview** releases are for pulic testing.
+
+Standard and LTS releases receive critical fixes throughout their lifetime for security and reliability. You must stay up to date with the latest patches to get support. For example, if a system is running 1.0.0 and 1.0.1 has been released, 1.0.1 will need to be installed to get support.
+
+**End of support** or **end of life** means the date after which bug fixes, security updates, and technical assistance are no longer available.
+
+#### Understanding .NET Runtime and .NET SDK Versions
+
+.NET Runtime versioning follows semantic versioning, that is, a major increment that indicates breaking changes, minor increments indicate new features, and patch increments that indicate bug fixes.
+
+.NET SDK versioning does not follow semantic versioning. The major and minor version numbers are tied to the runtime version it is match with. The patch number follows a convention that indicates the major and minor version of the SDK.
+
+| **Change** | **Runtime** | **SDK** |
+| ---------- | ----------- | ------- |
+| Initial Release | 7.0.0 | 7.0.100 |
+| SDK bug fix | 7.0.0 | 7.0.101 |
+| Runtime and SDK buf fix | 7.0.1 | 7.0.102 |
+| SDK new feature | 7.0.1 | 7.0.200 |
+
+#!markdown
+
+## **What is Different About Modern .NET?**
+
+Modern .NET is modularized compared to the legacy .NET Framework, which is monolithic. It is open source and Microsoft makes decisions about improvements and changes in the open.
+
+It can be smaller thant he last version of .NET Framework due to the removal of legacy and non-cross-platform technologies. For example, workloads such as **Windows Forms** and **Windows Presentation Foundation (WPF)** can be used to build GUI applications, but that are tightly bound to the Windows ecosystem, so they are not included with .NET on macOS and Linux.
+
+### Windows Desktop Development
+
+One of the features of modern .NET is support for running old Windows Forms and WPF desktop application using the Windows Desktop Pack that is included with the Window version of .NET Core 3.1 or later. You can make changes to your legacy Windows desktop app, and then rebuil it for modern .NET to take advantage of new features and performance improvements.
+
+### Web Development
+
+ASP.NET Web Forms and Windows Communication Foundation (WCF) are old web application and service technologies that fewer developers are choosing to use for new development projects today, so they have also been removed. Instead, developers prefer to use ASP.NET MVC, ASP.NET Web API, SignalR, gRPC. These technologies have been refactored and combined intoa platform that runs on modern .NET, named ASP.NET Core.
+
+### Database Development
+
+**Entity Framework** 6 is an object-relational mapping technology that is designed to work with data that is stored in relational databases, such as Oracle and SQL Server. It has gained baggage over the years, so the cross-platform API has been slimmed down, has been given support for non-relational databases like Azure Cosmos DB, and has been renamed **Entity Framework Core**.
+
+#!markdown
+
+## **Understanding .NET Standard**
+
+The situation with .NET in 2019 was that there were three forked .NET platforms controlled by Microsoft.
+
+* **.NET Core**: For cross-platform and new apps
+* **.NET Framework**: For legacy apps.
+* **Xamarin**: For mobile apps.
+
+Each had strengths and weaknesses because they were all designed for different scenarios. This led to the problem that a developer had to learn three platforms, each with annoying quirks and limitations.
+
+Because of that, Microsoft defined .NET Standard - a specification for a set of APIs that all .NET platforms could imoplement to indicate what level of compatability they have.
+
+With .NET Standard 2.0 and later, Microsoft made all three platforms converge on a modern minimum standard, which made it much easier for developers to share code between any flavor of .NET.
+
+For .NET Core 2.0 and later, this added most of the missing APIs that developers need to port old code written for .NET Framework to the cross-platform .NET Core. 
+
+It is important to understand that .NET Standard is just a standard. You are not able to install .NET Standard.
+
+To use .NET Standard, you must install a .NET platform that implements the .NET Standard specification. The last .NET Standard, version 2.1, is implement by .NET Core 3.0, Mono, and Xamarin. Some features of C# 8.0 require .NET Standard 2.1. .NET Standard 2.1 is not implemented by .NET Framework 4.8.
+
+With the release of .NET 5 and later, the need for .NET Standard has reduced significantly because there is now a single .NET for all platforms, including mobile. Modern .NET has a single BCL and two CLRs: CoreCLR is optimized for server or desktop scenarios like websites and Windows desktop apps, and the Mono runtime is optimized for mobile and web browser apps that have limited resources.
+
+#!csharp
+
+Console.WriteLine("Hello, Polygot!")
+
+#!csharp
+
+#!about
