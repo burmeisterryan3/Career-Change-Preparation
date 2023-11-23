@@ -1,0 +1,9 @@
+PUT https://localhost:5001/api/customers/abcxy HTTP/1.1
+Content-Type: application/json
+Content-Length: 94
+
+{
+    "customerID": "ABCXY",
+    "companyName": "ABC Corp",
+    "address": "123 Main St"
+}
