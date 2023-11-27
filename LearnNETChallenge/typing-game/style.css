@@ -1,0 +1,28 @@
+body {
+    font-family: helvetica, arial, sans-serif;
+}
+
+h1 {
+    color: #3a241d;
+    text-align: center;
+}
+
+#game-intro {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#game-rules {
+    text-align: center;
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.highlight {
+    background-color: yellow;
+}
+
+.error {
+    background-color: red;
+}
