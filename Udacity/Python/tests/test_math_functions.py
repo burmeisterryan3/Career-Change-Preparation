@@ -1,6 +1,6 @@
 """Tests the math functions"""
 import unittest
-from classes.functions import MathFunctions
+from classes.math_functions import MathFunctions
 
 class TestMathFunctions(unittest.TestCase):
     """Tests the math functions"""""
