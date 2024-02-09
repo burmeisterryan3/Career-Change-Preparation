@@ -1,5 +1,5 @@
 # Unit tests to check your solution
-from classes.gaussian import Gaussian
+from distributions import Gaussian
 import unittest
 
 class TestGaussianClass(unittest.TestCase):
@@ -15,15 +15,16 @@ class TestGaussianClass(unittest.TestCase):
          'pdf function does not give expected result') 
 
     def test_meancalculation(self):
-        self.gaussian.read_data_file('./data/numbers.txt', True)
+        self.gaussian.read_data_file('./data/numbers.txt')
         self.assertEqual(self.gaussian.calculate_mean(),\
          sum(self.gaussian.data) / float(len(self.gaussian.data)), 'calculated mean not as expected')
 
     def test_stdevcalculation(self):
-        self.gaussian.read_data_file('./data/numbers.txt', True)
-        self.assertEqual(round(self.gaussian.stdev, 2), 92.87, 'sample standard deviation incorrect')
-        self.gaussian.read_data_file('./data/numbers.txt', False)
-        self.assertEqual(round(self.gaussian.stdev, 2), 88.55, 'population standard deviation incorrect')
+        self.gaussian.read_data_file('./data/numbers.txt')
+        _ = self.gaussian.calculate_mean() # pytest instantiates a new object for each test, so we need to recalculate the mean
+        self.assertEqual(round(self.gaussian.calculate_stdev(), 2), 92.87, 'sample standard deviation incorrect')
+        self.gaussian.read_data_file('./data/numbers.txt')
+        self.assertEqual(round(self.gaussian.calculate_stdev(sample=False), 2), 88.55, 'population standard deviation incorrect')
                 
 tests = TestGaussianClass()
 
