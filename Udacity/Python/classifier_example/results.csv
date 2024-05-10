@@ -1,0 +1,4 @@
+arch,perc-not-dog-correct,perc-dog-correct,perc-breed-correct,perc-match-label
+ResNet,90.0,100.0,90.0,82.5
+AlexNet,100.0,100.0,80.0,75.0
+VGG,100.0,100.0,93.3,87.5
