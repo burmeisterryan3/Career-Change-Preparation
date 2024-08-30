@@ -1,0 +1,79 @@
+{
+  "public_identifier": "hannah-burmeister-cardiac-np-99083b132",
+  "background_cover_image_url": "https://media.licdn.com/dms/image/v2/C4E16AQER_mq8NzQaUw/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1651797173702?e=1730332800&v=beta&t=BXVCgGiof3xU0Xo7CtomCVcPvn7IP7oYeicvUjDFVM0",
+  "first_name": "Hannah",
+  "last_name": "Burmeister, Cardiac NP",
+  "full_name": "Hannah Burmeister, Cardiac NP",
+  "follower_count": 81,
+  "occupation": "Cardiovascular Nurse Practitioner",
+  "headline": "Cardiovascular Nurse Practitioner",
+  "country": "US",
+  "country_full_name": "United States",
+  "city": "Norfolk",
+  "state": "Virginia",
+  "experiences": [
+    {
+      "starts_at": { "day": 1, "month": 1, "year": 2022 },
+      "ends_at": null,
+      "company": "Innovation Health Services",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/ihscardiac",
+      "company_facebook_profile_url": null,
+      "title": "Director of Outreach",
+      "description": null,
+      "location": "Norfolk, Virginia, United States",
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/ihscardiac/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T003248Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=da0833e12440881541f8e0e7699245d6ba2abef59b4a469fd5bb06c233635584"
+    },
+    {
+      "starts_at": { "day": 1, "month": 1, "year": 2022 },
+      "ends_at": null,
+      "company": "Innovation Cardiology",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/innovation-cardiology",
+      "company_facebook_profile_url": null,
+      "title": "Cardiovacular Nurse Practitioner ",
+      "description": null,
+      "location": null,
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/innovation-cardiology/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T003248Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=fb45e717852c8555b30a148893865b0bb7137bbfca481ee993919d8c6baf498a"
+    },
+    {
+      "starts_at": { "day": 1, "month": 1, "year": 2021 },
+      "ends_at": null,
+      "company": "Innovation Cardiology",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/innovation-cardiology",
+      "company_facebook_profile_url": null,
+      "title": "Cardiovascular Nurse Practitioner",
+      "description": null,
+      "location": null,
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/innovation-cardiology/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T003248Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=fb45e717852c8555b30a148893865b0bb7137bbfca481ee993919d8c6baf498a"
+    }
+  ],
+  "education": [
+    {
+      "starts_at": null,
+      "ends_at": null,
+      "field_of_study": "Clinical Nurse Leadership",
+      "degree_name": "Master of Science",
+      "school": "University of Maryland School of Nursing",
+      "school_linkedin_profile_url": "https://www.linkedin.com/company/1102476/",
+      "school_facebook_profile_url": null,
+      "description": null,
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/umson/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T003248Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=68500727e534e0b54c9351bd0dccaa3309e9808406f0071cf05b4a3e4ec8254e",
+      "grade": null,
+      "activities_and_societies": null
+    },
+    {
+      "starts_at": null,
+      "ends_at": null,
+      "field_of_study": "Family Nurse Practitioner",
+      "degree_name": "Master of Science - MS",
+      "school": "Georgia Southwestern State University",
+      "school_linkedin_profile_url": "https://www.linkedin.com/company/430236/",
+      "school_facebook_profile_url": null,
+      "description": null,
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/georgia-southwestern-state-university/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T003248Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=8fd41f386b5e676faf2a87861bddebe61932c8ce47ce895b118e5e64d47de9b2",
+      "grade": null,
+      "activities_and_societies": null
+    }
+  ],
+  "languages": ["English"],
+  "connections": 72
+}
