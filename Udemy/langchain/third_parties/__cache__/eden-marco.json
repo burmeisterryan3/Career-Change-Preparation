@@ -1,0 +1,132 @@
+{
+  "public_identifier": "eden-marco",
+  "profile_pic_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/person/eden-marco/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=9485d5b2dc6c0e40b52f4606f07050e62107bbf517931029e4dc2710948ea07f",
+  "background_cover_image_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/person/eden-marco/cover?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c22bfebe0b0b6d7f08ff422210bd311146a7a0a45da5ff82b2b4a08c58f560f9",
+  "first_name": "Eden",
+  "last_name": "Marco",
+  "full_name": "Eden Marco",
+  "follower_count": 5510,
+  "occupation": "LLM Specialist, Customer Engineering - Google Cloud at Google",
+  "headline": "LLMs @ Google Cloud | Best-selling Udemy Instructor | Backend & GenAI | Opinions stated here are my own, not those of my company",
+  "summary": "Backend developer, Udemy.com best seller instructor\nOpinions stated here are my own, not those of my company",
+  "country": "IL",
+  "country_full_name": "Israel",
+  "city": "Tel Aviv District",
+  "experiences": [
+    {
+      "starts_at": { "day": 1, "month": 9, "year": 2023 },
+      "ends_at": null,
+      "company": "Google",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/google",
+      "company_facebook_profile_url": null,
+      "title": "LLM Specialist, Customer Engineering - Google Cloud",
+      "description": null,
+      "location": "Tel Aviv District, Israel",
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/google/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=2fe86ab5ffd993109fb43b5053a81ba56e6060ce0873ecf5283645b7eb36325e"
+    },
+    {
+      "starts_at": { "day": 1, "month": 2, "year": 2017 },
+      "ends_at": null,
+      "company": "Udemy",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/udemy",
+      "company_facebook_profile_url": null,
+      "title": "Independent Udemy Instructor",
+      "description": "Production and publication of 5 best-selling courses on the Udemy platform, with a total of 75K+ enrolled students, 16000+ ratings and a solid 4.7 \u2605 rating.",
+      "location": null,
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/udemy/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=9de84fc356a69085df7f169be6d3efee7de00ac1a2b221713286408a5c8999f5"
+    },
+    {
+      "starts_at": { "day": 1, "month": 6, "year": 2022 },
+      "ends_at": { "day": 30, "month": 9, "year": 2023 },
+      "company": "Google",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/google",
+      "company_facebook_profile_url": null,
+      "title": "Customer Engineer",
+      "description": null,
+      "location": "Tel Aviv, Israel",
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/google/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=2fe86ab5ffd993109fb43b5053a81ba56e6060ce0873ecf5283645b7eb36325e"
+    },
+    {
+      "starts_at": { "day": 1, "month": 1, "year": 2022 },
+      "ends_at": { "day": 30, "month": 6, "year": 2022 },
+      "company": "Orca Security",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/orca-security",
+      "company_facebook_profile_url": null,
+      "title": "Senior Software Engineer",
+      "description": null,
+      "location": "Tel Aviv District, Israel",
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/orca-security/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=90ce4a0ed908db6804aee1fbbd7aeabba330cc66ce46e492ebb5bb395afed48e"
+    },
+    {
+      "starts_at": { "day": 1, "month": 4, "year": 2020 },
+      "ends_at": { "day": 31, "month": 1, "year": 2022 },
+      "company": "Orca Security",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/orca-security",
+      "company_facebook_profile_url": null,
+      "title": "Software Engineer",
+      "description": null,
+      "location": "Tel Aviv, Israel",
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/orca-security/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=90ce4a0ed908db6804aee1fbbd7aeabba330cc66ce46e492ebb5bb395afed48e"
+    },
+    {
+      "starts_at": { "day": 1, "month": 12, "year": 2019 },
+      "ends_at": { "day": 30, "month": 4, "year": 2020 },
+      "company": "Wizer",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/get-wizer",
+      "company_facebook_profile_url": null,
+      "title": "Software Engineer",
+      "description": null,
+      "location": null,
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/get-wizer/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=c890d926bbd71b678489affd6dd78c3c89983346436bc744c93c3da8e07e5fae"
+    },
+    {
+      "starts_at": { "day": 1, "month": 7, "year": 2019 },
+      "ends_at": { "day": 31, "month": 12, "year": 2019 },
+      "company": "Deep Instinct",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/deep-instinct",
+      "company_facebook_profile_url": null,
+      "title": "Software Engineer",
+      "description": null,
+      "location": "Tel Aviv Area, Israel",
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/deep-instinct/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=aefa4b93599428dfac7543534c400255ca8812c3cecb41300d820bc2b3b4b52e"
+    },
+    {
+      "starts_at": { "day": 1, "month": 10, "year": 2018 },
+      "ends_at": { "day": 31, "month": 7, "year": 2019 },
+      "company": "Reichman University",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/reichman-university",
+      "company_facebook_profile_url": null,
+      "title": "Computer Science Teaching Assistant (External Lecturer)",
+      "description": "* Functional Programming (Including international school)\n* Introduction to Computer Science",
+      "location": "Herzliya Area, Israel",
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/reichman-university/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=b90dd3f7115d52ef2a5c7457e4f2a2074e0cb064bbd0be8009b101427cdbf9fe"
+    },
+    {
+      "starts_at": { "day": 1, "month": 7, "year": 2010 },
+      "ends_at": { "day": 31, "month": 8, "year": 2014 },
+      "company": "Israel Defense Forces",
+      "company_linkedin_profile_url": "https://www.linkedin.com/company/israeldefenseforces",
+      "company_facebook_profile_url": null,
+      "title": "Captain",
+      "description": null,
+      "location": null,
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/israeldefenseforces/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=908ba74f57500e332e67464d65dad8d188e15f477cf35788d39080d8b312e315"
+    }
+  ],
+  "education": [
+    {
+      "starts_at": { "day": 1, "month": 1, "year": 2015 },
+      "ends_at": { "day": 31, "month": 12, "year": 2019 },
+      "field_of_study": "Computer Science",
+      "degree_name": "Bachelor\u2019s Degree",
+      "school": "Technion - Israel Institute of Technology",
+      "school_linkedin_profile_url": "https://www.linkedin.com/company/3155/",
+      "school_facebook_profile_url": null,
+      "description": null,
+      "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/technion/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20240830%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20240830T175522Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=dcdd759c4f964e88baef3e45607a15cebd24d791b80fc5426f5904e515609da1",
+      "grade": null,
+      "activities_and_societies": null
+    }
+  ],
+  "connections": 3888
+}
