@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "vectors-in-memory"
+version = "0.1.0"
+description = "Udemy LangChain course vectors in memory section"
+authors = ["burmeisterryan3 <ryan.j.burmeister@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+langchain = "^0.2.15"
+pypdf = "^4.3.1"
+langchain-openai = "^0.1.23"
+langchain-community = "^0.2.15"
+langchainhub = "^0.1.21"
+python-dotenv = "^1.0.1"
+faiss-cpu = "^1.8.0.post1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

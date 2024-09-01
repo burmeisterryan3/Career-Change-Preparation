@@ -2,15 +2,14 @@ import os
 
 from dotenv import load_dotenv
 from langchain import hub
-from langchain.chains import create_retrieval_chain  # noqa: F401
+from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import (
-    create_stuff_documents_chain,  # noqa: F401
+    create_stuff_documents_chain,
 )
 from langchain_chroma import Chroma
 from langchain_core.documents.base import Document
 from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import (  # noqa: F401
-    RunnableLambda,
+from langchain_core.runnables import (
     RunnablePassthrough,
 )
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
