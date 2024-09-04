@@ -73,5 +73,17 @@
                 "PYTHONPATH": "${cwd}"
             }
         },
+        {
+            "name": "In Memory Vector DB Debugger - Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            }
+        },
     ]
 }
