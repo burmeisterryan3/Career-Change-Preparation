@@ -60,6 +60,20 @@
             }
         },
         {
+            "name": "Streamlit Runner",
+            "type": "debugpy",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "module": "streamlit",
+            // "program": "/Users/ryanj/.virtualenvs/llms/Scripts/streamlit",
+            "args": ["run", "${file}"],
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            }
+        },
+        {
             "name": "In Memory Vector DB Debugger - Current File",
             "type": "debugpy",
             "request": "launch",
@@ -70,6 +84,6 @@
             "env": {
                 "PYTHONPATH": "${cwd}"
             }
-        }
+        },
     ]
 }
