@@ -1,0 +1,14 @@
+Source:
+https://regex101.com/quiz/11
+
+Name:
+Validate Floating Point Numbers
+
+Question:
+Check if a floating point number (e.g. 3.14159) is in a valid format.
+
+Solution:
+/^[-+]?(\d+[.,]?\d*|\d*[.,]\d+)([eE][-+]?\d+)?$/
+
+Quality:
+Your shortest solution thus far is 48 characters long. The overall shortest solution is 40 characters long.

@@ -1,0 +1,21 @@
+Source:
+https://regex101.com/quiz/8
+
+Name:
+HTML Tags (Optional)
+
+Question:
+Strip all HTML tags from a string. HTML tags are enclosed in < and >.
+
+The regex will be applied on a line-by-line basis, meaning partial tags will need to be handled by the regex. Don't worry about opening or closing tags; we just want to get rid of them all.
+
+Note: This task is meant to be a learning exercise, and not necessarily the best way to parse HTML.
+
+Solution:
+s/<?[^<>]*>|<[^>]*//g
+
+Substitution:
+
+
+Quality:
+Your shortest solution thus far is 19 characters long. The overall shortest solution is 14 characters long.

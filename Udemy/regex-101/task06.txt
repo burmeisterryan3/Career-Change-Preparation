@@ -1,0 +1,16 @@
+Source:
+https://regex101.com/quiz/6
+
+Name:
+Broken Keyboard
+
+Question:
+Oh no! It seems my friends spilled beer all over my keyboard last night and my keys are super sticky now. Some of the time whennn I press a key, I get two duplicates.
+
+Can you ppplease help me fix thhhis?
+
+Solution:
+s/(.)\1{2}/$1/g
+
+Quality:
+Your shortest solution thus far is 13 characters long. The overall shortest solution is 12 characters long.

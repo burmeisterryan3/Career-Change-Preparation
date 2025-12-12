@@ -1,0 +1,14 @@
+Source:
+https://regex101.com/quiz/5
+
+Name:
+Whitespace
+
+Question:
+Find all occurrences of 4 or more whitespace characters in a row throughout the string.
+
+Solution:
+/\s{4,}/g
+
+Quality:
+Your shortest solution thus far is 9 characters long. The overall shortest solution is 9 characters long.

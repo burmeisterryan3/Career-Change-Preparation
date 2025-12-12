@@ -1,0 +1,20 @@
+Source:
+https://regex101.com/quiz/2
+
+Name:
+Capitalizing I
+
+Question:
+Use substitution to replace every occurrence of the word i with the word I (uppercase, I as in me).
+E.g.: i'm replacing it. am i not? -> I'm replacing it. am I not?.
+
+A regex match is replaced with the text in the Substitution field when using substitution.
+
+Solution:
+s/\bi\b/g
+
+Substitution:
+I
+
+Quality:
+Your shortest solution thus far is 9 characters long. The overall shortest solution is 9 characters long.

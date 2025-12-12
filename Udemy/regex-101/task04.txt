@@ -1,0 +1,14 @@
+Source:
+https://regex101.com/quiz/4
+
+Name:
+Retrieve Numbers
+
+Question:
+Count the number of integers in a given string. Integers are, for example: 1, 2, 65, 2579, etc.
+
+Solution:
+s/\d+/g
+
+Quality:
+Your shortest solution thus far is 6 characters long. The overall shortest solution is 6 characters long.

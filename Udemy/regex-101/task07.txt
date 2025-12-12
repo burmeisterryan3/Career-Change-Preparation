@@ -1,0 +1,16 @@
+Source:
+https://regex101.com/quiz/7
+
+Name:
+Validate an IP
+
+Question:
+Validate an IPv4 address.
+The addresses are four numbered separated by three dots, and can only have a maximum value of 255 in either octet.
+Start by trying to validate 172.16.254.1.
+
+Solution:
+/^(?:(?:25[0-5]{1}|2[0-4]\d|1[0-9]{2}|\d{1,2})\.){3}(?:25[0-5]{1}|2[0-4]\d|1\d{2}|\d{1,2})$/g
+
+Quality:
+Your shortest solution thus far is 93 characters long. The overall shortest solution is 39 characters long.

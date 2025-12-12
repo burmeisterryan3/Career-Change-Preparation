@@ -1,0 +1,18 @@
+Source:
+https://regex101.com/quiz/3
+
+Name:
+Uppercase Consonants
+
+Question:
+With regex you can count the number of matches.
+Can you make it return the number of uppercase consonants (B,C,D,F,..,X,Y,Z) in a given string?
+E.g.: it should return 3 with the text ABcDeFO!. Note: Only ASCII. We consider Y to be a consonant!
+
+Example: the regex /./g will return 3 when run against the string abc.
+
+Solution:
+s/[B-DF-HJ-NP-TV-Z]/g
+
+Quality:
+Your shortest solution thus far is 20 characters long. The overall shortest solution is 16 characters long.

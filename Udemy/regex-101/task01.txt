@@ -1,0 +1,15 @@
+Source:
+https://regex101.com/quiz/1
+
+Name:
+Word Boundaries
+
+Question:
+Check if a string contains the word word in it (case insensitive).
+If you have no idea, I guess you could try /word/.
+
+Solution:
+s/\bword\b/i
+
+Quality:
+Your shortest solution thus far is 11 characters long. The overall shortest solution is 11 characters long.

@@ -1,0 +1,21 @@
+Source:
+https://regex101.com/quiz/12
+
+Name:
+Match Any Number Between 0-100
+
+Question:
+Could you help me validate my input and only match positive integers between the range of 0 and 100?
+
+There can be several numbers in a string which I would want to retrieve.
+
+Try out these example strings:
+
+Sam has 200 apples. He gives Todd 20 and Mary 125.
+The weather is -5 C today, but will be +5 C tomorrow.
+
+Solution:
+/\b(?<!-)(?:100|\d?\d)\b/g
+
+Quality:
+Your shortest solution thus far is 26 characters long. The overall shortest solution is 26 characters long.
