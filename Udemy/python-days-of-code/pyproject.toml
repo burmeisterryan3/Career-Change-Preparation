@@ -1,0 +1,120 @@
+[project]
+name = "udemy-100-days-of-code-python"
+version = "0.1.0"
+description = "Contains folders for each day of Udemy's 100 day of Python code course"
+authors = [
+    {name = "Ryan Burmeister", email = "burmeister_ryan@bah.com"},
+]
+readme = "README.md"
+requires-python = ">=3.12"
+packages = [{include = "days_of_code"}]
+dependencies = [
+    "certifi>=2025.1.31",
+    "colorgram-py>=1.2.0",
+    "debugpy>=1.8.13",
+    "dotenv>=0.9.9",
+    "jupyter>=1.1.1",
+    "numpy>=2.2.3",
+    "pandas>=2.2.3",
+    "pip-system-certs>=5.3",
+    "pydantic>=2.10.6",
+    "scipy>=1.15.2",
+    "twilio>=9.8.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.5",
+]
+
+[tool.pytest.ini_options]
+# Modules are disjointed. Update for the module being tested as required
+pythonpath = "100-days-of-code/day011/blackjack"
+testpaths = "tests/day011"
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+# Discover Jupyter Notbeook files in any specified directories and lint them
+extend-include = ["*.ipynb"]
+
+line-length = 79
+indent-width = 4
+
+# Assume Python 3.8
+# target-version = "py38"
+
+[tool.ruff.lint]
+# Ruff includes 'F' and certain 'E' codes by default
+# Use extend-select to ensure we don't override these settings while adding the below
+extend-select = [
+  "UP",  # pyupgrade
+  "D",   # pydocstyle
+  "N",   # naming-convention
+]
+ignore = ["D417"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = true
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
