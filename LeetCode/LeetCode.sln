@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrays1D", "LeetCode\Arrays1D.csproj", "{E395399D-C8FB-4353-8F89-4BD445523BAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrays1D", "Arrays1D\Arrays1D.csproj", "{E395399D-C8FB-4353-8F89-4BD445523BAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrays1D.Test", "Arrays.Test\Arrays1D.Test.csproj", "{BFDF0449-31AE-42C3-B81B-42B51A201FD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrays1D.Test", "Arrays1D.Test\Arrays1D.Test.csproj", "{BFDF0449-31AE-42C3-B81B-42B51A201FD5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E395399D-C8FB-4353-8F89-4BD445523BAC} = {E395399D-C8FB-4353-8F89-4BD445523BAC}
 	EndProjectSection
