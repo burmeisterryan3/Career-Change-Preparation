@@ -1,0 +1,1 @@
+All applications should be run from the project level directory udemy-100-days-of-code-python.
