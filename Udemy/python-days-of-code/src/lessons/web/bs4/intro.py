@@ -32,8 +32,11 @@ def main():
     # company_url = soup.select_one("p a").get("href")
     # print(company_url)
 
-    name = soup.select_one("#name")
-    print(name)
+    # name = soup.select_one("#name")
+    # print(name)
+
+    headings = soup.select(".heading")
+    print(headings)  # prints a list
 
 
 if __name__ == "__main__":
