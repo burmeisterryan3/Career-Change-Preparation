@@ -1,0 +1,17 @@
+{
+    "editor.inlineSuggest.enabled": false,
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.rulers": [
+            {
+                "column": 80,
+                "color": "#3cff00"
+            },
+            {
+                "column": 100,
+                "color": "#ff2fc1"
+            }
+        ],
+        "editor.defaultFormatter": "charliermarsh.ruff",
+    }
+}
