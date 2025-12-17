@@ -20,6 +20,7 @@ dependencies = [
     "pip-system-certs>=5.3",
     "pydantic>=2.10.6",
     "scipy>=1.15.2",
+    "spotipy>=2.25.2",
     "twilio>=9.8.4",
 ]
 
@@ -39,6 +40,8 @@ extend-include = ["*.ipynb"]
 
 line-length = 100
 indent-width = 4
+fix = true
+target-version = "py313"
 
 [tool.ruff.lint]
 # Ruff includes 'F' and certain 'E' codes by default
@@ -47,6 +50,7 @@ extend-select = [
   "UP",  # pyupgrade
   "D",   # pydocstyle
   "N",   # naming-convention
+  "I",   # isort
 ]
 ignore = ["D417"]
 
@@ -56,6 +60,10 @@ unfixable = []
 
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
