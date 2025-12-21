@@ -20,6 +20,7 @@ dependencies = [
     "pip-system-certs>=5.3",
     "pydantic>=2.10.6",
     "scipy>=1.15.2",
+    "selenium>=4.39.0",
     "spotipy>=2.25.2",
     "twilio>=9.8.4",
 ]
@@ -33,6 +34,9 @@ dev = [
 # Modules are disjointed. Update for the module being tested as required
 pythonpath = "100-days-of-code/day011/blackjack"
 testpaths = "tests/day011"
+
+[tool.pyright]
+typeCheckingMode = "basic"
 
 [tool.ruff]
 # Discover Jupyter Notbeook files in any specified directories and lint them
